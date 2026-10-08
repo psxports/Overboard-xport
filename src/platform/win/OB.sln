@@ -1,0 +1,18 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{BC8A1FFA-BEE3-4634-8014-F334798102B3}") = "OB", "OB.vcxproj", "{F0F360C9-9656-45F5-A263-D7C09487C67F}"
+EndProject
+Global
+ GlobalSection(SolutionConfigurationPlatforms) = preSolution
+  Debug|x86 = Debug|x86
+  Release|x86 = Release|x86
+ EndGlobalSection
+ GlobalSection(ProjectConfigurationPlatforms) = postSolution
+  {F0F360C9-9656-45F5-A263-D7C09487C67F}.Debug|x86.ActiveCfg = Debug|Win32
+  {F0F360C9-9656-45F5-A263-D7C09487C67F}.Debug|x86.Build.0 = Debug|Win32
+  {F0F360C9-9656-45F5-A263-D7C09487C67F}.Release|x86.ActiveCfg = Release|Win32
+  {F0F360C9-9656-45F5-A263-D7C09487C67F}.Release|x86.Build.0 = Release|Win32
+ EndGlobalSection
+EndGlobal
