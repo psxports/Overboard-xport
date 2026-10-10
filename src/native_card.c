@@ -69,7 +69,6 @@ sint32 ob_native_card_call(uint32 target, uint32 count, const uint32 *args, uint
     uint32 routine;
     uint32 destination;
     uint32 offset;
-    (void)args;
     if (target != 0x80063D60u && target != 0x80063E18u) return 0;
     if (count) ob_native_missing(target, 0u, count);
     if (!card_initialized) card_failure("Kernel data is not initialized");

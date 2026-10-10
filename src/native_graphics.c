@@ -97,6 +97,21 @@ sint32 ob_native_graphics_call(uint32 target, uint32 count, const uint32 *args, 
 {
     switch (target)
     {
+    case 0x8005F888u:
+    {
+        graphics_arguments(target, count, 4u);
+        xport_gte_write_data(0u, r_u32(args[0]));
+        xport_gte_write_data(1u, r_u32(args[0] + 4u));
+        xport_gte_execute(0x180001u);
+        w_u32(args[1], xport_gte_read_data(14u));
+        w_u32(args[2], xport_gte_read_data(8u));
+        PsxGteSnapshot snapshot;
+        psx_gte_snapshot(&snapshot);
+        sint32 depth = (sint32)xport_gte_read_data(19u);
+        w_u32(args[3], (uint32)snapshot.flag);
+        *result = (uint32)(depth >> 2);
+        return 1;
+    }
     case 0x8005F59Cu:
         graphics_arguments(target, count, 3u);
         /* NormalColorCol loads one packed normal and one color before NCCS */

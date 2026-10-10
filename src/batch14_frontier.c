@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch14_frontier.h"
 
 uint32 ob_set_audio_mode(uint32 mode)

@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "front_signatures.h"
 #include "native_runtime.h"
 

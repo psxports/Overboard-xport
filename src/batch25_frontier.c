@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch25_frontier.h"
 
 uint32 ob_locate_spatial_cell(uint32 x, uint32 z, uint32 output)

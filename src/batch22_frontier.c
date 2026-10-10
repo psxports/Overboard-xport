@@ -1,6 +1,7 @@
+#include "psx.h"
 #include "batch22_frontier.h"
 
-uint32 ob_reset_file_setup(uint32 incoming_result)
+void ob_reset_file_setup(void)
 {
     FUNCTION_MARKER(0x80054CA8u, "SLES_008.65");
     w_u32(0x800896BCu, 0u);
@@ -8,42 +9,35 @@ uint32 ob_reset_file_setup(uint32 incoming_result)
     w_u32(0x8007FA80u, 0u);
     w_u32(0x80084A48u, 0u);
     w_u32(0x800771D8u, 0u);
-    return incoming_result;
 }
 
-uint32 ob_stamp_object_records(uint32 incoming_result)
+void ob_stamp_object_records(void)
 {
     FUNCTION_MARKER(0x80034530u, "SLES_008.65");
     uint32 node = r_u32(0x80077594u);
-    uint32 result = incoming_result;
     if (node == 0u)
-        return result;
+        return;
     uint32 timestamp = r_u32(0x800882BCu);
     do
     {
         sint32 type = r_s16(node + 4u);
-        result = type < 3 ? 1u : 0u;
         if (type == 0)
         {
             uint32 payload = r_u32(node + 8u);
-            result = timestamp + r_u16(payload + 10u);
-            w_u32(payload + 44u, result);
+            w_u32(payload + 44u, timestamp + r_u16(payload + 10u));
         }
         else if (type > 0 && type <= 3)
         {
             uint32 payload = r_u32(node + 8u);
-            result = timestamp + r_u16(payload + 8u);
-            w_u32(payload + 16u, result);
+            w_u32(payload + 16u, timestamp + r_u16(payload + 8u));
             if (type == 3)
             {
                 payload = r_u32(node + 8u);
-                result = timestamp + r_u16(payload + 32u);
-                w_u32(payload + 40u, result);
+                w_u32(payload + 40u, timestamp + r_u16(payload + 32u));
             }
         }
         node = r_u32(node);
     } while (node != 0u);
-    return result;
 }
 
 uint32 ob_init_optional_link(uint32 node)

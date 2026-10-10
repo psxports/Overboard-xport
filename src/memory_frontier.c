@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "memory_frontier.h"
 
 uint32 ob_memory_init_groups(void)

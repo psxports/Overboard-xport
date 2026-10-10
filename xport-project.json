@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "name": "Overboard!",
+  "short_name": "OB",
+  "toolset": "C:\\Projects\\xports\\xport\\tools",
+  "paths": {
+    "status": "status",
+    "project_tools": "tools",
+    "analysis_database": "status/analysis.sqlite",
+    "native_executable": "bin/OB.exe",
+    "native_debug_executable": "bin/OB_debug.exe",
+    "native_working_directory": "bin",
+    "native_solution": "src/platform/win/OB.sln",
+    "native_build": "_build",
+    "ida_exports": "orig/images",
+    "ida_configs": "tools/ida",
+    "sdk_classification": "status/ghidra/classification.json",
+    "disc_image": "iso/Overboard! (Europe).cue",
+    "music_source": "iso",
+    "music_output": "bin/MUSIC",
+    "original_executable": "orig/SLES_008.65"
+  },
+  "duckstation": {
+    "host": "127.0.0.1",
+    "gdb_port": 2412,
+    "reserved_gdb_ports": {
+      "user": 2412,
+      "lockstep": 2413
+    },
+    "default_role": "user",
+    "data_directory": "tools/duckstation/data/user",
+    "data_directories": {
+      "user": "tools/duckstation/data/user",
+      "lockstep": "tools/duckstation/data/lockstep"
+    }
+  },
+  "lockstep": {
+    "schema": 1,
+    "enabled": true,
+    "original_image": "SLES_008.65",
+    "native_configuration": "Debug",
+    "native_platform": "x86",
+    "msbuild_property": "LockstepDebug=true",
+    "source_roots": [
+      "src"
+    ],
+    "max_events": 1000000,
+    "memory": {
+      "dram_size": 2097152,
+      "scratchpad_size": 1024
+    },
+    "devices": {
+      "vram": "trusted_wrapper",
+      "spu_ram": "trusted_wrapper"
+    },
+    "runtime": {
+      "duckstation_role": "lockstep",
+      "record_role": "user",
+      "native_arguments": [
+        "--lockstep-replay"
+      ]
+    }
+  },
+  "code_refresh": {
+    "build": {
+      "solution": "src/platform/win/OB.sln",
+      "configuration": "Debug",
+      "platform": "x86",
+      "process_name": "OB_debug.exe"
+    },
+    "tests": [],
+    "artifacts": []
+  },
+  "analysis": {
+    "images": [
+      "SLES_008.65"
+    ],
+    "default_image": "SLES_008.65"
+  },
+  "capabilities": {
+    "redbook_audio": {
+      "enabled": true
+    }
+  }
+}

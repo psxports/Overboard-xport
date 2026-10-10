@@ -17,6 +17,19 @@ sint32 ob_native_services_call(uint32 target, uint32 count, const uint32 *args, 
 {
     switch (target)
     {
+        case 0x80064028u:
+            *result = ob_native_sprintf(count, args);
+            return 1;
+
+        case 0x80063FE8u:
+            service_arguments(target, count, 0u);
+            *result = (uint32)randPSX();
+            return 1;
+        case 0x80063FF8u:
+            service_arguments(target, count, 1u);
+            srandPSX(args[0]);
+            *result = 0u;
+            return 1;
         case 0x80063B94u:
             service_arguments(target, count, 1u);
             *result = (uint32)_card_info((sint32)args[0]);
@@ -257,6 +270,12 @@ sint32 ob_native_services_call(uint32 target, uint32 count, const uint32 *args, 
             *result = !mask || (mask & 0x2000u) ? r_u32(0x8007633Cu) : 0u;
             return 1;
         }
+        case 0x800637B8u:
+            service_arguments(target, count, 1u);
+            SpuGetVoiceAttr((SpuVoiceAttr *)psx_addr(args[0], sizeof(SpuVoiceAttr)));
+            /* The volume fade caller ignores the original SDK return carrier */
+            *result = 0u;
+            return 1;
         case 0x80062EE8u:
             service_arguments(target, count, 1u);
             SpuSetVoiceAttr((SpuVoiceAttr *)psx_addr(args[0], sizeof(SpuVoiceAttr)));

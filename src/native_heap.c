@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "native_heap.h"
 #include "native_runtime.h"
 #include "draft_signatures.h"

@@ -1,11 +1,11 @@
+#include "psx.h"
 #include "batch15_frontier.h"
 #include "batch5_frontier.h"
 
-uint32 ob_set_scene_callback(uint32 callback, uint32 incoming_result)
+void ob_set_scene_callback(uint32 callback)
 {
     FUNCTION_MARKER(0x8001B048u, "SLES_008.65");
     w_u32(0x80066030u, callback);
-    return incoming_result;
 }
 
 uint32 ob_init_scene_geometry(void)

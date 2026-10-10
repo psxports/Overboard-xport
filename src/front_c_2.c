@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "front_signatures.h"
 #include "native_runtime.h"
 #include <stdint.h>
@@ -7,13 +8,7 @@
 
 static void front_c_solid_quad(uint32 x, uint32 y, uint32 width, uint32 height)
 {
-    uint32 attributes = ob_draft_scratch_acquire(32u);
-    w_u32(attributes + 16u, 196u);
-    w_u32(attributes + 20u, 196u);
-    w_u32(attributes + 24u, 196u);
-    w_u32(attributes + 28u, 1u);
-    ob_append_solid_quad(x, y, width, height, attributes);
-    ob_draft_scratch_release(attributes);
+    ob_append_solid_quad(x, y, width, height, 196u, 196u, 196u, 1u);
 }
 
 uint32 ob_front_80099AF4(void)

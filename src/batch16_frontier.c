@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch16_frontier.h"
 
 uint32 ob_link_object(uint32 parent, uint32 child)

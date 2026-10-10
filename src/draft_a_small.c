@@ -97,12 +97,12 @@ uint32 sub_80017554(void)
     return result;
 }
 
-uint32 sub_80045490(uint32 a1)
+uint32 sub_80045490(uint32 object, uint32 time)
 {
     FUNCTION_MARKER(0x80045490u, "SLES_008.65");
-    /* TODO Bind the omitted incoming helper carriers */
-    ob_draft_unresolved_call(0x80045758u, 0u);
-    return a1 + 80u;
+    /* Ignored return needs no original incoming result carrier */
+    ob_advance_object(object, time, 0u);
+    return object + 80u;
 }
 
 uint32 sub_8004E614(uint32 a1)
@@ -275,19 +275,19 @@ uint32 sub_80046BE8(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
     return 128u;
 }
 
-uint32 sub_8004F478(uint32 a1, uint32 a3)
+uint32 sub_8004F478(uint32 object, uint32 unused, uint32 mode)
 {
     FUNCTION_MARKER(0x8004F478u, "SLES_008.65");
-    if (r_u32(a1 + 152u) == a3) return sub_8004F758(a1, a3);
-    sub_8004F610(a1, a3);
-    w_u32(a1 + 156u, 2147483393u);
-    w_u32(a1 + 160u, 2147483393u);
-    w_u32(a1 + 152u, a3);
-    /* TODO Bind the existing ground collision helper stack adapter */
-    ob_draft_unresolved_call(0x8004F354u, 1u, a1);
-    w_u32(a1 + 208u, r_u32(a1 + 208u) & 0x7FFFFFFFu);
-    /* TODO Supply omitted collision helper carriers */
-    return ob_draft_unresolved_call(0x8004F51Cu, 1u, a1);
+    uint32 collision;
+    if (r_u32(object + 152u) == mode)
+        return sub_8004F758(object, mode);
+    collision = sub_8004F610(object, mode);
+    w_u32(object + 156u, 0x7FFFFF01u);
+    w_u32(object + 160u, 0x7FFFFF01u);
+    w_u32(object + 152u, mode);
+    ob_draft_unresolved_call(0x8004F354u, 1u, object);
+    w_u32(object + 208u, r_u32(object + 208u) & 0x7FFFFFFFu);
+    return sub_8004F51C(object, collision, mode);
 }
 
 uint32 sub_8004CE64(uint32 a1, uint32 a2)

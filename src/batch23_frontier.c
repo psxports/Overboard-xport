@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch23_frontier.h"
 #include "batch17_frontier.h"
 #include "batch19_frontier.h"
@@ -78,23 +79,23 @@ uint32 ob_find_collision_slot(void)
     return index;
 }
 
-uint32 ob_remove_ordered_object(uint32 object, uint32 guest_sp)
+uint32 ob_remove_ordered_object(uint32 unused_a0, uint32 object)
 {
     FUNCTION_MARKER(0x80043AB0u, "SLES_008.65");
     ob_unlink_reference_node(object);
     uint32 result = r_u32(object + 12u);
     if (result == 0u)
-        result = ob_free_reference_record(object, guest_sp - 0x18u);
+        result = ob_free_reference_record(object);
     return result;
 }
 
-uint32 ob_unregister_effect_object(uint32 object, uint32 guest_sp)
+uint32 ob_unregister_effect_object(uint32 object)
 {
     FUNCTION_MARKER(0x80045F20u, "SLES_008.65");
-    return ob_remove_ordered_object(object, guest_sp - 0x18u);
+    return ob_remove_ordered_object(0x800896F0u, object);
 }
 
-uint32 ob_update_object_collision_time(uint32 object, uint32 guest_sp)
+uint32 ob_update_object_collision_time(uint32 object)
 {
     FUNCTION_MARKER(0x80047A60u, "SLES_008.65");
     uint32 minimum = 0x7FFFFF01u;
@@ -113,7 +114,7 @@ uint32 ob_update_object_collision_time(uint32 object, uint32 guest_sp)
     }
     uint32 link = r_u32(object + 0xCCu);
     if (link != 0u)
-        ob_unregister_effect_object(object + 0xCCu, guest_sp - 0x20u);
+        ob_unregister_effect_object(object + 0xCCu);
     uint32 callback = r_u32(object + 0xF0u);
     w_u32(object + 0xE8u, minimum);
     if (callback == 0u)
@@ -123,7 +124,7 @@ uint32 ob_update_object_collision_time(uint32 object, uint32 guest_sp)
     return ob_register_effect_object(object + 0xCCu);
 }
 
-uint32 ob_update_ground_collision_time(uint32 object, uint32 guest_sp)
+uint32 ob_update_ground_collision_time(uint32 object)
 {
     FUNCTION_MARKER(0x8004F354u, "SLES_008.65");
     uint32 first = r_u32(object + 0x9Cu);
@@ -143,7 +144,7 @@ uint32 ob_update_ground_collision_time(uint32 object, uint32 guest_sp)
     }
     uint32 link = r_u32(object + 0x64u);
     if (link != 0u)
-        ob_unregister_effect_object(object + 0x64u, guest_sp - 0x20u);
+        ob_unregister_effect_object(object + 0x64u);
     uint32 callback = r_u32(object + 0x88u);
     w_u32(object + 0x80u, minimum);
     if (callback == 0u)
@@ -190,3 +191,4 @@ uint32 ob_y_angle_matrix14(uint32 angle, uint32 matrix)
     w_u16(matrix + 16u, cosine);
     return result;
 }
+

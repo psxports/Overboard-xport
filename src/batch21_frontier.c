@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch21_frontier.h"
 #include "batch5_frontier.h"
 #include "batch16_frontier.h"
@@ -165,10 +166,9 @@ uint32 ob_classify_effect_tables(uint32 descriptor)
     return ob_classify_effect_cells(descriptor);
 }
 
-uint32 ob_effect_setup_stub_result(uint32 incoming_result)
+void ob_effect_setup_stub_result(void)
 {
     FUNCTION_MARKER(0x80024310u, "SLES_008.65");
-    return incoming_result;
 }
 
 uint32 ob_clear_effect_workspace(void)

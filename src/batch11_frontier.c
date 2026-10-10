@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch11_frontier.h"
 
 uint32 ob_snapshot_geometry_state(void)

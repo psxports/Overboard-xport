@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch6_frontier.h"
 #include <stdint.h>
 

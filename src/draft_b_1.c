@@ -1,12 +1,14 @@
+#include "psx.h"
 #include "draft_signatures.h"
 #include "native_timers.h"
+#include "native_runtime.h"
 
 /* Unverified draft bodies */
 
-uint32 sub_8001195C(uint32 a1, uint32 a2)
+uint32 sub_8001195C(uint32 a1)
 {
     FUNCTION_MARKER(0x8001195Cu, "SLES_008.65");
-    return a1 != UINT32_MAX ? sub_8001F454(a1, a2) : UINT32_MAX;
+    return a1 != UINT32_MAX ? sub_8001F454(a1) : UINT32_MAX;
 }
 
 uint32 sub_80016254(void)
@@ -27,11 +29,10 @@ uint32 sub_80025A9C(uint32 handle)
     return sub_80025ABC(handle);
 }
 
-uint32 sub_80029290(void)
+uint32 sub_80029290(uint32 vector, uint32 compact_vector)
 {
     FUNCTION_MARKER(0x80029290u, "SLES_008.65");
-    /* TODO: Recover forwarded argument carriers omitted by IDA */
-    return ob_draft_unresolved_call(0x800292B0u, 0u);
+    return ob_draft_unresolved_call(0x800292B0u, 2u, vector, compact_vector);
 }
 
 void sub_800558E4(void)
@@ -41,11 +42,16 @@ void sub_800558E4(void)
     xport_bios_enter_critical();
 }
 
-uint32 sub_80055954(uint32 a1, uint32 a2)
+uint32 sub_80055954(uint32 pattern, uint32 entry)
 {
     FUNCTION_MARKER(0x80055954u, "SLES_008.65");
-    /* TODO: Bind BIOS B0 firstfile selector 0x42 */
-    return ob_draft_unresolved_call(0x80055954u, 2u, a1, a2);
+    void *record = psx_addr(entry, 40u);
+    void *found = firstfile((const char *)psx_addr(pattern, 1u), record);
+    if (found == NULL)
+        return 0u;
+    if (found != record)
+        ob_native_missing(0x80055954u, entry, 0u);
+    return entry;
 }
 
 void sub_8005F488(uint32 a1)
@@ -90,15 +96,14 @@ uint32 sub_80047B24(uint32 a1)
 uint32 sub_80046CAC(uint32 a1)
 {
     FUNCTION_MARKER(0x80046CACu, "SLES_008.65");
-    /* TODO: Recover forwarded carriers of the first call */
-    ob_draft_unresolved_call(0x80046CDCu, 0u);
+    sub_80046CDC(a1);
     return sub_80046D98(a1);
 }
 
 uint32 sub_80019EA0(uint32 a1, uint32 a2)
 {
     FUNCTION_MARKER(0x80019EA0u, "SLES_008.65");
-    return ob_draft_unresolved_call(r_u32(0x800B0768u), 3u,
+    return ob_draft_unresolved_call(0x800B0768u, 3u,
         r_u32(56u * a1 + ((uint32)-2146657944)), a2, r_u32(0x800882BCu));
 }
 
@@ -201,4 +206,5 @@ uint32 sub_80017178(void)
     w_u32(0x80065FFCu, result);
     return result;
 }
+
 

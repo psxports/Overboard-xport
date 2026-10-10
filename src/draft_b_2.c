@@ -36,21 +36,18 @@ uint32 sub_80022058(void)
 }
 
 
-uint32 sub_80021FF4(uint32 a1)
+uint32 sub_80021FF4(uint32 increment)
 {
-    FUNCTION_MARKER(0x80021ff4u, "SLES_008.65");
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-  uint32 v1;
-  sint32 result;
-  v1 = ((uint32)((sint32)((uint32)(100) * (uint32)((sint32)((uint32)((sint32)r_u32(0x80083E7C)) + (uint32)(a1))))) / (sint32)r_u32(0x80083E30));
-  if (!(sint32)r_u32(0x80083E30))
-    ob_draft_unresolved_call(0x80021ff4u, 2u, 7u, 0);
-  w_u32(0x80083E7C, ((uint32)((sint32)r_u32(0x80083E7C)) + (uint32)(a1)));
-  result = 1;
-  if ((v1 >= 0x5F))
-    w_u32(0x80089B7C, 1);
-  return result;
+    FUNCTION_MARKER(0x80021FF4u, "SLES_008.65");
+    uint32 total = r_u32(0x80083E7Cu) + increment;
+    uint32 denominator = r_u32(0x80083E30u);
+    if (denominator == 0u)
+        xport_mips_break(7u);
+    uint32 percentage = (total * 100u) / denominator;
+    w_u32(0x80083E7Cu, total);
+    if (percentage >= 95u)
+        w_u32(0x80089B7Cu, 1u);
+    return 1u;
 }
 
 
@@ -780,8 +777,8 @@ uint32 sub_80011984(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a5, uint3
     uint32 volume = (uint32)((sint32)product >> 8) & 255u;
     if (resource < 0)
     {
-        /* TODO: Original negative resource path returns an undefined incoming t0 carrier */
-        return ob_native_missing_value(0x80011984u, "Negative resource incoming result");
+        /* TODO: Original negative-resource return is unspecified; native ABI chooses the negative ID, without original-value equivalence */
+        return (uint32)resource;
     }
     if (a7)
         return (uint32)sub_8001EBBC(resource, volume, (sint32)(a3 & 255u),
@@ -937,28 +934,19 @@ uint32 sub_8001D048(uint32 a1)
 }
 
 
-uint32 sub_8004B450(uint32 a1, uint32 a2)
+uint32 sub_8004B450(uint32 output, uint32 packed)
 {
-    FUNCTION_MARKER(0x8004b450u, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-  sint32 v2;
-  uint32 result;
-  sint32 v4;
-  sint16 v5;
-  v2 = ((sint32)(a2) >> 16);
-  result = a1;
-  v4 = (sint16)r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x80077644u)) + (uint32)(4))));
-  if (!(r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x80077644u)) + (uint32)(4))))))
-    ob_draft_unresolved_call(0x8004b450u, 2u, 7u, 0);
-  if (((v4 == (sint32)(0u - (uint32)(1))) && ((uint8)(v2) == 0x80000000)))
-    ob_draft_unresolved_call(0x8004b450u, 2u, 6u, 0);
-  v5 = ((uint8)(v2) / (sint16)r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x80077644u)) + (uint32)(4)))));
-  if (!(r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x80077644u)) + (uint32)(4))))))
-    ob_draft_unresolved_call(0x8004b450u, 2u, 7u, 0);
-  w_u32(a1, (sint32)((uint32)((sint32)((uint32)(16) * (uint32)(((uint8)(v2) % v4)))) + (uint32)(((uint8)((v2) >> 8) & 0xF))));
-  w_u32((a1 + (1) * 4u), (sint32)((uint32)((sint32)((uint32)(16) * (uint32)(v5))) + (uint32)(((uint8)((v2) >> 8) >> 4))));
-  return result;
+    FUNCTION_MARKER(0x8004B450u, "SLES_008.65");
+    uint32 low_byte = (packed >> 16) & 255u;
+    uint32 high_byte = packed >> 24;
+    sint32 divisor = r_s16(r_u32(0x80077644u) + 4u);
+    if (divisor == 0)
+        xport_mips_break(7u);
+    sint32 quotient = (sint32)low_byte / divisor;
+    sint32 remainder = (sint32)low_byte % divisor;
+    w_u8(output, ((uint32)remainder << 4) + (high_byte & 15u));
+    w_u8(output + 1u, ((uint32)quotient << 4) + (high_byte >> 4));
+    return output;
 }
 
 
@@ -1116,47 +1104,50 @@ uint32 sub_80047E2C(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
 }
 
 
-uint32 sub_8001F454(uint32 a1, uint32 a2)
+uint32 sub_8001F454(uint32 voice)
 {
-    FUNCTION_MARKER(0x8001f454u, "SLES_008.65");
-    /* TODO: Bind external adapter for sub_8006272C */
-  sint32 result;
-  sint32 v4;
-  sint32 v5;
-  sint32 v6;
-  result = (uint8)((sint8)r_u8(0x8006c00cu));
-  if ((sint8)r_u8(0x8006c00cu))
-  {
-    result = (a1 < 0x18);
-    if ((a1 != (sint32)(0u - (uint32)(1))))
+    FUNCTION_MARKER(0x8001F454u, "SLES_008.65");
+    uint32 enabled = r_u8(0x8006C00Cu);
+    if (enabled == 0u) return enabled;
+    if (voice == UINT32_MAX) return UINT32_MAX;
+    if (voice >= 24u) return voice * 8u;
+    uint32 offset = voice * 28u;
+    uint32 active = r_u32(0x80078544u + offset) & 2u;
+    if (active == 0u) return active;
+    sint32 first = (sint8)r_u8(0x80078554u + offset);
+    uint32 channel = (uint32)first * 28u;
+    uint32 mask = 0u;
+    uint32 mask_defined = 0u;
+    if (r_u32(0x800782B4u + channel) == voice)
     {
-      result = (sint32)((uint32)(8) * (uint32)(a1));
-      if ((a1 < 0x18))
-      {
-        v4 = (sint32)((uint32)(28) * (uint32)(a1));
-        result = (r_u32((uint32)((sint32)((uint32)(v4) - (uint32)(2146990780)))) & 2);
-        if (result)
-        {
-          v5 = (sint8)r_u8((uint32)((sint32)((uint32)(v4) - (uint32)(2146990764))));
-          if ((r_u32((uint32)((sint32)((uint32)((sint32)((uint32)(28) * (uint32)(v5))) - (uint32)(2146991436)))) == a1))
-          {
-            a2 = (sint32)((uint32)(1) << (uint32)(v5));
-            w_u32((uint32)((sint32)((uint32)((sint32)((uint32)(28) * (uint32)(v5))) - (uint32)(2146991456))), 0);
-          }
-          v6 = (sint8)r_u8((uint32)((sint32)((uint32)(v4) - (uint32)(2146990763))));
-          if ((((sint32)(v6) >= (sint32)(0)) && (r_u32((uint32)((sint32)((uint32)((sint32)((uint32)(28) * (uint32)(v6))) - (uint32)(2146991436)))) == a1)))
-          {
-            a2 |= (sint32)((uint32)(1) << (uint32)(v6));
-            w_u32((uint32)((sint32)((uint32)((sint32)((uint32)(28) * (uint32)(v6))) - (uint32)(2146991456))), 0);
-          }
-          ob_draft_unresolved_call(0x8006272cu, 2u, 0, a2);
-          result = (sint32)((uint32)(28) * (uint32)(a1));
-          w_u32((uint32)((sint32)((uint32)((sint32)((uint32)(28) * (uint32)(a1))) - (uint32)(2146990780))), 0);
-        }
-      }
+        mask = 1u << ((uint32)first & 31u);
+        mask_defined = 1u;
+        w_u32(0x800782A0u + channel, 0u);
     }
-  }
-  return result;
+    sint32 second = (sint8)r_u8(0x80078555u + offset);
+    if (second >= 0)
+    {
+        channel = (uint32)second * 28u;
+        if (r_u32(0x800782B4u + channel) == voice)
+        {
+            if (mask_defined == 0u)
+            {
+                /* TODO Recover incoming mask when the first channel has a different owner */
+                mask = ob_native_missing_value(0x8001F454u, "Incoming sound mask");
+                mask_defined = 1u;
+            }
+            mask |= 1u << ((uint32)second & 31u);
+            w_u32(0x800782A0u + channel, 0u);
+        }
+    }
+    if (mask_defined == 0u)
+    {
+        /* TODO Recover incoming mask when neither channel belongs to this voice */
+        mask = ob_native_missing_value(0x8001F454u, "Incoming sound mask");
+    }
+    ob_draft_unresolved_call(0x8006272Cu, 2u, 0u, mask);
+    w_u32(0x80078544u + offset, 0u);
+    return offset;
 }
 
 
@@ -1264,65 +1255,52 @@ uint32 sub_8001CF58(void)
 }
 
 
-uint32 sub_8004F51C(uint32 a1, uint32 a2, uint32 a3)
+uint32 sub_8004F51C(uint32 object, uint32 collision, uint32 time)
 {
-    FUNCTION_MARKER(0x8004f51cu, "SLES_008.65");
-    uint32 local_objects = ob_draft_scratch_acquire(12u);
-  sint32 result;
-  sint32 v4;
-  sint32 v5;
-  sint32 v6;
-  sint32 v7;
-  sint32 v8;
-  sint32 v9;
-  ;
-  sint16 v11;
-  sint16 v12;
-  sint16 v13;
-  sint32 v14;
-  sint32 v15;
-  sint32 v16;
-  sint32 v17;
-  result = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(148))));
-  if (result)
-  {
-    w_u32(((local_objects + 0u) + (1) * 4u), a2);
-    w_u32(((local_objects + 0u) + (0) * 4u), a1);
-    w_u32(((local_objects + 0u) + (2) * 4u), a3);
-    v11 = r_u16((uint32)((sint32)((uint32)(a1) + (uint32)(164))));
-    v12 = r_u16((uint32)((sint32)((uint32)(a1) + (uint32)(166))));
-    v13 = r_u16((uint32)((sint32)((uint32)(a1) + (uint32)(168))));
-    v4 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(80))));
-    if (v11)
+    FUNCTION_MARKER(0x8004F51Cu, "SLES_008.65");
+    uint32 callback = r_u32(object + 148u);
+    if (callback == 0u) return callback;
+    uint32 packet = ob_draft_scratch_acquire(36u);
+    w_u32(packet + 4u, collision);
+    w_u32(packet, object);
+    w_u32(packet + 8u, time);
+    sint32 x_sign = (sint16)r_u16(object + 164u);
+    w_u16(packet + 12u, (uint16)x_sign);
+    sint32 y_sign = (sint16)r_u16(object + 166u);
+    w_u16(packet + 14u, (uint16)y_sign);
+    sint32 z_sign = (sint16)r_u16(object + 168u);
+    w_u16(packet + 16u, (uint16)z_sign);
+    uint32 coordinate = r_u32(object + 80u);
+    if (x_sign != 0)
     {
-      v5 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(68))));
-      if (((sint32)(v11) > (sint32)(0)))
-        v5 = (sint32)(0u - (uint32)(v5));
-      v4 = ((uint32)(v4) + (uint32)(v5));
+        uint32 radius = r_u32(object + 68u);
+        if (x_sign > 0) radius = 0u - radius;
+        coordinate += radius;
     }
-    v14 = ((sint32)(v4) >> 8);
-    v6 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(84))));
-    if (v12)
+    w_u32(packet + 20u, (uint32)((sint32)coordinate >> 8));
+    coordinate = r_u32(object + 84u);
+    if (y_sign != 0)
     {
-      v7 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(72))));
-      if (((sint32)(v12) > (sint32)(0)))
-        v7 = (sint32)(0u - (uint32)(v7));
-      v6 = ((uint32)(v6) + (uint32)(v7));
+        uint32 radius = r_u32(object + 72u);
+        if (y_sign > 0) radius = 0u - radius;
+        coordinate += radius;
     }
-    v15 = ((sint32)(v6) >> 8);
-    v8 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(88))));
-    if (v13)
+    w_u32(packet + 24u, (uint32)((sint32)coordinate >> 8));
+    coordinate = r_u32(object + 88u);
+    if (z_sign != 0)
     {
-      v9 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(76))));
-      if (((sint32)(v13) > (sint32)(0)))
-        v9 = (sint32)(0u - (uint32)(v9));
-      v8 = ((uint32)(v8) + (uint32)(v9));
+        uint32 radius = r_u32(object + 76u);
+        if (z_sign > 0) radius = 0u - radius;
+        coordinate += radius;
     }
-    v16 = ((sint32)(v8) >> 8);
-    v17 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(144))));
-    { uint32 draft_return = ob_draft_unresolved_call(r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(148)))), 2u, r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(140)))), (local_objects + 0u)); ob_draft_scratch_release(local_objects);  return draft_return; }
-  }
-  { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
+    w_u32(packet + 28u, (uint32)((sint32)coordinate >> 8));
+    w_u32(packet + 32u, r_u32(object + 144u));
+    callback = r_u32(object + 148u);
+    uint32 owner = r_u32(object + 140u);
+    /* Incoming time remains in a2 at the original callback transfer */
+    uint32 result = ob_draft_unresolved_call(callback, 3u, owner, packet, time);
+    ob_draft_scratch_release(packet);
+    return result;
 }
 
 
@@ -1364,77 +1342,55 @@ uint32 sub_8004A1C0(void)
 }
 
 
-uint32 sub_80046AF8(uint32 a1, uint32 a2)
+uint32 sub_80046AF8(uint32 object, uint32 state)
 {
-    FUNCTION_MARKER(0x80046af8u, "SLES_008.65");
-    /* TODO: Recover missing meaningful argument 2 of sub_80047450 */
-    /* TODO: Recover missing meaningful argument 3 of sub_80047450 */
-    /* TODO: Recover missing meaningful argument 4 of sub_80047450 */
-
-  sint32 v4;
-  sint32 v5;
-  uint32 v6;
-  uint32 v7;
-  sint32 v8;
-  sint32 result;
-  sint32 i;
-  sint32 v11;
-  v4 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(24))));
-  v5 = (sint32)((uint32)((sint32)((uint32)(4) * (uint32)(v4))) + (uint32)(4));
-  v6 = (uint32)((sint32)((uint32)((sint32)r_u32(0x80077140u)) + (uint32)(v5)));
-  v7 = (uint32)((sint32)((uint32)((sint32)r_u32(0x80077148u)) + (uint32)(v5)));
-  v8 = (sint32)((uint32)(v4) + (uint32)(1));
-  result = ((sint32)((sint32)r_u32(0x80077260u)) < (sint32)((sint32)((uint32)(v4) + (uint32)(1))));
-  for (i = (sint32)((uint32)(8) * (uint32)(v4)); ((sint32)((sint32)r_u32(0x80077260u)) >= (sint32)(v8)); ((v6 += 4u)))
-  {
-    v11 = r_u32(v6);
-    if (r_u32(v6))
+    FUNCTION_MARKER(0x80046AF8u, "SLES_008.65");
+    uint32 object_index = r_u32(object + 24u);
+    uint32 index = object_index + 1u;
+    uint32 objects = r_u32(0x80077140u) + index * 4u;
+    uint32 pairs = r_u32(0x80077148u) + index * 4u;
+    uint32 pair_offset = object_index * 8u;
+    while ((sint32)index <= r_s32(0x80077260u))
     {
-      sub_80046BE8(r_u32(v6), a1, ((uint32)(r_u32(v7)) + (uint32)(i)), a2);
-      sub_80047450(v11, ob_native_missing_value(0x80046af8u, "todo_argument_0"), ob_native_missing_value(0x80046af8u, "todo_argument_1"), ob_native_missing_value(0x80046af8u, "todo_argument_2"));
+        uint32 other = r_u32(objects);
+        if (other != 0u)
+        {
+            uint32 pair = r_u32(pairs) + pair_offset;
+            uint32 previous_flags = r_u32(pair);
+            sub_80046BE8(other, object, pair, state);
+            sub_80047450(other, object, pair, previous_flags);
+        }
+        pairs += 4u;
+        ++index;
+        objects += 4u;
     }
-    ((v7 += 4u));
-    result = ((sint32)((sint32)r_u32(0x80077260u)) < (sint32)(++v8));
-  }
-
-  return result;
+    return 1u;
 }
 
 
-uint32 sub_80047050(uint32 a1, uint32 a2)
+uint32 sub_80047050(uint32 object, uint32 state)
 {
     FUNCTION_MARKER(0x80047050u, "SLES_008.65");
-    /* TODO: Recover missing meaningful argument 2 of sub_80047450 */
-    /* TODO: Recover missing meaningful argument 3 of sub_80047450 */
-    /* TODO: Recover missing meaningful argument 4 of sub_80047450 */
-
-  sint32 v4;
-  sint32 v5;
-  uint32 v6;
-  uint32 v7;
-  sint32 v8;
-  sint32 result;
-  sint32 i;
-  sint32 v11;
-  v4 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(24))));
-  v5 = (sint32)((uint32)((sint32)((uint32)(4) * (uint32)(v4))) + (uint32)(4));
-  v6 = (uint32)((sint32)((uint32)((sint32)r_u32(0x80077140u)) + (uint32)(v5)));
-  v7 = (uint32)((sint32)((uint32)((sint32)r_u32(0x80077148u)) + (uint32)(v5)));
-  v8 = (sint32)((uint32)(v4) + (uint32)(1));
-  result = ((sint32)((sint32)r_u32(0x80077260u)) < (sint32)((sint32)((uint32)(v4) + (uint32)(1))));
-  for (i = (sint32)((uint32)(8) * (uint32)(v4)); ((sint32)((sint32)r_u32(0x80077260u)) >= (sint32)(v8)); ((v6 += 4u)))
-  {
-    v11 = r_u32(v6);
-    if (r_u32(v6))
+    uint32 object_index = r_u32(object + 24u);
+    uint32 index = object_index + 1u;
+    uint32 objects = r_u32(0x80077140u) + index * 4u;
+    uint32 pairs = r_u32(0x80077148u) + index * 4u;
+    uint32 pair_offset = object_index * 8u;
+    while ((sint32)index <= r_s32(0x80077260u))
     {
-      sub_800477B8(r_u32(v6), a1, a2, ((uint32)(r_u32(v7)) + (uint32)(i)));
-      sub_80047450(v11, ob_native_missing_value(0x80047050u, "todo_argument_0"), ob_native_missing_value(0x80047050u, "todo_argument_1"), ob_native_missing_value(0x80047050u, "todo_argument_2"));
+        uint32 other = r_u32(objects);
+        if (other != 0u)
+        {
+            uint32 pair = r_u32(pairs) + pair_offset;
+            uint32 previous_flags = r_u32(pair);
+            sub_800477B8(other, object, state, pair);
+            sub_80047450(other, object, pair, previous_flags);
+        }
+        pairs += 4u;
+        ++index;
+        objects += 4u;
     }
-    ((v7 += 4u));
-    result = ((sint32)((sint32)r_u32(0x80077260u)) < (sint32)(++v8));
-  }
-
-  return result;
+    return 1u;
 }
 
 
@@ -1516,12 +1472,12 @@ uint32 sub_80019EE0(uint32 a1)
   w_u16(0x80076880u, 0);
   if (((sint32)((sint8)r_u8(0x8006c248u)) > (sint32)(0)))
     w_u32(0x8008969C, (sint32)((uint32)((sint32)((uint32)(100) * (uint32)((sint32)((uint32)((sint32)((uint32)(30) * (uint32)((sint8)r_u8(0x8006c248u)))) + (uint32)(30))))) + (uint32)(200)));
-  if (((uint8)((sint8)r_u8(0x8006c230u)) >= 2u))
+  if (((uint8)(r_u8(0x8006c230u)) >= 2u))
     w_u32(0x800C4D18, 3);
   w_u8(0x8008AE6A, 0);
-  ob_draft_unresolved_call((sint32)r_u32(0x80093D00), 1u, (sint32)r_u32(0x800C4D18));
+  ob_draft_unresolved_call(0x80093D00u, 1u, (sint32)r_u32(0x800C4D18));
   v1 = 0;
-  if ((sint8)r_u8(0x8006c230u))
+  if (r_u8(0x8006c230u))
   {
     v2 = 0;
     do
@@ -1538,9 +1494,9 @@ uint32 sub_80019EE0(uint32 a1)
       w_u16((uint32)((sint32)((uint32)(v2) - (uint32)(2146657900))), v3);
       v2 = ((uint32)(v2) + (uint32)(56));
     }
-    while ((v1 < (uint8)((sint8)r_u8(0x8006c230u))));
+    while ((v1 < (uint8)(r_u8(0x8006c230u))));
   }
-  ob_draft_unresolved_call((sint32)r_u32(0x800A49A4), 1u, v1);
+  ob_draft_unresolved_call(0x800A49A4u, 0u);
   return sub_8001A1CC();
 }
 
@@ -1590,9 +1546,6 @@ uint32 sub_8004A2EC(uint32 a1)
 uint32 sub_80023C08(void)
 {
     FUNCTION_MARKER(0x80023c08u, "SLES_008.65");
-    /* Temporarily skip intro movies by the user's native startup choice */
-    if (ob_native_skip_intro_movies) return 0u;
-    /* TODO: Bind external adapter for sub_80054440 */
 
   sub_80030700(0, 0, 0);
   sub_8003077C(0x8008C704u, 255, 2, 255, 255, 255);
@@ -1917,5 +1870,9 @@ uint32 sub_800342F0(uint32 a1)
   }
   { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
 }
+
+
+
+
 
 

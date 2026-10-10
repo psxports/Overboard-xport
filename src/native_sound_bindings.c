@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "native_sound_bindings.h"
 #include "native_runtime.h"
 #include "psx_spu.h"

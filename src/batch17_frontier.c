@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch17_frontier.h"
 
 uint32 ob_angle_matrix14(uint32 angle, uint32 matrix)

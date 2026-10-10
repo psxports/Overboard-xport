@@ -1,5 +1,6 @@
 #include "draft_signatures.h"
 #include "native_runtime.h"
+#include "native_extra_signatures.h"
 
 uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
 {
@@ -7,6 +8,35 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
         return ob_native_front_dispatch(target, count, args);
     switch (target)
     {
+    case 0x80011A24u:
+        if (count != 6u) ob_native_missing(target, 6u, count);
+        return ob_main_80011A24(args[0], args[1], args[2], args[3], args[4], args[5]);
+        case 0x80028784u:
+            if (count != 2u) ob_native_missing(target, 2u, count);
+            return ob_main_80028784(args[0], args[1]);
+        case 0x80011E20u:
+            if (count != 4u) ob_native_missing(target, 4u, count);
+            ob_main_80011E20(args[0], args[1], args[2], args[3]);
+            return 0u;
+        case 0x80045410u:
+            if (count != 2u) ob_native_missing(target, 2u, count);
+            return ob_main_80045410(args[0], args[1]);
+        case 0x80054538u:
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_main_80054538(args[0]);
+        case 0x800285A4u:
+            if (count != 3u) ob_native_missing(target, 3u, count);
+            return ob_main_800285A4(args[0], args[1], args[2]);
+        case 0x80044080u:
+            if (count != 2u) ob_native_missing(target, 2u, count);
+            ob_main_80044080(args[0], args[1]);
+            return 0u;
+        case 0x8004E66Cu:
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_main_8004E66C(args[0]);
+        case 0x8004E694u:
+            if (count != 2u) ob_native_missing(target, 2u, count);
+            return ob_main_8004E694(args[0], args[1]);
         case 0x800117C8u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_800117C8((uint32)args[0]);
@@ -14,8 +44,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_800118C0((sint32)args[0]);
         case 0x8001195Cu:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)sub_8001195C((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return (uint32)sub_8001195C((uint32)args[0]);
         case 0x80011984u:
             if (count != 7u) ob_native_missing(target, 7u, count);
             return (uint32)sub_80011984((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4], (uint32)args[5], (uint32)args[6]);
@@ -71,17 +101,19 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)ob_init_view_geometry();
         case 0x80013908u:
-            if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_append_text_glyphs((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            if (count != 3u) ob_native_missing(target, 3u, count);
+            ob_append_text_glyphs((uint32)args[0], (uint32)args[1], (uint32)args[2]);
+            return 0u;
         case 0x80013C00u:
-            if (count != 4u) ob_native_missing(target, 4u, count);
-            return (uint32)ob_append_three_digit_indicator((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3]);
+            if (count != 3u) ob_native_missing(target, 3u, count);
+            return (uint32)ob_append_three_digit_indicator((uint32)args[0], (uint32)args[1], (uint32)args[2]);
         case 0x80013FA4u:
             if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)sub_80013FA4((uint32)args[0]);
+            sub_80013FA4(args[0]);
+            return 0u;
         case 0x80014BF8u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_append_player_hud((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return (uint32)ob_append_player_hud((uint32)args[0]);
         case 0x8001578Cu:
             if (count != 4u) ob_native_missing(target, 4u, count);
             return (uint32)sub_8001578C((sint32)args[0], (sint32)args[1], (sint32)args[2], (sint32)args[3]);
@@ -101,8 +133,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_8001627C((sint32)args[0]);
         case 0x80016390u:
-            if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)sub_80016390((uint32)args[0]);
+            if (count != 4u) ob_native_missing(target, 4u, count);
+            return (uint32)sub_80016390((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3]);
         case 0x80016598u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80016598((uint32)args[0]);
@@ -125,8 +157,9 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80016FC4((uint32)args[0]);
         case 0x800170B8u:
-            if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)ob_effect_stub_result((uint32)args[0]);
+            if (count != 0u) ob_native_missing(target, 0u, count);
+            ob_effect_stub_result();
+            return 0u;
         case 0x800170C0u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)ob_draw_text_end((uint32)args[0]);
@@ -191,8 +224,9 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)ob_random15();
         case 0x8001B048u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_set_scene_callback((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            ob_set_scene_callback(args[0]);
+            return 0u;
         case 0x8001B058u:
             if (count != 0u) ob_native_missing(target, 0u, count);
             nullsub_18(); return 0u;
@@ -251,8 +285,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 6u) ob_native_missing(target, 6u, count);
             return (uint32)sub_8001EBBC((sint32)args[0], (uint32)args[1], (sint32)args[2], (sint32)args[3], (sint32)args[4], (sint32)args[5]);
         case 0x8001F454u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)sub_8001F454((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return (uint32)sub_8001F454((uint32)args[0]);
         case 0x8001F56Cu:
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)sub_8001F56C((uint32)args[0], (sint32)args[1]);
@@ -293,23 +327,23 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)ob_find_voice_slot();
         case 0x80020450u:
-            if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_append_textured_glyph((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            if (count != 8u) ob_native_missing(target, 8u, count);
+            return (uint32)ob_append_textured_glyph((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4], (uint32)args[5], (uint32)args[6], (uint32)args[7]);
         case 0x80020864u:
-            if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_append_colored_texture_quad((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            if (count != 11u) ob_native_missing(target, 11u, count);
+            return ob_append_colored_texture_quad(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
         case 0x80020A70u:
-            if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_append_solid_quad((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            if (count != 8u) ob_native_missing(target, 8u, count);
+            return ob_append_solid_quad(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
         case 0x80020D64u:
-            if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_append_textured_vertices((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            if (count != 10u) ob_native_missing(target, 10u, count);
+            return ob_append_textured_vertices(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
         case 0x80020FD4u:
-            if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_append_textured_rectangle((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            if (count != 10u) ob_native_missing(target, 10u, count);
+            return ob_append_textured_rectangle(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
         case 0x8002140Cu:
-            if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_append_colored_texture_scaled((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            if (count != 13u) ob_native_missing(target, 13u, count);
+            return (uint32)ob_append_colored_texture_scaled((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4], (uint32)args[5], (uint32)args[6], (uint32)args[7], (uint32)args[8], (uint32)args[9], (uint32)args[10], (uint32)args[11], (uint32)args[12]);
         case 0x80021460u:
             if (count != 8u) ob_native_missing(target, 8u, count);
             return (uint32)sub_80021460((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4], (uint32)args[5], (uint32)args[6], (uint32)args[7]);
@@ -320,8 +354,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_800217B4((sint32)args[0]);
         case 0x8002192Cu:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_append_draw_mode((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return (uint32)ob_append_draw_mode((uint32)args[0]);
         case 0x80021A38u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80021A38((uint32)args[0]);
@@ -416,8 +450,9 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)sub_80023E70();
         case 0x80024310u:
-            if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)ob_effect_setup_stub_result((uint32)args[0]);
+            if (count != 0u) ob_native_missing(target, 0u, count);
+            ob_effect_setup_stub_result();
+            return 0u;
         case 0x80024320u:
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)sub_80024320();
@@ -665,8 +700,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80028614((uint32)args[0]);
         case 0x80029290u:
-            if (count != 0u) ob_native_missing(target, 0u, count);
-            return (uint32)sub_80029290();
+            if (count != 2u) ob_native_missing(target, 2u, count);
+            return sub_80029290(args[0], args[1]);
         case 0x800292B0u:
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)sub_800292B0((uint32)args[0], (uint32)args[1]);
@@ -838,7 +873,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             return (uint32)sub_80034114((uint32)args[0], (uint32)args[1]);
         case 0x80034234u:
             if (count != 0u) ob_native_missing(target, 0u, count);
-            return (uint32)sub_80034234();
+            sub_80034234();
+            return 0u;
         case 0x800342F0u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_800342F0((uint32)args[0]);
@@ -846,8 +882,9 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80034430((uint32)args[0]);
         case 0x80034530u:
-            if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)ob_stamp_object_records((uint32)args[0]);
+            if (count != 0u) ob_native_missing(target, 0u, count);
+            ob_stamp_object_records();
+            return 0u;
         case 0x80034768u:
             if (count != 8u) ob_native_missing(target, 8u, count);
             return (uint32)sub_80034768((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4], (uint32)args[5], (uint32)args[6], (uint32)args[7]);
@@ -969,8 +1006,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)ob_unlink_object_record((uint32)args[0]);
         case 0x800436ACu:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_free_object_record((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_free_object_record(args[0]);
         case 0x800436D4u:
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)ob_link_object((uint32)args[0], (uint32)args[1]);
@@ -993,17 +1030,19 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)ob_init_object_list((uint32)args[0]);
         case 0x80043974u:
-            if (count != 3u) ob_native_missing(target, 3u, count);
-            return (uint32)ob_clear_owner_references((uint32)args[0], (uint32)args[1], (uint32)args[2]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            ob_clear_owner_references((uint32)args[0]);
+            return 0u;
         case 0x800439BCu:
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)ob_insert_ordered_object((uint32)args[0], (uint32)args[1]);
         case 0x80043AB0u:
             if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_remove_ordered_object((uint32)args[0], (uint32)args[1]);
+            return ob_remove_ordered_object(args[0], args[1]);
         case 0x80043AF4u:
-            if (count != 3u) ob_native_missing(target, 3u, count);
-            return (uint32)ob_clear_reference_list((uint32)args[0], (uint32)args[1], (uint32)args[2]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            ob_clear_reference_list((uint32)args[0]);
+            return 0u;
         case 0x80043B68u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80043B68((uint32)args[0]);
@@ -1014,8 +1053,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)ob_reset_reference_record((uint32)args[0]);
         case 0x80043C6Cu:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_free_reference_record((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return (uint32)ob_free_reference_record((uint32)args[0]);
         case 0x80043C94u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)ob_unlink_reference_node((uint32)args[0]);
@@ -1056,11 +1095,11 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 3u) ob_native_missing(target, 3u, count);
             return (uint32)sub_80043EAC((uint32)args[0], (uint32)args[1], (uint32)args[2]);
         case 0x80043FD0u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_destroy_geometry_object((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_destroy_geometry_object(args[0]);
         case 0x80044058u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_free_geometry_object((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_free_geometry_object(args[0]);
         case 0x800440E8u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)ob_detach_geometry_child((uint32)args[0]);
@@ -1139,8 +1178,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)sub_80045464((uint32)args[0], (uint32)args[1]);
         case 0x80045490u:
-            if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)sub_80045490((uint32)args[0]);
+            if (count != 2u) ob_native_missing(target, 2u, count);
+            return (uint32)sub_80045490((uint32)args[0], (uint32)args[1]);
         case 0x800454BCu:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_800454BC((uint32)args[0]);
@@ -1184,8 +1223,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)ob_register_effect_object((uint32)args[0]);
         case 0x80045F20u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_unregister_effect_object((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_unregister_effect_object(args[0]);
         case 0x80045F4Cu:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80045F4C((uint32)args[0]);
@@ -1268,8 +1307,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)ob_select_earliest_flagged_contact((uint32)args[0]);
         case 0x80047A60u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_update_object_collision_time((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_update_object_collision_time(args[0]);
         case 0x80047B24u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80047B24((uint32)args[0]);
@@ -1302,7 +1341,7 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             return (uint32)sub_800487B8((uint32)args[0]);
         case 0x80048978u:
             if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_world_store_pair((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            return ob_world_store_pair((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
         case 0x80048994u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80048994((uint32)args[0]);
@@ -1316,8 +1355,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_80048D2C((uint32)args[0]);
         case 0x80048FECu:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_world_axis_entry_time((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_world_axis_entry_time((uint32)args[0]);
         case 0x800491B0u:
             if (count != 4u) ob_native_missing(target, 4u, count);
             return (uint32)sub_800491B0((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3]);
@@ -1364,20 +1403,20 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)sub_8004AAFC((uint32)args[0], (uint32)args[1]);
         case 0x8004B0B0u:
-            if (count != 4u) ob_native_missing(target, 4u, count);
-            return (uint32)ob_border_cell_blocked((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3]);
+            if (count != 3u) ob_native_missing(target, 3u, count);
+            return (uint32)ob_border_cell_blocked((uint32)args[0], (uint32)args[1], (uint32)args[2]);
         case 0x8004B3C4u:
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)ob_clear_effect_workspace();
         case 0x8004B3E8u:
-            if (count != 3u) ob_native_missing(target, 3u, count);
-            return (uint32)ob_border_subcell_to_tile((uint32)args[0], (uint32)args[1], (uint32)args[2]);
+            if (count != 2u) ob_native_missing(target, 2u, count);
+            return (uint32)ob_border_subcell_to_tile((uint32)args[0], (uint32)args[1]);
         case 0x8004B450u:
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)sub_8004B450((uint32)args[0], (uint32)args[1]);
         case 0x8004B514u:
-            if (count != 3u) ob_native_missing(target, 3u, count);
-            return (uint32)ob_border_cell_address((uint32)args[0], (uint32)args[1], (uint32)args[2]);
+            if (count != 2u) ob_native_missing(target, 2u, count);
+            return ob_border_cell_address(args[0], args[1]);
         case 0x8004B634u:
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)sub_8004B634();
@@ -1442,8 +1481,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 5u) ob_native_missing(target, 5u, count);
             return (uint32)ob_build_three_axis_codes((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
         case 0x8004D0F8u:
-            if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)ob_build_view_axis_codes((uint32)args[0]);
+            if (count != 0u) ob_native_missing(target, 0u, count);
+            return (uint32)ob_build_view_axis_codes();
         case 0x8004D634u:
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_8004D634((uint32)args[0]);
@@ -1494,7 +1533,7 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             return (uint32)sub_8004E9E4((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3]);
         case 0x8004EC6Cu:
             if (count != 5u) ob_native_missing(target, 5u, count);
-            return (uint32)ob_append_sea_quad((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (uint32)args[4]);
+            return ob_append_sea_quad((uint32)args[0], (uint32)args[1], (uint32)args[2], (uint32)args[3], (sint32)args[4]);
         case 0x8004EEF4u:
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)sub_8004EEF4((uint32)args[0], (uint32)args[1]);
@@ -1502,8 +1541,9 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 2u) ob_native_missing(target, 2u, count);
             return (uint32)sub_8004F004((sint32)args[0], (uint32)args[1]);
         case 0x8004F064u:
-            if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)ob_scene_stub_result((uint32)args[0]);
+            if (count != 0u) ob_native_missing(target, 0u, count);
+            ob_scene_stub_result();
+            return 0u;
         case 0x8004F074u:
             if (count != 3u) ob_native_missing(target, 3u, count);
             return (uint32)sub_8004F074((sint32)args[0], (sint32)args[1], (sint32)args[2]);
@@ -1520,14 +1560,14 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 1u) ob_native_missing(target, 1u, count);
             return (uint32)sub_8004F31C((uint32)args[0]);
         case 0x8004F354u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)ob_update_ground_collision_time((uint32)args[0], (uint32)args[1]);
+            if (count != 1u) ob_native_missing(target, 1u, count);
+            return ob_update_ground_collision_time(args[0]);
         case 0x8004F418u:
             if (count != 3u) ob_native_missing(target, 3u, count);
             return (uint32)sub_8004F418((uint32)args[0], (uint32)args[1], (uint32)args[2]);
         case 0x8004F478u:
-            if (count != 2u) ob_native_missing(target, 2u, count);
-            return (uint32)sub_8004F478((uint32)args[0], (uint32)args[1]);
+            if (count != 3u) ob_native_missing(target, 3u, count);
+            return (uint32)sub_8004F478((uint32)args[0], (uint32)args[1], (uint32)args[2]);
         case 0x8004F51Cu:
             if (count != 3u) ob_native_missing(target, 3u, count);
             return (uint32)sub_8004F51C((uint32)args[0], (uint32)args[1], (uint32)args[2]);
@@ -1628,8 +1668,9 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)sub_80054C14();
         case 0x80054CA8u:
-            if (count != 1u) ob_native_missing(target, 1u, count);
-            return (uint32)ob_reset_file_setup((uint32)args[0]);
+            if (count != 0u) ob_native_missing(target, 0u, count);
+            ob_reset_file_setup();
+            return 0u;
         case 0x80054CD8u:
             if (count != 0u) ob_native_missing(target, 0u, count);
             return (uint32)sub_80054CD8();

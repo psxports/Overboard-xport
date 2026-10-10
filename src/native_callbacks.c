@@ -5,7 +5,6 @@
 
 sint32 ob_native_callback_dispatch(void *context, uint32 address)
 {
-    (void)context;
     if (address == 0x8002CFF4u)
     {
         sub_8002CFF4();

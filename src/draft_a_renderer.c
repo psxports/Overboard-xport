@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "draft_signatures.h"
 
 /* Unverified renderer draft with declaration-only GTE adapters */

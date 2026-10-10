@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch9_frontier.h"
 
 uint32 ob_memory_payload_size(uint32 handle)

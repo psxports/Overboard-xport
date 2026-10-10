@@ -200,14 +200,14 @@ uint32 sub_8001994C(void)
     {
       while (1)
       {
-        ob_draft_unresolved_call((sint32)r_u32(0x800C0FC8), 3u, (sint32)(0u - (uint32)(2146925892)), (sint32)((uint32)(v2) + (uint32)((sint32)r_u32(0x80076878u))), 4);
+        ob_draft_unresolved_call(0x800C0FC8u, 3u, (sint32)(0u - (uint32)(2146925892)), (sint32)((uint32)(v2) + (uint32)((sint32)r_u32(0x80076878u))), 4);
         w_u32(0x80076878u, ((uint32)((sint32)r_u32(0x80076878u)) + (uint32)(4)));
         if (((sint32)r_u32(0x800882BC) == (sint32)(0u - (uint32)(1))))
           break;
-        ob_draft_unresolved_call((sint32)r_u32(0x800A636C), 2u, (local_objects + 0u), 0);
+        ob_draft_unresolved_call(0x800A636Cu, 2u, (local_objects + 0u), 0);
         if (((sint32)r_u32(((local_objects + 0u) + (0) * 4u)) || sub_80054440(0)))
           break;
-        ob_draft_unresolved_call((sint32)r_u32(0x800C0FC8), 3u, (local_objects + 0u), (sint32)((uint32)(v2) + (uint32)((sint32)r_u32(0x80076878u))), 4);
+        ob_draft_unresolved_call(0x800C0FC8u, 3u, (local_objects + 0u), (sint32)((uint32)(v2) + (uint32)((sint32)r_u32(0x80076878u))), 4);
         w_u32(0x80076878u, ((uint32)((sint32)r_u32(0x80076878u)) + (uint32)(4)));
         if (((sint32)r_u32(0x800C9984) == (sint32)(0u - (uint32)(1))))
         {
@@ -219,9 +219,9 @@ uint32 sub_8001994C(void)
           ob_draft_unresolved_call(0x8001ae60u, 2u, 0, (sint32)r_u32(((local_objects + 0u) + (0) * 4u)));
         }
         sub_80045D70((sint32)r_u32(0x800882BC));
-        ob_draft_unresolved_call((sint32)r_u32(0x800BAA14), 1u, (sint32)r_u32(0x800882BC));
-        ob_draft_unresolved_call((sint32)r_u32(0x800AE0F8), 2u, (sint32)r_u32(0x800882BC), 0);
-        ob_draft_unresolved_call((sint32)r_u32(0x80093D84), 1u, 0);
+        ob_draft_unresolved_call(0x800BAA14u, 1u, (sint32)r_u32(0x800882BC));
+        ob_draft_unresolved_call(0x800AE0F8u, 2u, (sint32)r_u32(0x800882BC), 0);
+        ob_draft_unresolved_call(0x80093D84u, 0u);
         if (((uint32)((sint32)r_u32(0x80076874u)) < (sint32)r_u32(0x800882BC)))
           goto LABEL_14;
       }
@@ -255,11 +255,12 @@ uint32 sub_8001994C(void)
           do
           {
             ob_draft_unresolved_call(r_u32((uint32)((sint32)((uint32)(v7) - (uint32)(2146657952)))), 2u, (local_objects + 0u), v5);
+            uint32 input_word = r_u32(local_objects);
             v8 = r_u32((uint32)((sint32)((uint32)(v7) - (uint32)(2146657916))));
-            w_u32((uint32)((sint32)((uint32)(v7) - (uint32)(2146657904))), (sint32)r_u32(((local_objects + 0u) + (0) * 4u)));
+            w_u32((uint32)((sint32)((uint32)(v7) - (uint32)(2146657904))), input_word);
             if ((v8 == (sint32)(0u - (uint32)(1))))
             {
-              ob_draft_unresolved_call(r_u32((uint32)(v6)), 1u, v5);
+              ob_draft_unresolved_call(r_u32((uint32)(v6)), 2u, v5, input_word);
             }
             else
             {
@@ -269,9 +270,9 @@ uint32 sub_8001994C(void)
             v6 = ((uint32)(v6) + (uint32)(56));
             sub_80045D70((sint32)r_u32(0x800882BC));
             v7 = ((uint32)(v7) + (uint32)(56));
-            ob_draft_unresolved_call((sint32)r_u32(0x800BAA14), 1u, (sint32)r_u32(0x800882BC));
-            ob_draft_unresolved_call((sint32)r_u32(0x800AE0F8), 2u, (sint32)r_u32(0x800882BC), 0);
-            ob_draft_unresolved_call((sint32)r_u32(0x80093D84), 1u, 0);
+            ob_draft_unresolved_call(0x800BAA14u, 1u, (sint32)r_u32(0x800882BC));
+            ob_draft_unresolved_call(0x800AE0F8u, 2u, (sint32)r_u32(0x800882BC), 0);
+            ob_draft_unresolved_call(0x80093D84u, 0u);
             ob_draft_unresolved_call(0x8005fb28u, 3u, (sint32)r_u32(0x8006c16cu), (sint32)(0u - (uint32)(2146925892)), 4);
             ob_draft_unresolved_call(0x8005fb28u, 3u, (sint32)r_u32(0x8006c16cu), (local_objects + 0u), 4);
             ++v5;
@@ -288,7 +289,7 @@ uint32 sub_8001994C(void)
   {
     w_u32(0x800882BC, (sint32)((uint32)(25) * (uint32)(((sint32)r_u32(0x800882BC) / 25))));
     result = 0;
-    if (((sint32)r_u32(0x800882BC) < v1))
+    if (r_u32(0x800882BC) < v1)
     {
       do
       {
@@ -299,17 +300,18 @@ uint32 sub_8001994C(void)
         if ((sint8)r_u8(0x8006c230u))
         {
           v10 = 0;
-          v11 = (sint32)r_u32(0x8006c138u);
+          v11 = 0x8006C138u;
           do
           {
             if ((sint32)r_u32(v11))
             {
               ob_draft_unresolved_call(r_u32((uint32)((sint32)((uint32)(v10) - (uint32)(2146657952)))), 2u, (local_objects + 0u), v9);
+              uint32 input_word = r_u32(local_objects);
               v12 = r_u32((uint32)((sint32)((uint32)(v10) - (uint32)(2146657916))));
-              w_u32((uint32)((sint32)((uint32)(v10) - (uint32)(2146657904))), (sint32)r_u32(((local_objects + 0u) + (0) * 4u)));
+              w_u32((uint32)((sint32)((uint32)(v10) - (uint32)(2146657904))), input_word);
               if ((v12 == (sint32)(0u - (uint32)(1))))
               {
-                ob_draft_unresolved_call(r_u32((uint32)((sint32)((uint32)(v10) - (uint32)(2146657948)))), 1u, v9);
+                ob_draft_unresolved_call(r_u32((uint32)((sint32)((uint32)(v10) - (uint32)(2146657948)))), 2u, v9, input_word);
               }
               else
               {
@@ -317,9 +319,9 @@ uint32 sub_8001994C(void)
                 ob_draft_unresolved_call(0x8001ae60u, 2u, v9, (sint32)r_u32(((local_objects + 0u) + (0) * 4u)));
               }
               sub_80045D70((sint32)r_u32(0x800882BC));
-              ob_draft_unresolved_call((sint32)r_u32(0x800BAA14), 1u, (sint32)r_u32(0x800882BC));
-              ob_draft_unresolved_call((sint32)r_u32(0x800AE0F8), 2u, (sint32)r_u32(0x800882BC), 0);
-              ob_draft_unresolved_call((sint32)r_u32(0x80093D84), 1u, 0);
+              ob_draft_unresolved_call(0x800BAA14u, 1u, (sint32)r_u32(0x800882BC));
+              ob_draft_unresolved_call(0x800AE0F8u, 2u, (sint32)r_u32(0x800882BC), 0);
+              ob_draft_unresolved_call(0x80093D84u, 0u);
             }
             v10 = ((uint32)(v10) + (uint32)(56));
             ++v9;

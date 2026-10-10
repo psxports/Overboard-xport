@@ -1,30 +1,18 @@
+#include "psx.h"
 #include "draft_signatures.h"
 
 /* Unverified draft bodies */
 
-uint32 sub_80013FA4(uint32 a1)
+void sub_80013FA4(uint32 a1)
 {
     FUNCTION_MARKER(0x80013fa4u, "SLES_008.65");
     /* TODO: Bind external adapter for sub_80064028 */
-    /* TODO: Bind external adapter for sub_80013908 */
-    /* TODO: Bind external adapter for sub_80020FD4 */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    /* TODO: Bind external adapter for sub_80020D64 */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Bind external adapter for sub_80020A70 */
     /* TODO: Bind external adapter for sub_800260C8 */
     /* TODO: Bind external adapter for sub_80063FB8 */
     /* TODO: Bind external adapter for sub_80014BF8 */
     /* TODO: Bind external adapter for sub_80015374 */
     /* TODO: Bind external adapter for sub_80015B1C */
-    /* TODO: Bind external adapter for sub_80020864 */
-    /* TODO: Bind external adapter for nullsub_16 */
     uint32 local_objects = ob_draft_scratch_acquire(164u);
-    uint32 literal_0 = ob_draft_scratch_acquire(4u);
-    w_u8(literal_0 + 0u, 120u);
-    w_u8(literal_0 + 1u, 37u);
-    w_u8(literal_0 + 2u, 100u);
-    w_u8(literal_0 + 3u, 0u);
   sint16 v2;
   sint16 v3;
   sint32 v4;
@@ -88,26 +76,26 @@ uint32 sub_80013FA4(uint32 a1)
   v4 = 1;
   v5 = 0x8006c138u;
   w_u32(0x8006c174u, 1);
-  v6 = (sint32)r_u32((0x8006c138u + (r_u16(0x800C4E70)) * 4u));
+  v6 = (sint32)r_u32((0x8006c138u + (r_s16(0x800C4E70)) * 4u));
   w_u32(0x80065d30u, (((uint32)((uint8)((sint32)r_u32(0x80065d30u))) + (uint32)(1)) & 3));
   v7 = (sint32)(0u - (uint32)(1));
   if (v6)
   {
     v8 = r_u32((uint32)((sint32)((uint32)(v6) + (uint32)(108))));
-    if ((((sint8)r_u8(0x8006c230u) == 1) && (sint32)r_u32((0x8006c138u + (0) * 4u))))
+    if (((r_u8(0x8006c230u) == 1) && (sint32)r_u32((0x8006c138u + (0) * 4u))))
     {
       sub_8001578C(0, 12, 220, 0);
-      ob_draft_unresolved_call(0x80064028u, 4u, (local_objects + 0u), 0x80010110u, (sint16)r_u16((uint32)((sint32)((uint32)(v8) + (uint32)(32)))), r_u16(0x800D649C));
-      ob_draft_unresolved_call(0x80013908u, 2u, (local_objects + 0u), (sint32)((uint32)((sint32)((uint32)(18) * (uint32)((sint32)r_u32(0x8006c174u)))) + (uint32)(12)));
-      ob_draft_unresolved_call(0x80020fd4u, 4u, (0x80066674u), 0, 0, 15);
-      ob_draft_unresolved_call(0x80064028u, 3u, (local_objects + 0u), literal_0, r_u8((uint32)((sint32)((uint32)(v8) + (uint32)(44)))));
-      ob_draft_unresolved_call(0x80013908u, 2u, (local_objects + 0u), ((sint32)((uint32)(16) * (uint32)((sint32)r_u32(0x8006c174u))) | 0xC));
-      ob_draft_unresolved_call(0x80020fd4u, 4u, (sint32)r_u32(0x80066678u), 0, 0, 15);
+      ob_draft_unresolved_call(0x80064028u, 4u, (local_objects + 0u), 0x80010110u, (sint16)r_u16((uint32)((sint32)((uint32)(v8) + (uint32)(32)))), r_s16(0x800D649C));
+      ob_append_text_glyphs( (local_objects + 0u), (sint32)((uint32)((sint32)((uint32)(18) * (uint32)((sint32)r_u32(0x8006c174u)))) + (uint32)(12)), 236u - 31u*r_u32(0x8006C174u));
+      ob_draft_unresolved_call(0x80020fd4u, 10u, (0x80066674u), 0, 0, 15, 15u, 12u, 236u - 35u*r_u32(0x8006C174u), 15u*r_u32(0x8006C174u), 15u*r_u32(0x8006C174u), 0u);
+      ob_draft_unresolved_call(0x80064028u, 3u, (local_objects + 0u), 0x8001011Cu, r_u8((uint32)((sint32)((uint32)(v8) + (uint32)(44)))));
+      ob_append_text_glyphs( (local_objects + 0u), ((sint32)((uint32)(16) * (uint32)((sint32)r_u32(0x8006c174u))) | 0xC), 236u - 49u*r_u32(0x8006C174u));
+      ob_draft_unresolved_call(0x80020fd4u, 10u, 0x80066678u, 0, 0, 15, 15u, 12u, 236u - 53u*r_u32(0x8006C174u), 16u*r_u32(0x8006C174u), 16u*r_u32(0x8006C174u), 0u);
     }
     w_u32(0x8007FA98, (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(2) * (uint32)((sint32)r_u32(0x8006c174u)))) + (uint32)((sint32)((uint32)(16) * (uint32)((sint32)r_u32(0x8006c174u)))))) + (uint32)(20)));
     v5 = (uint32)((sint32)((uint32)(32) * (uint32)((sint32)r_u32(0x8006c174u))));
     w_u32(0x8007FA94, (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(369) - (uint32)((sint32)((uint32)(5) * (uint32)((sint32)r_u32(0x8006c174u)))))) - (uint32)((sint32)((uint32)(32) * (uint32)((sint32)r_u32(0x8006c174u)))))) + (uint32)((sint32)((uint32)(16) * (uint32)((sint32)r_u32(0x8006c174u))))));
-    if (((sint8)r_u8(0x8006c230u) == 1))
+    if ((r_u8(0x8006c230u) == 1))
     {
       sub_8002F284((sint32)(0u - (uint32)(2146931856)), (local_objects + 64u));
       v9 = (((uint32)((uint16)((sint32)(0u - (uint32)((sint16)r_u16(((local_objects + 64u) + (0) * 2u)))))) + (uint32)(8)) >> 4);
@@ -115,27 +103,27 @@ uint32 sub_80013FA4(uint32 a1)
       v11 = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(0x8006c174u)) * (uint32)(31))) * (uint32)((sint16)r_u16((0x8006cb04u + ((sint32)((uint32)(v9) - (uint32)(1024))) * 2u))));
       v12 = ((sint32)((sint32)((sint32)((uint32)(((sint32)(v10) / (sint32)(0x4000))) + (uint32)(((uint32)((sint32)((uint32)(v10) + (uint32)((((sint32)(v10) < (sint32)(0))) ? (0x3FFF) : (0)))) >> 31))))) >> 1);
       v13 = ((sint32)((sint32)((sint32)((uint32)(((sint32)(v11) / (sint32)(0x4000))) + (uint32)(((uint32)((sint32)((uint32)(v11) + (uint32)((((sint32)(v11) < (sint32)(0))) ? (0x3FFF) : (0)))) >> 31))))) >> 1);
-      w_u32(local_objects + 32u, ((uint32)((sint32)r_u32(local_objects + 32u)) & ~((uint32)65535u << 0) | (((uint32)((sint32)((uint32)((sint32)((uint32)((sint32)r_u32(0x8007FA94)) - (uint32)(v12))) - (uint32)(v13))) & 65535u) << 0)));
-      w_u32(local_objects + 32u, ((uint32)((sint32)r_u32(local_objects + 32u)) & ~((uint32)65535u << 16) | (((uint32)((sint32)((uint32)((sint32)((uint32)((sint32)r_u32(0x8007FA98)) + (uint32)(v13))) - (uint32)(v12))) & 65535u) << 16)));
+      w_u16(local_objects + 32u, r_u32(0x8007FA94u) - (uint32)v12 - (uint32)v13);
+      w_u16(local_objects + 34u, r_u32(0x8007FA98u) + (uint32)v13 - (uint32)v12);
       w_u16(local_objects + 40u, (sint32)((uint32)((sint32)r_u32(local_objects + 32u)) + (uint32)(((sint32)(v10) / (sint32)(0x4000)))));
       w_u16(local_objects + 42u, ((uint32)((uint16)(((sint32)r_u32(local_objects + 32u)) >> 16)) - (uint32)(((sint32)(v11) / (sint32)(0x4000)))));
       w_u16(local_objects + 56u, (sint32)((uint32)((sint16)r_u16(local_objects + 40u)) + (uint32)(((sint32)(v11) / (sint32)(0x4000)))));
       w_u16(local_objects + 48u, (sint32)((uint32)((sint32)r_u32(local_objects + 32u)) + (uint32)(((sint32)(v11) / (sint32)(0x4000)))));
       w_u16(local_objects + 50u, ((uint32)((uint16)(((sint32)r_u32(local_objects + 32u)) >> 16)) + (uint32)(((sint32)(v10) / (sint32)(0x4000)))));
       w_u16(local_objects + 58u, (sint32)((uint32)((sint16)r_u16(local_objects + 42u)) + (uint32)(((sint32)(v10) / (sint32)(0x4000)))));
-      ob_draft_unresolved_call(0x80020d64u, 4u, (sint32)r_u32(0x80066668u), 0, 0, 31);
+      ob_draft_unresolved_call(0x80020d64u, 10u, 0x80066668u, 0, 0, 31, 31u, local_objects + 32u, local_objects + 40u, local_objects + 56u, local_objects + 48u, 0u);
     }
-    v4 = (uint8)((sint8)r_u8(0x8006c230u));
+    v4 = (uint8)(r_u8(0x8006c230u));
     v14 = 0;
-    if (((sint8)r_u8(0x8006c230u) == 1))
+    if ((r_u8(0x8006c230u) == 1))
     {
       if (((sint32)r_u32((0x8006c138u + (0) * 4u)) && (r_u32((uint32)((sint32)((uint32)((sint32)r_u32((0x8006c138u + (0) * 4u))) + (uint32)(288)))) == 20)))
-        w_u32(0x80089B78, (uint8)((sint8)r_u8(0x8006c230u)));
+        w_u32(0x80089B78, (uint8)(r_u8(0x8006c230u)));
     }
     else
     {
       v5 = 0;
-      if ((sint8)r_u8(0x8006c230u))
+      if (r_u8(0x8006c230u))
       {
         v15 = 0x8006c138u;
         do
@@ -145,7 +133,7 @@ uint32 sub_80013FA4(uint32 a1)
           v5 = (uint32)(((uint32)(v5) + (1) * 1u));
           ((v15 += 4u));
         }
-        while (((sint32)(v5) < (uint8)((sint8)r_u8(0x8006c230u))));
+        while (((sint32)(v5) < (uint8)(r_u8(0x8006c230u))));
       }
       if ((v14 == (sint32)((uint32)((sint8)r_u8(0x8006c235u)) - (uint32)(1))))
         w_u32(0x80089B78, 1);
@@ -162,58 +150,58 @@ uint32 sub_80013FA4(uint32 a1)
     }
     v18 = (sint32)((uint32)((sint32)((uint32)(4) * (uint32)((sint32)((uint32)(v17) - (uint32)(v16))))) - (uint32)(v16));
     if (!(sint32)r_u32(0x800D6498))
-      ob_draft_unresolved_call(0x80013fa4u, 2u, 7u, 0);
+      xport_mips_break(7u);
     if ((((sint32)r_u32(0x800D6498) == (sint32)(0u - (uint32)(1))) && (v18 == 0x80000000)))
-      ob_draft_unresolved_call(0x80013fa4u, 2u, 6u, 0);
-    ob_draft_unresolved_call(0x80020a70u, 4u, (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(3) * (uint32)((sint32)r_u32(0x8006c174u)))) + (uint32)(361))) - (uint32)((sint32)((uint32)((sint32)r_u32(0x8006c174u)) << (uint32)(6)))), (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(4) * (uint32)((sint32)r_u32(0x8006c174u)))) + (uint32)(236))) - (uint32)((sint32)((uint32)(16) * (uint32)((sint32)r_u32(0x8006c174u))))), (sint32)((uint32)(((sint32)(v18) / (sint32)((sint32)r_u32(0x800D6498)))) * (uint32)((sint32)r_u32(0x8006c174u))), (sint32)((uint32)(10) * (uint32)((sint32)r_u32(0x8006c174u))));
-    ob_draft_unresolved_call(0x80020fd4u, 4u, (0x80066684u), 0, 0, 63);
+      xport_mips_break(6u);
+    ob_draft_unresolved_call(0x80020a70u, 8u, (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(3) * (uint32)((sint32)r_u32(0x8006c174u)))) + (uint32)(361))) - (uint32)((sint32)((uint32)((sint32)r_u32(0x8006c174u)) << (uint32)(6)))), (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(4) * (uint32)((sint32)r_u32(0x8006c174u)))) + (uint32)(236))) - (uint32)((sint32)((uint32)(16) * (uint32)((sint32)r_u32(0x8006c174u))))), (sint32)((uint32)(((sint32)(v18) / (sint32)((sint32)r_u32(0x800D6498)))) * (uint32)((sint32)r_u32(0x8006c174u))), (sint32)((uint32)(10) * (uint32)((sint32)r_u32(0x8006c174u))), 250u, 250u, 250u, 0u);
+    ob_draft_unresolved_call(0x80020fd4u, 10u, (0x80066684u), 0, 0, 63, 16u, 361u - 64u*r_u32(0x8006C174u), 236u - 16u*r_u32(0x8006C174u), 63u*r_u32(0x8006C174u), 16u*r_u32(0x8006C174u), 0u);
   }
   if (((r_u8(0x8008AE69) & 1) != 0))
   {
     ob_draft_unresolved_call(0x800260c8u, 1u, (local_objects + 32u));
     ob_draft_unresolved_call(0x80064028u, 3u, (local_objects + 72u), 0x80010120u, (sint32)r_u32(local_objects + 32u));
-    ob_draft_unresolved_call(0x80013908u, 2u, (local_objects + 72u), 12);
+    ob_append_text_glyphs( (local_objects + 72u), 12, 5u);
     ob_draft_unresolved_call(0x80064028u, 4u, (local_objects + 72u), 0x80010128u, (sint32)((uint32)(80) - (uint32)((sint32)r_u32(0x8007755cu))), 80);
     v19 = ob_draft_unresolved_call(0x80063fb8u, 1u, (local_objects + 72u));
-    ob_draft_unresolved_call(0x80013908u, 2u, (local_objects + 72u), (sint32)((uint32)(369) - (uint32)((sint32)((uint32)(10) * (uint32)(v19)))));
+    ob_append_text_glyphs( (local_objects + 72u), (sint32)((uint32)(369) - (uint32)((sint32)((uint32)(10) * (uint32)(v19)))), 5u);
     v20 = (sint32)((uint32)((sint32)r_u32(0x800882BC)) - (uint32)((sint32)r_u32(0x80077658u)));
     if (((sint32)((sint32)((uint32)((sint32)r_u32(0x800882BC)) - (uint32)((sint32)r_u32(0x80077658u)))) <= (sint32)(0)))
       v20 = 1;
     ob_draft_unresolved_call(0x80064028u, 3u, (local_objects + 72u), 0x80010138u, ((sint32)(1000) / (sint32)(v20)));
     v21 = ob_draft_unresolved_call(0x80063fb8u, 1u, (local_objects + 72u));
-    ob_draft_unresolved_call(0x80013908u, 2u, (local_objects + 72u), (sint32)((uint32)(369) - (uint32)((sint32)((uint32)(10) * (uint32)(v21)))));
+    ob_append_text_glyphs( (local_objects + 72u), (sint32)((uint32)(369) - (uint32)((sint32)((uint32)(10) * (uint32)(v21)))), 238u);
     if ((sint32)r_u32(0x8006c134u))
     {
       sub_80045378(r_u32((uint32)((sint32)((uint32)((sint32)r_u32(0x8006c134u)) + (uint32)(44)))), (sint32)r_u32(0x800882BC), (local_objects + 152u));
       v22 = r_u32((uint32)((sint32)r_u32(0x80077644u)));
       if (!(r_u32((uint32)((sint32)r_u32(0x80077644u)))))
-        ob_draft_unresolved_call(0x80013fa4u, 2u, 7u, 0);
+        xport_mips_break(7u);
       if (((v22 == (sint32)(0u - (uint32)(1))) && ((sint32)((uint32)((sint32)r_u32(((local_objects + 152u) + (0) * 4u))) + (uint32)((sint32)r_u32(0x80077458u))) == 0x80000000)))
-        ob_draft_unresolved_call(0x80013fa4u, 2u, 6u, 0);
-      v23 = ((sint32)((uint32)((sint32)r_u32(((local_objects + 152u) + (0) * 4u))) + (uint32)((sint32)r_u32(0x80077458u))) / r_u32((uint32)((sint32)r_u32(0x80077644u))));
+        xport_mips_break(6u);
+      v23 = ((sint32)((uint32)((sint32)r_u32(((local_objects + 152u) + (0) * 4u))) + (uint32)((sint32)r_u32(0x80077458u))) / (sint32)r_u32((uint32)((sint32)r_u32(0x80077644u))));
       if (!v22)
-        ob_draft_unresolved_call(0x80013fa4u, 2u, 7u, 0);
+        xport_mips_break(7u);
       if (((v22 == (sint32)(0u - (uint32)(1))) && ((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)((sint32)r_u32(local_objects + 160u))) == 0x80000000)))
-        ob_draft_unresolved_call(0x80013fa4u, 2u, 6u, 0);
+        xport_mips_break(6u);
       v24 = ((sint32)((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)((sint32)r_u32(local_objects + 160u)))) / (sint32)(v22));
       ob_draft_unresolved_call(0x80064028u, 4u, (local_objects + 72u), 0x80010144u, (sint32)r_u32(((local_objects + 152u) + (0) * 4u)), (sint32)r_u32(local_objects + 160u));
       v25 = ob_draft_unresolved_call(0x80063fb8u, 1u, (local_objects + 72u));
-      ob_draft_unresolved_call(0x80013908u, 2u, (local_objects + 72u), (sint32)((uint32)(192) - (uint32)((sint32)((uint32)(5) * (uint32)(v25)))));
+      ob_append_text_glyphs( (local_objects + 72u), (sint32)((uint32)(192) - (uint32)((sint32)((uint32)(5) * (uint32)(v25)))), 16u);
       ob_draft_unresolved_call(0x80064028u, 4u, (local_objects + 72u), 0x80010154u, v23, (sint16)(v24));
       v26 = ob_draft_unresolved_call(0x80063fb8u, 1u, (local_objects + 72u));
-      ob_draft_unresolved_call(0x80013908u, 2u, (local_objects + 72u), (sint32)((uint32)(192) - (uint32)((sint32)((uint32)(5) * (uint32)(v26)))));
+      ob_append_text_glyphs( (local_objects + 72u), (sint32)((uint32)(192) - (uint32)((sint32)((uint32)(5) * (uint32)(v26)))), 226u);
     }
     w_u32(0x80077658u, (sint32)r_u32(0x800882BC));
   }
   v27 = 0;
-  if (((uint8)((sint8)r_u8(0x8006c230u)) < 2u))
+  if (((uint8)(r_u8(0x8006c230u)) < 2u))
   {
     ob_draft_unresolved_call(0x80014bf8u, 1u, 0);
   }
   else
   {
     v28 = 0;
-    if ((sint8)r_u8(0x8006c230u))
+    if (r_u8(0x8006c230u))
     {
       v29 = 0x8006c138u;
       do
@@ -224,7 +212,7 @@ uint32 sub_80013FA4(uint32 a1)
         ++v28;
         ((v29 += 4u));
       }
-      while ((v28 < (uint8)((sint8)r_u8(0x8006c230u))));
+      while ((v28 < (uint8)(r_u8(0x8006c230u))));
     }
     if ((((sint32)((sint8)r_u8(0x8006c248u)) > (sint32)(0)) && !(sint16)r_u16(0x80076880u)))
     {
@@ -235,12 +223,12 @@ uint32 sub_80013FA4(uint32 a1)
       else
       {
         v4 = (sint32)(0x8006c138u);
-        v30 = r_u32((uint32)((sint32)((uint32)((sint32)r_u32((0x8006c138u + (r_u16(0x800C4E70)) * 4u))) + (uint32)(288))));
+        v30 = r_u32((uint32)((sint32)((uint32)((sint32)r_u32((0x8006c138u + (r_s16(0x800C4E70)) * 4u))) + (uint32)(288))));
         v31 = ((sint32)((sint32)r_u32(0x8008969C)) / (sint32)(100));
         if ((((v30 != 3) && (v30 != 22)) && !v31))
         {
           v32 = 0;
-          if ((sint8)r_u8(0x8006c230u))
+          if (r_u8(0x8006c230u))
           {
             v33 = 0;
             while (1)
@@ -263,7 +251,7 @@ uint32 sub_80013FA4(uint32 a1)
               LABEL_66:
               v32 = v36;
 
-              v37 = ((sint32)((sint16)(v36)) < (sint32)((sint32)((uint8)((sint8)r_u8(0x8006c230u)))));
+              v37 = ((sint32)((sint16)(v36)) < (sint32)((sint32)((uint8)(r_u8(0x8006c230u)))));
               v33 = (sint32)((uint32)(v36) << (uint32)(16));
               if (!v37)
                 goto LABEL_67;
@@ -280,7 +268,7 @@ uint32 sub_80013FA4(uint32 a1)
           LABEL_67:
           v38 = 0;
 
-          if ((sint8)r_u8(0x8006c230u))
+          if (r_u8(0x8006c230u))
           {
             v39 = 0;
             do
@@ -303,13 +291,13 @@ uint32 sub_80013FA4(uint32 a1)
                 if ((v42 == 22))
                   goto LABEL_76;
                 w_u8((uint32)(((uint32)(r_u32((uint32)((sint32)((uint32)(v4) + (uint32)(108))))) + (uint32)(46))), 0);
-                ob_draft_unresolved_call((sint32)r_u32(0x800B3210), 2u, (sint32)r_u32(v40), a1);
+                ob_draft_unresolved_call(0x800B3210u, 2u, (sint32)r_u32(v40), a1);
               }
               v41 = (sint32)((uint32)(v38) + (uint32)(1));
               LABEL_76:
               v38 = v41;
 
-              v37 = ((sint32)((sint16)(v41)) < (sint32)((sint32)((uint8)((sint8)r_u8(0x8006c230u)))));
+              v37 = ((sint32)((sint16)(v41)) < (sint32)((sint32)((uint8)(r_u8(0x8006c230u)))));
               v39 = (sint32)((uint32)(v41) << (uint32)(16));
             }
             while (v37);
@@ -317,13 +305,13 @@ uint32 sub_80013FA4(uint32 a1)
           w_u16(0x80076880u, 1);
         }
       }
-      ob_draft_unresolved_call(0x80015b1cu, 2u, v31, v4);
+      ob_draft_unresolved_call(0x80015b1cu, 1u, v31);
     }
     v43 = 0;
     if ((((uint32)((sint32)((uint32)((sint32)((uint32)(a1) - (uint32)((sint32)r_u32(0x8007687cu)))) - (uint32)(2001))) < 0xBB7) || (sint8)r_u8(0x8006c249u)))
     {
       v44 = 0;
-      if ((sint8)r_u8(0x8006c230u))
+      if (r_u8(0x8006c230u))
       {
         v45 = 0;
         do
@@ -333,15 +321,15 @@ uint32 sub_80013FA4(uint32 a1)
           {
             sub_8004EEF4(((uint32)(r_u32((uint32)((sint32)((uint32)(v46) + (uint32)(44))))) + (uint32)(108)), (local_objects + 152u));
             v47 = v44++;
-            ob_draft_unresolved_call(0x80020864u, 4u, (sint32)r_u32((0x80065cf8u + (v47) * 4u)), 0, 0, 15);
+            ob_draft_unresolved_call(0x80020864u, 11u, (sint32)r_u32((0x80065cf8u + (v47) * 4u)), 0, 0, 15, 15u, (uint32)(r_s16(local_objects + 152u) - 8), (uint32)(r_s16(local_objects + 154u) - 16), 0u, (uint32)(sint32)r_s16(0x80065D0Cu + 2u*(uint32)v43), (uint32)(sint32)r_s16(0x80065D18u + 2u*(uint32)v43), (uint32)(sint32)r_s16(0x80065D24u + 2u*(uint32)v43));
           }
           v45 = (sint32)((uint32)(++v43) << (uint32)(16));
         }
-        while (((sint32)((sint16)(v43)) < (sint32)((sint32)((uint8)((sint8)r_u8(0x8006c230u))))));
+        while (((sint32)((sint16)(v43)) < (sint32)((sint32)((uint8)(r_u8(0x8006c230u))))));
       }
     }
   }
-  { uint32 draft_return = ob_draft_unresolved_call(0x800170c0u, 1u, v5); ob_draft_scratch_release(local_objects); ob_draft_scratch_release(literal_0);  return draft_return; }
+    ob_draft_scratch_release(local_objects);
 }
 
 
@@ -351,8 +339,6 @@ void sub_8003858C(uint32 a1)
     /* TODO: Bind external adapter for sub_800322BC */
     /* TODO: Bind external adapter for sub_8002E968 */
     /* TODO: Bind external adapter for sub_8002FA88 */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
     /* TODO: Bind external adapter for sub_8003A064 */
     /* TODO: Bind external adapter for sub_8005F288 */
     /* TODO: Bind external adapter for sub_8005F3C8 */
@@ -578,9 +564,9 @@ void sub_8003858C(uint32 a1)
       v21 = (r_u16(local_objects + 236u) >> 1);
     v22 = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(local_objects + 184u)) << (uint32)(8))) + (uint32)(v21));
     if (!r_u16(local_objects + 236u))
-      ob_draft_unresolved_call(0x8003858cu, 2u, 7u, 0);
+      xport_mips_break(7u);
     if (((r_u16(local_objects + 236u) == (sint32)(0u - (uint32)(1))) && (v22 == 0x80000000)))
-      ob_draft_unresolved_call(0x8003858cu, 2u, 6u, 0);
+      xport_mips_break(6u);
     w_u32(0x800774f8u, (v22 / (sint32)r_u16(local_objects + 236u)));
     if (((sint32)((sint32)r_u32(local_objects + 188u)) <= (sint32)(0)))
       v23 = ((sint32)(0u - (uint32)r_u16(local_objects + 236u)) >> 1);
@@ -588,7 +574,7 @@ void sub_8003858C(uint32 a1)
       v23 = (r_u16(local_objects + 236u) >> 1);
     v24 = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(local_objects + 188u)) << (uint32)(8))) + (uint32)(v23));
     if (((r_u16(local_objects + 236u) == (sint32)(0u - (uint32)(1))) && (v24 == 0x80000000)))
-      ob_draft_unresolved_call(0x8003858cu, 2u, 6u, 0);
+      xport_mips_break(6u);
     w_u32(0x800774fcu, (v24 / (sint32)r_u16(local_objects + 236u)));
     if (((sint32)((sint32)r_u32(local_objects + 192u)) <= (sint32)(0)))
       v25 = ((sint32)(0u - (uint32)r_u16(local_objects + 236u)) >> 1);
@@ -596,7 +582,7 @@ void sub_8003858C(uint32 a1)
       v25 = (r_u16(local_objects + 236u) >> 1);
     v26 = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(local_objects + 192u)) << (uint32)(8))) + (uint32)(v25));
     if (((r_u16(local_objects + 236u) == (sint32)(0u - (uint32)(1))) && (v26 == 0x80000000)))
-      ob_draft_unresolved_call(0x8003858cu, 2u, 6u, 0);
+      xport_mips_break(6u);
     w_u32(0x80077500u, (v26 / (sint32)r_u16(local_objects + 236u)));
     if (((sint32)((sint32)r_u32(0x800773b8u)) <= (sint32)(0)))
       v27 = ((sint32)(0u - (uint32)r_u16(local_objects + 236u)) >> 1);
@@ -604,7 +590,7 @@ void sub_8003858C(uint32 a1)
       v27 = (r_u16(local_objects + 236u) >> 1);
     v28 = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(0x800773b8u)) << (uint32)(8))) + (uint32)(v27));
     if (((r_u16(local_objects + 236u) == (sint32)(0u - (uint32)(1))) && (v28 == 0x80000000)))
-      ob_draft_unresolved_call(0x8003858cu, 2u, 6u, 0);
+      xport_mips_break(6u);
     w_u32(0x800774acu, (v28 / (sint32)r_u16(local_objects + 236u)));
     if (((v6 & 1) == 0))
       goto LABEL_70;
@@ -660,9 +646,9 @@ void sub_8003858C(uint32 a1)
         v40 = (r_u16(local_objects + 156u) >> 1);
       v41 = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(local_objects + 104u)) << (uint32)(8))) + (uint32)(v40));
       if (!r_u16(local_objects + 156u))
-        ob_draft_unresolved_call(0x8003858cu, 2u, 7u, 0);
+        xport_mips_break(7u);
       if (((r_u16(local_objects + 156u) == (sint32)(0u - (uint32)(1))) && (v41 == 0x80000000)))
-        ob_draft_unresolved_call(0x8003858cu, 2u, 6u, 0);
+        xport_mips_break(6u);
       v73 = (v41 / (sint32)r_u16(local_objects + 156u));
       if (((sint32)((sint32)r_u32(local_objects + 108u)) <= (sint32)(0)))
         v42 = ((sint32)(0u - (uint32)r_u16(local_objects + 156u)) >> 1);
@@ -670,7 +656,7 @@ void sub_8003858C(uint32 a1)
         v42 = (r_u16(local_objects + 156u) >> 1);
       v43 = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(local_objects + 108u)) << (uint32)(8))) + (uint32)(v42));
       if (((r_u16(local_objects + 156u) == (sint32)(0u - (uint32)(1))) && (v43 == 0x80000000)))
-        ob_draft_unresolved_call(0x8003858cu, 2u, 6u, 0);
+        xport_mips_break(6u);
       v74 = (v43 / (sint32)r_u16(local_objects + 156u));
       if (((sint32)((sint32)r_u32(local_objects + 112u)) <= (sint32)(0)))
         v44 = ((sint32)(0u - (uint32)r_u16(local_objects + 156u)) >> 1);
@@ -678,7 +664,7 @@ void sub_8003858C(uint32 a1)
         v44 = (r_u16(local_objects + 156u) >> 1);
       v45 = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(local_objects + 112u)) << (uint32)(8))) + (uint32)(v44));
       if (((r_u16(local_objects + 156u) == (sint32)(0u - (uint32)(1))) && (v45 == 0x80000000)))
-        ob_draft_unresolved_call(0x8003858cu, 2u, 6u, 0);
+        xport_mips_break(6u);
       v46 = (v45 / (sint32)r_u16(local_objects + 156u));
       v47 = v73;
       v75 = v46;
@@ -837,7 +823,6 @@ void sub_8003858C(uint32 a1)
 uint32 sub_80052A68(void)
 {
     FUNCTION_MARKER(0x80052a68u, "SLES_008.65");
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
     /* TODO: Bind external adapter for sub_8004EC6C */
     uint32 local_objects = ob_draft_scratch_acquire(1280u);
   sint32 result;
@@ -1044,7 +1029,7 @@ uint32 sub_80052A68(void)
     w_u32(local_objects + 8u, (sint32)((uint32)(v2) - (uint32)(((sint32)(((sint32)(v2) % (sint32)(22500))) / (sint32)(3)))));
   else
     w_u32(local_objects + 8u, (sint32)((uint32)(v2) + (uint32)(((sint32)(((sint32)((sint32)(0u - (uint32)(v2))) % (sint32)(22500))) / (sint32)(3)))));
-  v3 = ((((sint32)((sint8)((sint32)r_u32(local_objects + 0u))) / (sint32)((sint32)(0u - (uint32)(28)))) & 1) | (sint32)((uint32)(2) * (uint32)((((sint32)((sint8)((sint32)r_u32(local_objects + 8u))) / (sint32)((sint32)(0u - (uint32)(28)))) & 1))));
+  v3 = (uint16)(((r_s32(local_objects) / 22500) & 1) | (2 * ((r_s32(local_objects + 8u) / 22500) & 1)));
   w_u32(local_objects + 4u, 0);
   v168 = v3;
   if (!(sint32)r_u32(0x800C8300))
@@ -1093,7 +1078,7 @@ uint32 sub_80052A68(void)
   w_u32(local_objects + 56u, (sint32)r_u32(local_objects + 40u));
   w_u32(local_objects + 48u, (sint32)((uint32)((sint32)r_u32(local_objects + 32u)) + (uint32)(7500)));
   sub_8004EEF4((local_objects + 48u), (sint32)((local_objects + 896u)));
-  ob_draft_unresolved_call(0x8004ec6cu, 9u, (local_objects + 128u), (local_objects + 384u), (local_objects + 640u), (local_objects + 896u), (sint16)(v168), ob_native_missing_value(0x80052a68u, "v131"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u));
+  ob_draft_unresolved_call(0x8004ec6cu, 5u, (local_objects + 128u), (local_objects + 384u), (local_objects + 640u), (local_objects + 896u), (sint16)(v168));
   w_u32(local_objects + 64u, (sint32)r_u32(local_objects + 0u));
   w_u32(local_objects + 68u, (sint32)r_u32(local_objects + 4u));
   w_u32(local_objects + 72u, (sint32)r_u32(local_objects + 8u));
@@ -1110,7 +1095,7 @@ uint32 sub_80052A68(void)
     w_u32(local_objects + 96u, ((uint32)((sint32)r_u32(local_objects + 96u)) - (uint32)(7500)));
     sub_8004EEF4((local_objects + 64u), (sint32)((uint32)((sint32)((local_objects + 128u))) + (uint32)(v13)));
     sub_8004EEF4((local_objects + 96u), (sint32)((uint32)((sint32)((local_objects + 640u))) + (uint32)(v13)));
-    v14 = ob_draft_unresolved_call(0x8004ec6cu, 9u, (uint32)(((uint32)((local_objects + 128u)) + (v13) * 1u)), (uint32)(((uint32)((((local_objects + 128u) + 0xFFFFFFFCu))) + (v13) * 1u)), (uint32)(((uint32)((local_objects + 640u)) + (v13) * 1u)), (uint32)(((uint32)((((local_objects + 640u) + 0xFFFFFFFCu))) + (v13) * 1u)), (sint16)(v10), ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u));
+    v14 = ob_draft_unresolved_call(0x8004ec6cu, 5u, (uint32)(((uint32)((local_objects + 128u)) + (v13) * 1u)), (uint32)(((uint32)((((local_objects + 128u) + 0xFFFFFFFCu))) + (v13) * 1u)), (uint32)(((uint32)((local_objects + 640u)) + (v13) * 1u)), (uint32)(((uint32)((((local_objects + 640u) + 0xFFFFFFFCu))) + (v13) * 1u)), (sint16)(v10));
     v11 = (sint32)((uint32)(v12) + (uint32)(1));
   }
   while (!((sint32)((uint32)(v14) << (uint32)(16))));
@@ -1139,7 +1124,7 @@ uint32 sub_80052A68(void)
     w_u32(local_objects + 112u, ((uint32)((sint32)r_u32(local_objects + 112u)) + (uint32)(7500)));
     sub_8004EEF4((local_objects + 80u), (sint32)((uint32)((sint32)((local_objects + 384u))) + (uint32)(v18)));
     sub_8004EEF4((local_objects + 112u), (sint32)((uint32)((sint32)((local_objects + 896u))) + (uint32)(v18)));
-    v19 = ob_draft_unresolved_call(0x8004ec6cu, 9u, (uint32)(((uint32)((((local_objects + 384u) + 0xFFFFFFFCu))) + (v18) * 1u)), (uint32)(((uint32)((local_objects + 384u)) + (v18) * 1u)), (uint32)(((uint32)((((local_objects + 896u) + 0xFFFFFFFCu))) + (v18) * 1u)), (uint32)(((uint32)((local_objects + 896u)) + (v18) * 1u)), (sint16)(v15), ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u));
+    v19 = ob_draft_unresolved_call(0x8004ec6cu, 5u, (uint32)(((uint32)((((local_objects + 384u) + 0xFFFFFFFCu))) + (v18) * 1u)), (uint32)(((uint32)((local_objects + 384u)) + (v18) * 1u)), (uint32)(((uint32)((((local_objects + 896u) + 0xFFFFFFFCu))) + (v18) * 1u)), (uint32)(((uint32)((local_objects + 896u)) + (v18) * 1u)), (sint16)(v15));
     v16 = (sint32)((uint32)(v17) + (uint32)(1));
   }
   while (!((sint32)((uint32)(v19) << (uint32)(16))));
@@ -1170,7 +1155,7 @@ uint32 sub_80052A68(void)
     sub_8004EEF4((local_objects + 16u), v23);
     v24 = (uint32)(v23);
     v25 = v170;
-    if (((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, v22, v24, ((v174 + ((sint32)((uint32)(64) * (uint32)(v170))) * 2u)), ((v175 + ((sint32)((uint32)(64) * (uint32)(v170))) * 2u)), v20, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16)))
+    if (((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, v22, v24, ((v174 + ((sint32)((uint32)(64) * (uint32)(v170))) * 2u)), ((v175 + ((sint32)((uint32)(64) * (uint32)(v170))) * 2u)), v20)) << (uint32)(16)))
     {
       v172 = 0;
       v173 = 0;
@@ -1198,7 +1183,7 @@ uint32 sub_80052A68(void)
           w_u32(v58, (sint32)((uint32)((sint32)r_u32(((local_objects + 1160u) + ((v178 / 4)) * 4u))) - (uint32)(7500)));
           sub_8004EEF4(v58, v59);
         }
-        if (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v22 + (v56) * 2u)), ((v22 + ((sint32)((uint32)(v56) - (uint32)(2))) * 2u)), ((v174 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v50))) + (uint32)(v56))) * 2u)), ((v174 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v50))) - (uint32)(2))) + (uint32)(v56))) * 2u)), v57, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16))))
+        if (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v22 + (v56) * 2u)), ((v22 + ((sint32)((uint32)(v56) - (uint32)(2))) * 2u)), ((v174 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v50))) + (uint32)(v56))) * 2u)), ((v174 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v50))) - (uint32)(2))) + (uint32)(v56))) * 2u)), v57)) << (uint32)(16))))
           ++v172;
         v53 = (sint32)((uint32)(v54) + (uint32)(1));
       }
@@ -1236,7 +1221,7 @@ uint32 sub_80052A68(void)
           w_u32(v72, (sint32)((uint32)((sint32)r_u32(((local_objects + 1192u) + ((v179 / 4)) * 4u))) + (uint32)(7500)));
           sub_8004EEF4(v72, v73);
         }
-        if (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v64 + ((sint32)((uint32)(v70) - (uint32)(2))) * 2u)), ((v64 + (v70) * 2u)), ((v175 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v66))) - (uint32)(2))) + (uint32)(v70))) * 2u)), ((v175 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v66))) + (uint32)(v70))) * 2u)), v71, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16))))
+        if (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v64 + ((sint32)((uint32)(v70) - (uint32)(2))) * 2u)), ((v64 + (v70) * 2u)), ((v175 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v66))) - (uint32)(2))) + (uint32)(v70))) * 2u)), ((v175 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v66))) + (uint32)(v70))) * 2u)), v71)) << (uint32)(16))))
           ++v173;
         v68 = (sint32)((uint32)(v45) + (uint32)(1));
       }
@@ -1272,7 +1257,7 @@ uint32 sub_80052A68(void)
         }
         ++v30;
       }
-      while (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v26 + (v32) * 2u)), ((v26 + ((sint32)((uint32)(v32) - (uint32)(2))) * 2u)), ((v174 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v27))) + (uint32)(v32))) * 2u)), ((v174 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v27))) - (uint32)(2))) + (uint32)(v32))) * 2u)), v33, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16))));
+      while (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v26 + (v32) * 2u)), ((v26 + ((sint32)((uint32)(v32) - (uint32)(2))) * 2u)), ((v174 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v27))) + (uint32)(v32))) * 2u)), ((v174 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v27))) - (uint32)(2))) + (uint32)(v32))) * 2u)), v33)) << (uint32)(16))));
       v36 = v171;
       v37 = ((v186 + ((sint32)((uint32)(3) * (uint32)(v171))) * 4u));
       w_u16((((uint32)(v186) + (v171) * 2u) + (576) * 2u), v31);
@@ -1307,7 +1292,7 @@ uint32 sub_80052A68(void)
         }
         ++v44;
       }
-      while (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v40 + ((sint32)((uint32)(v46) - (uint32)(2))) * 2u)), ((v40 + (v46) * 2u)), ((v175 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v42))) - (uint32)(2))) + (uint32)(v46))) * 2u)), ((v175 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v42))) + (uint32)(v46))) * 2u)), v47, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16))));
+      while (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v40 + ((sint32)((uint32)(v46) - (uint32)(2))) * 2u)), ((v40 + (v46) * 2u)), ((v175 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v42))) - (uint32)(2))) + (uint32)(v46))) * 2u)), ((v175 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v42))) + (uint32)(v46))) * 2u)), v47)) << (uint32)(16))));
     }
     v74 = ((v186 + ((sint32)((uint32)(3) * (uint32)(v171))) * 4u));
     w_u16((((uint32)(v186) + (v171) * 2u) + (592) * 2u), v45);
@@ -1338,7 +1323,7 @@ uint32 sub_80052A68(void)
     v80 = (uint32)(((uint32)(v181) + (v78) * 1u));
     sub_8004EEF4((local_objects + 48u), (sint32)(v80));
     v81 = v170;
-    if (((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v180 + ((sint32)((uint32)(64) * (uint32)(v170))) * 2u)), ((v181 + ((sint32)((uint32)(64) * (uint32)(v170))) * 2u)), v79, v80, v77, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16)))
+    if (((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v180 + ((sint32)((uint32)(64) * (uint32)(v170))) * 2u)), ((v181 + ((sint32)((uint32)(64) * (uint32)(v170))) * 2u)), v79, v80, v77)) << (uint32)(16)))
     {
       v172 = 0;
       v173 = 0;
@@ -1366,7 +1351,7 @@ uint32 sub_80052A68(void)
           w_u32(v113, (sint32)((uint32)((sint32)r_u32(((local_objects + 1224u) + ((v184 / 4)) * 4u))) - (uint32)(7500)));
           sub_8004EEF4(v113, v114);
         }
-        if (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v180 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v105))) + (uint32)(v111))) * 2u)), ((v180 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v105))) - (uint32)(2))) + (uint32)(v111))) * 2u)), ((v79 + (v111) * 2u)), ((v79 + ((sint32)((uint32)(v111) - (uint32)(2))) * 2u)), v112, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16))))
+        if (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v180 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v105))) + (uint32)(v111))) * 2u)), ((v180 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v105))) - (uint32)(2))) + (uint32)(v111))) * 2u)), ((v79 + (v111) * 2u)), ((v79 + ((sint32)((uint32)(v111) - (uint32)(2))) * 2u)), v112)) << (uint32)(16))))
           ++v172;
         v108 = (sint32)((uint32)(v109) + (uint32)(1));
       }
@@ -1403,7 +1388,7 @@ uint32 sub_80052A68(void)
           w_u32(v126, (sint32)((uint32)((sint32)r_u32(((local_objects + 1256u) + ((v185 / 4)) * 4u))) + (uint32)(7500)));
           sub_8004EEF4(v126, v127);
         }
-        if (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v181 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v120))) - (uint32)(2))) + (uint32)(v124))) * 2u)), ((v181 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v120))) + (uint32)(v124))) * 2u)), ((v119 + ((sint32)((uint32)(v124) - (uint32)(2))) * 2u)), ((v119 + (v124) * 2u)), v125, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16))))
+        if (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v181 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v120))) - (uint32)(2))) + (uint32)(v124))) * 2u)), ((v181 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v120))) + (uint32)(v124))) * 2u)), ((v119 + ((sint32)((uint32)(v124) - (uint32)(2))) * 2u)), ((v119 + (v124) * 2u)), v125)) << (uint32)(16))))
           ++v173;
         v122 = (sint32)((uint32)(v100) + (uint32)(1));
       }
@@ -1438,7 +1423,7 @@ uint32 sub_80052A68(void)
         }
         ++v85;
       }
-      while (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v180 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v82))) + (uint32)(v87))) * 2u)), ((v180 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v82))) - (uint32)(2))) + (uint32)(v87))) * 2u)), ((v79 + (v87) * 2u)), ((v79 + ((sint32)((uint32)(v87) - (uint32)(2))) * 2u)), v88, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16))));
+      while (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v180 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v82))) + (uint32)(v87))) * 2u)), ((v180 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v82))) - (uint32)(2))) + (uint32)(v87))) * 2u)), ((v79 + (v87) * 2u)), ((v79 + ((sint32)((uint32)(v87) - (uint32)(2))) * 2u)), v88)) << (uint32)(16))));
       v91 = v171;
       v92 = ((v187 + ((sint32)((uint32)(3) * (uint32)(v171))) * 4u));
       w_u16((((uint32)(v187) + (v171) * 2u) + (608) * 2u), v86);
@@ -1473,7 +1458,7 @@ uint32 sub_80052A68(void)
         }
         ++v99;
       }
-      while (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 9u, ((v181 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v97))) - (uint32)(2))) + (uint32)(v101))) * 2u)), ((v181 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v97))) + (uint32)(v101))) * 2u)), ((v95 + ((sint32)((uint32)(v101) - (uint32)(2))) * 2u)), ((v95 + (v101) * 2u)), v102, ob_native_missing_value(0x80052a68u, "v132"), (sint32)r_u32(local_objects + 0u), (sint32)r_u32(local_objects + 4u), (sint32)r_u32(local_objects + 8u))) << (uint32)(16))));
+      while (!(((uint32)(ob_draft_unresolved_call(0x8004ec6cu, 5u, ((v181 + ((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v97))) - (uint32)(2))) + (uint32)(v101))) * 2u)), ((v181 + ((sint32)((uint32)((sint32)((uint32)(64) * (uint32)(v97))) + (uint32)(v101))) * 2u)), ((v95 + ((sint32)((uint32)(v101) - (uint32)(2))) * 2u)), ((v95 + (v101) * 2u)), v102)) << (uint32)(16))));
     }
     v128 = ((v187 + ((sint32)((uint32)(3) * (uint32)(v171))) * 4u));
     w_u16((((uint32)(v187) + (v171) * 2u) + (624) * 2u), v100);
@@ -1489,5 +1474,9 @@ uint32 sub_80052A68(void)
   while (((sint32)((sint32)((uint32)(v172) + (uint32)(v173))) > (sint32)(0)));
   { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
 }
+
+
+
+
 
 

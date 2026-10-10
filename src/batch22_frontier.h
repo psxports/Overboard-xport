@@ -1,8 +1,8 @@
 #ifndef OB_BATCH22_FRONTIER_H
 #define OB_BATCH22_FRONTIER_H
 #include "xport.h"
-uint32 ob_reset_file_setup(uint32 incoming_result);
-uint32 ob_stamp_object_records(uint32 incoming_result);
+void ob_reset_file_setup(void);
+void ob_stamp_object_records(void);
 uint32 ob_init_optional_link(uint32 node);
 uint32 ob_attach_link_record(uint32 head, uint32 node);
 uint32 ob_attach_optional_link(uint32 node, uint32 head);

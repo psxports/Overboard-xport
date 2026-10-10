@@ -140,8 +140,6 @@ uint32 sub_800496D8(uint32 a1)
 uint32 sub_800553D0(uint32 a1, uint32 a2, uint32 a3)
 {
     FUNCTION_MARKER(0x800553d0u, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
     /* TODO: Bind external adapter for sub_80063FC8 */
   uint32 v5;
   uint32 v6;
@@ -732,8 +730,8 @@ uint32 sub_8004C944(uint32 a1)
   do
   {
     ob_draft_unresolved_call(0x8002dc10u, 1u, (uint32)(0x800843F0));
-    sub_8002F9C4((sint32)(0u - (uint32)(2146941968)), (sint32)((uint32)((sint32)((sint32)r_u32(0x80073694u))) + (uint32)(v28)));
-    ob_draft_unresolved_call(0x8002faa8u, 2u, (uint32)(0x800843F0), (sint32)r_u32(0x80073688u));
+    sub_8002F9C4((sint32)(0u - (uint32)(2146941968)), (sint32)(0x80073694u + (uint32)v28));
+    ob_draft_unresolved_call(0x8002faa8u, 2u, (uint32)(0x800843F0), 0x80073688u);
     v29 = (uint32)((sint32)((uint32)(v27) - (uint32)(2146919448)));
     for (i2 = (sint32)(0u - (uint32)(2146941968)); (i2 != (sint32)(0u - (uint32)(2146941888))); i2 = ((uint32)(i2) + (uint32)(16)))
     {
@@ -969,8 +967,6 @@ uint32 sub_80039838(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
 uint32 sub_8004FC64(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a5, uint32 a6, uint32 a7)
 {
     FUNCTION_MARKER(0x8004fc64u, "SLES_008.65");
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
     /* TODO: Bind external adapter for sub_8005160C */
   sint32 v12;
   sint32 v13;
@@ -1013,9 +1009,11 @@ uint32 sub_8004FC64(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a5, uint3
   {
     a4 = 10;
   }
-  v12 = ((sint32)(a2) % (sint32)(a6));
+  if (a6 == 0u)
+    xport_mips_break(7u);
   if (((a6 == (sint32)(0u - (uint32)(1))) && (a2 == 0x80000000)))
-    ob_draft_unresolved_call(0x8004fc64u, 2u, 6u, 0);
+    xport_mips_break(6u);
+  v12 = ((sint32)(a2) % (sint32)(a6));
   v13 = ((sint32)(a2) / (sint32)(a6));
   w_u32(a1, 0);
   w_u32((a1 + (22) * 4u), a7);
@@ -1045,7 +1043,7 @@ uint32 sub_8004FC64(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a5, uint3
   if (v15)
   {
     if (((v15 == (sint32)(0u - (uint32)(1))) && (a6 == 0x80000000)))
-      ob_draft_unresolved_call(0x8004fc64u, 2u, 6u, 0);
+      xport_mips_break(6u);
     w_u32((a1 + (20) * 4u), ((sint32)(a6) / (sint32)(v15)));
     w_u32((a1 + (21) * 4u), ((sint32)(a6) % (sint32)(v15)));
   }
@@ -1066,7 +1064,7 @@ uint32 sub_8004FC64(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a5, uint3
     {
       v21 = (sint32)((uint32)((sint32)((uint32)(2) * (uint32)(a6))) - (uint32)(v17));
       if (((v20 == (sint32)(0u - (uint32)(1))) && (v21 == 0x80000000)))
-        ob_draft_unresolved_call(0x8004fc64u, 2u, 6u, 0);
+        xport_mips_break(6u);
       w_u32((a1 + (9) * 4u), (sint32)((uint32)(a5) + (uint32)(((sint32)(v21) / (sint32)(v20)))));
       w_u32((a1 + (10) * 4u), ((sint32)(v21) % (sint32)(v20)));
     }
@@ -1084,7 +1082,7 @@ uint32 sub_8004FC64(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a5, uint3
     if (v18)
     {
       if (((v18 == (sint32)(0u - (uint32)(1))) && (v19 == 0x80000000)))
-        ob_draft_unresolved_call(0x8004fc64u, 2u, 6u, 0);
+        xport_mips_break(6u);
       w_u32((a1 + (9) * 4u), (sint32)((uint32)(a5) + (uint32)(((sint32)(v19) / (sint32)(v18)))));
       w_u32((a1 + (10) * 4u), ((sint32)(v19) % (sint32)(v18)));
     }
@@ -1102,7 +1100,7 @@ uint32 sub_8004FC64(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a5, uint3
     if (v24)
     {
       if (((v24 == (sint32)(0u - (uint32)(1))) && (v25 == 0x80000000)))
-        ob_draft_unresolved_call(0x8004fc64u, 2u, 6u, 0);
+        xport_mips_break(6u);
       w_u32((a1 + (11) * 4u), (sint32)((uint32)(a5) + (uint32)(((sint32)(v25) / (sint32)(v24)))));
       w_u32((a1 + (12) * 4u), ((sint32)(v25) % (sint32)(v24)));
     }
@@ -1124,7 +1122,7 @@ uint32 sub_8004FC64(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a5, uint3
     if (v22)
     {
       if (((v22 == (sint32)(0u - (uint32)(1))) && (v23 == 0x80000000)))
-        ob_draft_unresolved_call(0x8004fc64u, 2u, 6u, 0);
+        xport_mips_break(6u);
       w_u32((a1 + (11) * 4u), (sint32)((uint32)(a5) + (uint32)(((sint32)(v23) / (sint32)(v22)))));
       w_u32((a1 + (12) * 4u), ((sint32)(v23) % (sint32)(v22)));
     }
@@ -1307,8 +1305,6 @@ release_model:
 uint32 sub_8004AAFC(uint32 a1, uint32 a2)
 {
     FUNCTION_MARKER(0x8004aafcu, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
     /* TODO: Bind external adapter for sub_8004B0B0 */
     /* TODO: Bind external adapter for sub_8004B3E8 */
     uint32 local_objects = ob_draft_scratch_acquire(32u);
@@ -1353,16 +1349,17 @@ uint32 sub_8004AAFC(uint32 a1, uint32 a2)
     v3 = (uint32)(sub_80045464(r_u32((uint32)(((uint32)(r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(24))))) + (uint32)(52)))), (sint32)r_u32(0x800775fcu)));
   v6 = r_u32((uint32)((sint32)r_u32(0x80077644u)));
   if (!(r_u32((uint32)((sint32)r_u32(0x80077644u)))))
-    ob_draft_unresolved_call(0x8004aafcu, 2u, 7u, 0);
+    xport_mips_break(7u);
   if (((v6 == (sint32)(0u - (uint32)(1))) && (r_u32(v3) == 0x80000000)))
-    ob_draft_unresolved_call(0x8004aafcu, 2u, 6u, 0);
-  v7 = (r_u32(v3) % r_u32((uint32)((sint32)r_u32(0x80077644u))));
+    xport_mips_break(6u);
+  v7 = (sint32)r_u32(v3) % v6;
   v8 = r_u32((v3 + (2) * 4u));
-  v9 = ((sint32)(v8) % (sint32)(v6));
+
   if (((v6 == (sint32)(0u - (uint32)(1))) && (v8 == 0x80000000)))
-    ob_draft_unresolved_call(0x8004aafcu, 2u, 6u, 0);
-  v10 = (r_u32(v3) % r_u32((uint32)((sint32)r_u32(0x80077644u))));
-  v11 = ((sint32)(v8) % (sint32)(v6));
+    xport_mips_break(6u);
+  v10 = v7;
+  v9 = v8 % v6;
+  v11 = v9;
   if (((v7 & 0x8000) != 0))
     v10 = ((uint32)(v10) & ~((uint32)65535u << 0) | (((uint32)((sint32)((uint32)(v7) + (uint32)(v6))) & 65535u) << 0));
   if (((v9 & 0x8000) != 0))
@@ -1541,7 +1538,7 @@ uint32 sub_8004AAFC(uint32 a1, uint32 a2)
   if ((uint32)(v26))
   {
     v26 = ((uint64_t)(v26) & ~((uint64_t)4294967295u << 0) | (((uint64_t)((r_u16((uint32)((sint32)((uint32)(a1) + (uint32)(38)))) | 0x100)) & 4294967295u) << 0));
-    w_u16((uint32)((sint32)((uint32)(a1) + (uint32)(38))), v26);
+    w_u16((uint32)((sint32)((uint32)(a1) + (uint32)(38))), (uint32)v26);
   }
   LABEL_76:
   ob_draft_unresolved_call(0x8004b3e8u, 2u, (local_objects + 24u), ((uint64_t)((((v26 & 0xFFFF0000) | r_u8(local_objects + 0u)) | ((uint32)(r_u8(local_objects + 1u)) << (uint32)(8)))) << (uint64_t)(16)));
@@ -1803,6 +1800,8 @@ uint32 sub_80023308(uint32 a1)
   sub_80017178();
   { uint32 draft_return = sub_80024D54(0x3FFFF); ob_draft_scratch_release(local_objects);  return draft_return; }
 }
+
+
 
 
 

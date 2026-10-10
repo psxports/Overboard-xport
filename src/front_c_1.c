@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "front_signatures.h"
 #include "native_runtime.h"
 #include <stdint.h>
@@ -12,13 +13,7 @@ void ob_front_8008EEEC(void)
 
 static void front_c_solid_quad(uint32 x, uint32 y, uint32 width, uint32 height)
 {
-    uint32 attributes = ob_draft_scratch_acquire(32u);
-    w_u32(attributes + 16u, 196u);
-    w_u32(attributes + 20u, 196u);
-    w_u32(attributes + 24u, 196u);
-    w_u32(attributes + 28u, 1u);
-    ob_append_solid_quad(x, y, width, height, attributes);
-    ob_draft_scratch_release(attributes);
+    ob_append_solid_quad(x, y, width, height, 196u, 196u, 196u, 1u);
 }
 
 uint32 ob_front_8008E204(void)
@@ -142,7 +137,7 @@ uint32 ob_front_8009B8E4(uint32 a1)
     FUNCTION_MARKER(0x8009B8E4u, "FRONT.BIN");
     uint32 object = r_u32(a1);
     sub_80045124(r_u32(object + 48u));
-    ob_draft_unresolved_call(0x80044058u, 1u, r_u32(r_u32(a1) + 52u));
+    ob_free_geometry_object( r_u32(r_u32(a1) + 52u));
     ob_draft_unresolved_call(0x800436ACu, 1u, r_u32(r_u32(a1)));
     return sub_800263B4(a1);
 }
@@ -154,7 +149,7 @@ uint32 ob_front_8008DD3C(uint32 a1)
     uint32 result;
     w_u32(handle, a1);
     sub_80045124(r_u32(a1 + 48u));
-    ob_draft_unresolved_call(0x80044058u, 1u, r_u32(r_u32(handle) + 52u));
+    ob_free_geometry_object( r_u32(r_u32(handle) + 52u));
     ob_draft_unresolved_call(0x800436ACu, 1u, r_u32(r_u32(handle)));
     result = sub_800263B4(handle);
     ob_draft_scratch_release(handle);

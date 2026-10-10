@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "draft_signatures.h"
 #include "native_runtime.h"
 #include "native_timers.h"
@@ -314,10 +315,10 @@ sint32 sub_800465E8(uint32 a1, uint32 a2)
     }
     uint32 record = r_u32(r_u32(0x80077148u) + 4u * r_u32(larger + 24u));
     record += 8u * r_u32(smaller + 24u);
+    uint32 previous_flags = r_u32(record);
     w_u32(record + 4u, 0x7FFFFFFFu);
     w_u32(record, 128u);
-    /* TODO: Preserve helper nonstandard argument carriers beyond a0 */
-    return (sint32)ob_draft_unresolved_call(0x80047450u, 1u, larger);
+    return (sint32)sub_80047450(larger, smaller, record, previous_flags);
 }
 
 sint32 sub_800279D4(uint32 a1)
@@ -562,7 +563,7 @@ sint32 sub_80024548(void)
     w_u32(0x8006C138u, 0u);
     w_u32(0x8006C13Cu, 0u);
     w_u32(0x800C4D18u, 0u);
-    ob_draft_unresolved_call(0x8009450Cu, 3u, 0u, 0u, 0u);
+    ob_draft_unresolved_call(0x8009450Cu, 2u, 0u, 0u);
     ob_draft_unresolved_call(0x80093D00u, 1u, r_u32(0x800C4D18u));
     w_u32(0x800C8390u, 1u);
     w_u32(0x800C8488u, 0u);
@@ -611,31 +612,21 @@ sint32 sub_8001F874(void)
     return result;
 }
 
-sint32 sub_80034234(void)
+void sub_80034234(void)
 {
     FUNCTION_MARKER(0x80034234u, "SLES_008.65");
     uint32 node = r_u32(0x80077594u);
-    /* TODO: Original result is unspecified when the list is empty */
-    sint32 result;
-    if (node == 0u)
-        return (sint32)ob_draft_unresolved_call(0x80034234u, 0u);
-    do
+    while (node != 0u)
     {
         sint32 type = r_s16(node + 4u);
-        result = type < 2;
         if (type == 0)
-            result = (sint32)sub_800342F0(r_u32(node + 8u));
+            sub_800342F0(r_u32(node + 8u));
         else if (type == 1 || type == 2)
-            result = sub_80034430(r_u32(node + 8u));
-        else if (type >= 2)
-        {
-            result = 3;
-            if (type == 3)
-                result = (sint32)ob_draft_unresolved_call(0x80034500u, 1u, r_u32(node + 8u));
-        }
+            sub_80034430(r_u32(node + 8u));
+        else if (type == 3)
+            ob_draft_unresolved_call(0x80034500u, 1u, r_u32(node + 8u));
         node = r_u32(node);
-    } while (node != 0u);
-    return result;
+    }
 }
 
 sint32 sub_80054A24(sint32 a1, uint32 a2)
@@ -800,13 +791,22 @@ sint32 sub_8004E310(uint32 a1, sint32 a2)
     {
         do
         {
-            /* TODO: Inline GTE MVMVA 0x480012 stores MAC1/MAC2/MAC3 as halfwords */
-            ob_draft_unresolved_call(0x8004E354u, 3u, input, output + 8u, 0x480012u);
+            xport_gte_write_data(0u, r_u32(input));
+            xport_gte_write_data(1u, r_u32(input + 4u));
+            xport_gte_execute(0x480012u);
+            uint32 mac1 = xport_gte_read_data(25u);
+            uint32 mac2 = xport_gte_read_data(26u);
+            w_u16(output + 8u, mac1);
+            uint32 mac3 = xport_gte_read_data(27u);
+            w_u16(output + 10u, mac2);
+            w_u16(output + 12u, mac3);
             input += 8u;
+            uint32 count = r_u16(0x80077388u);
             ++index;
-            result = index < r_u16(0x80077388u);
+            result = (sint32)index < (sint32)count;
             output += 24u;
-        } while (result != 0);
+        }
+        while (result != 0);
     }
     return result;
 }
@@ -862,8 +862,7 @@ sint32 sub_80045094(uint32 a1)
         else
             ob_draft_unresolved_call(0x80045D0Cu, 1u, child);
     }
-    /* TODO Existing binding requires unavailable result and stack carriers */
-    ob_draft_unresolved_call(0x80043974u, 1u, a1 + 144u);
+    ob_clear_owner_references(a1 + 144u);
     if (r_u32(a1 + 24u) != 0u)
         sub_8004514C(a1);
     w_u32(a1 + 8u, 0u);

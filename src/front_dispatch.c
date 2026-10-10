@@ -1,5 +1,7 @@
 #include "front_signatures.h"
 #include "native_runtime.h"
+#include "game_signatures.h"
+#include "movie_player.h"
 
 static uint32 loaded_overlay = UINT32_MAX;
 
@@ -11,6 +13,8 @@ void ob_native_overlay_loaded(uint32 index)
 
 uint32 ob_native_front_dispatch(uint32 target, uint32 count, const uint32 *args)
 {
+    if (loaded_overlay == 1u) return ob_native_game_dispatch(target, count, args);
+    if (loaded_overlay == 2u) return ob_native_movie_dispatch(target, count, args);
     if (loaded_overlay != 0u) ob_native_missing(target, 0u, loaded_overlay);
     switch (target)
     {

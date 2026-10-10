@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "draft_signatures.h"
 #include "native_runtime.h"
 #include "native_graphics.h"
@@ -20,19 +21,14 @@ static uint32 native_cd_read_pending;
 
 static void native_cd_sync_event(uint8 status, uint8 *result)
 {
-    (void)status;
-    (void)result;
     DeliverEvent(0xF0000003u, 0x20u);
 }
 
 static void native_cd_ready_event(uint8 status, uint8 *result)
 {
-    (void)status;
-    (void)result;
     DeliverEvent(0xF0000003u, 0x40u);
 }
 
-const uint32 ob_native_skip_intro_movies = 1u;
 const uint32 xport_cd_ready_callback_address = 0x80073AF4u;
 const uint32 xport_cd_sync_callback_address = 0x80073AF0u;
 const uint32 xport_cd_status_address = 0x80073B00u;
@@ -172,7 +168,7 @@ static uint32 native_call(uint32 target, uint32 argument_count, uint32 *args)
             if (!xport_guest_fill(args[0], 0u, args[1])) ob_native_missing(target, 2u, argument_count); return args[0];
         case 0x80057CD0u:
             if (argument_count != 2u) ob_native_missing(target, 2u, argument_count);
-            return CdSearchFilePSX(psx_addr(args[0], 24u), (const char *)psx_addr(args[1], 1u)) ? args[0] : 0u;
+            return CdSearchFileGuest(args[0], args[1]);
         case 0x80056048u:
             if (argument_count != 3u) ob_native_missing(target, 3u, argument_count);
             if (ob_native_cd_audio_call(args[0], args[1], args[2], &graphics_result)) return graphics_result;

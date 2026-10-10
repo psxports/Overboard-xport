@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch10_frontier.h"
 #include "memory_frontier.h"
 #include "audit_frontier.h"

@@ -9,7 +9,7 @@ uint32 ob_classify_effect_indices(uint32 descriptor);
 uint32 ob_classify_effect_cell(uint32 cell, uint32 descriptor);
 uint32 ob_classify_effect_cells(uint32 descriptor);
 uint32 ob_classify_effect_tables(uint32 descriptor);
-uint32 ob_effect_setup_stub_result(uint32 incoming_result);
+void ob_effect_setup_stub_result(void);
 uint32 ob_clear_effect_workspace(void);
 uint32 ob_init_view_geometry(void);
 uint32 ob_refresh_effect_records(void);

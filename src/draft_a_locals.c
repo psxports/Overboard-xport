@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "draft_signatures.h"
 
 /* Unverified drafts with actual local objects in guest scratch */
@@ -181,9 +182,8 @@ uint32 sub_800129FC(uint32 a1)
 uint32 sub_80024B40(void)
 {
     FUNCTION_MARKER(0x80024B40u, "SLES_008.65");
-    /* TODO Bind guest callbacks */
-    ob_draft_unresolved_call(r_u32(0x800A2D74u), 1u, r_u32(0x800882BCu));
-    return ob_draft_unresolved_call(r_u32(0x80093C44u), 1u, 0u);
+    ob_draft_unresolved_call(0x800A2D74u, 1u, r_u32(0x800882BCu));
+    return ob_draft_unresolved_call(0x80093C44u, 0u);
 }
 
 void sub_80058D98(void)

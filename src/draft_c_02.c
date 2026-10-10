@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "draft_signatures.h"
 #include "native_runtime.h"
 #include <stdint.h>
@@ -209,9 +210,7 @@ sint32 sub_80034430(uint32 a1)
 sint32 sub_8001E108(void)
 {
     FUNCTION_MARKER(0x8001e108u, "SLES_008.65");
-    /* TODO: Bind external adapter for sub_800637B8 */
-    /* TODO: Bind external adapter for sub_80062EE8 */
-    uint32 local_objects = ob_draft_scratch_acquire(12u);
+    uint32 local_objects = ob_draft_scratch_acquire((uint32)sizeof(SpuVoiceAttr));
   sint32 v0;
   sint32 v1;
   sint32 v2;
@@ -314,30 +313,24 @@ uint32 sub_800262CC(uint32 a1, sint32 a2)
 }
 
 
-sint32 sub_8003042C(uint32 a1, uint32 a2)
+sint32 sub_8003042C(uint32 input, uint32 output)
 {
-    FUNCTION_MARKER(0x8003042cu, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    uint32 local_objects = ob_draft_scratch_acquire(4u);
-  sint32 v4;
-  sint32 v5;
-  sint32 result;
-  ;
-  sub_800303D4(a1, (local_objects + 0u));
-  v4 = (uint16)((sint32)r_u32(local_objects + 0u));
-  v5 = (sint32)((uint32)((sint16)r_u16(a1)) << (uint32)(14));
-  if (!((uint16)((sint32)r_u32(local_objects + 0u))))
-    ob_draft_unresolved_call(0x8003042cu, 2u, 7u, 0);
-  if ((((uint16)((sint32)r_u32(local_objects + 0u)) == (0u - (uint32)(1))) && (v5 == 0x80000000)))
-    ob_draft_unresolved_call(0x8003042cu, 2u, 6u, 0);
-  w_u16(a2, (v5 / (uint16)((sint32)r_u32(local_objects + 0u))));
-  w_u16((a2 + (1) * 2u), ((sint32)((uint32)((sint16)r_u16((a1 + (1) * 2u))) << (uint32)(14)) / v4));
-  result = ((sint32)((uint32)((sint16)r_u16((a1 + (2) * 2u))) << (uint32)(14)) / v4);
-  w_u16((a2 + (2) * 2u), result);
-  { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
+    FUNCTION_MARKER(0x8003042Cu, "SLES_008.65");
+    uint32 length_cell = ob_draft_scratch_acquire(4u);
+    sub_800303D4(input, length_cell);
+    sint32 length = (sint32)r_u16(length_cell);
+    ob_draft_scratch_release(length_cell);
+    if (length == 0)
+        return (sint32)ob_native_missing_value(0x8003042Cu, "BREAK 7 signed division by zero");
+    sint32 result = 0;
+    for (uint32 i = 0u; i < 3u; ++i)
+    {
+        sint32 component = (sint32)((uint32)(sint32)r_s16(input + i*2u) << 14);
+        result = component / length;
+        w_u16(output + i*2u, (uint32)result);
+    }
+    return result;
 }
-
 
 sint32 sub_8001627C(sint32 a1)
 {
@@ -457,38 +450,32 @@ sint32 sub_8001F9B0(sint32 a1, sint32 a2)
 }
 
 
-sint32 sub_80053D20(sint32 a1, sint32 a2)
+sint32 sub_80053D20(sint32 x, sint32 z)
 {
-    FUNCTION_MARKER(0x80053d20u, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    uint32 local_objects = ob_draft_scratch_acquire(40u);
-  sint32 v2;
-  sint32 v3;
-  sint32 v4;
-  sint32 v5;
-  ;
-  ;
-  uint32 v9;
-  if ((sint32)r_u32(0x800771D0u))
-  {
-    v2 = r_u32((uint32)((sint32)r_u32(0x80077644u)));
-    v3 = (sint32)((uint32)(a1) + (uint32)((sint32)r_u32(0x80077458u)));
-    if (!(r_u32((uint32)((sint32)r_u32(0x80077644u)))))
-      ob_draft_unresolved_call(0x80053d20u, 2u, 7u, 0);
-    if (((v2 == (0u - (uint32)(1))) && (v3 == 0x80000000)))
-      ob_draft_unresolved_call(0x80053d20u, 2u, 6u, 0);
-    v4 = (v3 / r_u32((uint32)((sint32)r_u32(0x80077644u))));
-    if (((v2 == (0u - (uint32)(1))) && ((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)(a2)) == 0x80000000)))
-      ob_draft_unresolved_call(0x80053d20u, 2u, 6u, 0);
-    v5 = ((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)(a2)) / v2);
-    w_u32(((local_objects + 0u) + (0) * 4u), (sint32)((uint32)((sint32)((uint32)(v4) * (uint32)(v2))) - (uint32)((sint32)r_u32(0x80077458u))));
-    w_u32(((local_objects + 0u) + (2) * 4u), (sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)((sint32)((uint32)(v5) * (uint32)(r_u32((uint32)((sint32)r_u32(0x80077644u))))))));
-    sub_80051400((local_objects + 0u), (sint32)((local_objects + 16u)));
-    v9 = r_u32(local_objects + 24u);
-    sub_8004E028(v4, v5, v9);
-  }
-  { uint32 draft_return = 1; ob_draft_scratch_release(local_objects);  return draft_return; }
+    FUNCTION_MARKER(0x80053D20u, "SLES_008.65");
+    if (r_u32(0x800771D0u) != 0u)
+    {
+        uint32 scale_address = r_u32(0x80077644u);
+        sint32 scale = (sint32)r_u32(scale_address);
+        uint32 origin_x = r_u32(0x80077458u);
+        uint32 origin_z = r_u32(0x80077468u);
+        sint32 numerator_x = (sint32)((uint32)x + origin_x);
+        sint32 numerator_z = (sint32)(origin_z - (uint32)z);
+        if (scale == 0)
+            return (sint32)ob_native_missing_value(0x80053D20u,"BREAK 7 signed division by zero");
+        if (scale == -1 && ((uint32)numerator_x == 0x80000000u || (uint32)numerator_z == 0x80000000u))
+            return (sint32)ob_native_missing_value(0x80053D20u,"BREAK 6 signed division overflow");
+        sint32 cell_x = numerator_x / scale;
+        sint32 cell_z = numerator_z / scale;
+        uint32 objects = ob_draft_scratch_acquire(24u);
+        w_u32(objects,(uint32)cell_x*(uint32)scale-origin_x);
+        w_u32(objects+8u,origin_z-(uint32)cell_z*r_u32(scale_address));
+        sub_80051400(objects,(sint32)(objects+12u));
+        uint32 surface = r_u32(objects+20u);
+        sub_8004E028(cell_x,cell_z,surface);
+        ob_draft_scratch_release(objects);
+    }
+    return 1;
 }
 
 
@@ -652,8 +639,6 @@ sint32 sub_800454BC(uint32 a1)
 uint32 sub_80026164(uint32 a1, uint32 a2, sint32 a3)
 {
     FUNCTION_MARKER(0x80026164u, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
   uint32 v6;
   uint32 v7;
   uint32 v8;
@@ -673,7 +658,7 @@ uint32 sub_80026164(uint32 a1, uint32 a2, sint32 a3)
   else
   {
     if ((a3 == (0u - (uint32)(4))))
-      ob_draft_unresolved_call(0x80026164u, 2u, 7u, 0);
+      return ob_native_missing_value(0x80026164u, "BREAK 7 unsigned division by zero");
     v7 = (0x7E8 / v6);
     v8 = (0x7E8 % v6);
     v9 = (sint32)((uint32)((0x7E8 / v6)) * (uint32)(v6));
@@ -737,73 +722,28 @@ sint32 sub_80043404(void)
 }
 
 
-sint32 sub_80048BF4(uint32 a1)
+sint32 sub_80048BF4(uint32 object)
 {
-    FUNCTION_MARKER(0x80048bf4u, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-  sint32 v1;
-  sint32 v2;
-  sint32 v3;
-  sint32 v4;
-  sint32 v5;
-  sint32 v6;
-  sint32 v7;
-  sint32 v8;
-  sint32 v9;
-  sint32 v10;
-  sint32 v11;
-  sint32 v12;
-  sint32 result;
-  v1 = r_u32((a1 + (24) * 4u));
-  if (v1)
-  {
-    v3 = ((uint32)(r_u32((a1 + (6) * 4u))) - (uint32)(r_u32((a1 + (21) * 4u))));
-    if (((v1 == (0u - (uint32)(1))) && (v3 == 0x80000000)))
-      ob_draft_unresolved_call(0x80048bf4u, 2u, 6u, 0);
-    v2 = (v3 / v1);
-  }
-  else
-  {
-    v2 = 2147483393;
-  }
-  v4 = r_u32((a1 + (25) * 4u));
-  if (v4)
-  {
-    v6 = ((uint32)(r_u32((a1 + (7) * 4u))) - (uint32)(r_u32((a1 + (22) * 4u))));
-    if (((v4 == (0u - (uint32)(1))) && (v6 == 0x80000000)))
-      ob_draft_unresolved_call(0x80048bf4u, 2u, 6u, 0);
-    v5 = (v6 / v4);
-  }
-  else
-  {
-    v5 = 2147483393;
-  }
-  v7 = r_u32((a1 + (26) * 4u));
-  if (v7)
-  {
-    v9 = ((uint32)(r_u32((a1 + (8) * 4u))) - (uint32)(r_u32((a1 + (23) * 4u))));
-    if (((v7 == (0u - (uint32)(1))) && (v9 == 0x80000000)))
-      ob_draft_unresolved_call(0x80048bf4u, 2u, 6u, 0);
-    v8 = (v9 / v7);
-  }
-  else
-  {
-    v8 = 2147483393;
-  }
-  v10 = v5;
-  v11 = (v5 < v2);
-  if ((v8 < v5))
-  {
-    v10 = v8;
-    v11 = (v8 < v2);
-  }
-  v12 = v2;
-  if (v11)
-    v12 = v10;
-  result = ((uint32)(((uint32)(r_u32(a1)) + (uint32)(v12))) + (uint32)(1));
-  w_u32((a1 + (27) * 4u), result);
-  return result;
+    FUNCTION_MARKER(0x80048BF4u, "SLES_008.65");
+    sint32 times[3];
+    for (uint32 i=0u; i<3u; ++i)
+    {
+        sint32 divisor = (sint32)r_u32(object+96u+i*4u);
+        times[i] = 0x7FFFFF01;
+        if (divisor != 0)
+        {
+            sint32 value = (sint32)(r_u32(object+24u+i*4u)-r_u32(object+84u+i*4u));
+            if (divisor == -1 && (uint32)value == 0x80000000u)
+                return (sint32)ob_native_missing_value(0x80048BF4u,"BREAK 6 signed division overflow");
+            times[i] = value/divisor;
+        }
+    }
+    sint32 minimum = times[1];
+    if (times[2] < minimum) minimum = times[2];
+    if (times[0] < minimum) minimum = times[0];
+    uint32 result = r_u32(object)+(uint32)minimum+1u;
+    w_u32(object+108u,result);
+    return (sint32)result;
 }
 
 
@@ -961,46 +901,27 @@ sint32 sub_800220BC(void)
 
 sint32 sub_800427AC(void)
 {
-    FUNCTION_MARKER(0x800427acu, "SLES_008.65");
-    /* TODO: Bind external adapter for sub_8002DC10 */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-  sint32 v0;
-  sint32 v1;
-  sint32 v2;
-  sint32 v3;
-  sint32 v4;
-  sint32 v5;
-  sint32 result;
-  ob_draft_unresolved_call(0x8002dc10u, 1u, (uint32)(0x800895C0));
-  v0 = r_u32((uint32)((sint32)((uint32)((sint32)r_u32(0x8007741Cu)) + (uint32)(12))));
-  v1 = r_u32((uint32)((sint32)((uint32)(v0) + (uint32)(24))));
-  v2 = r_u32((uint32)((sint32)((uint32)(v0) + (uint32)(28))));
-  v3 = (sint32)((uint32)(v1) << (uint32)(16));
-  if (((sint16)(v2) < (sint16)(v1)))
-    v3 = (sint32)((uint32)(v2) << (uint32)(16));
-  v4 = (v3 >> 2);
-  if ((((sint16)(v1) == (0u - (uint32)(1))) && (v4 == 0x80000000)))
-    ob_draft_unresolved_call(0x800427acu, 2u, 6u, 0);
-  if (!((uint16)(v2)))
-    ob_draft_unresolved_call(0x800427acu, 2u, 7u, 0);
-  if ((((sint16)(v2) == (0u - (uint32)(1))) && (v4 == 0x80000000)))
-    ob_draft_unresolved_call(0x800427acu, 2u, 6u, 0);
-  v5 = (v4 / (uint16)((sint32)((uint32)(2) * (uint32)(r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x800770C0u)) + (uint32)(8))))))));
-  if (!((sint32)((uint32)(2) * (uint32)(r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x800770C0u)) + (uint32)(8))))))))
-    ob_draft_unresolved_call(0x800427acu, 2u, 7u, 0);
-  w_u16(0x800895C2, 0);
-  w_u16(0x800895C4, 0);
-  w_u16(0x800895C6, 0);
-  w_u16(0x800895CA, 0);
-  w_u16(0x800895CC, 0);
-  w_u16(0x800895CE, 0);
-  result = (r_u32(0x800895F0) | 0x12);
-  w_u32(0x800895F0, ((uint32)(r_u32(0x800895F0)) | (uint32)(0x12u)));
-  w_u32(0x800895C0, (v4 / (sint16)(v1)));
-  w_u16(0x800895C8, (v4 / (sint16)(v2)));
-  w_u16(0x800895D0, v5);
-  return result;
+    FUNCTION_MARKER(0x800427ACu, "SLES_008.65");
+    ob_draft_unresolved_call(0x8002DC10u,1u,0x800895C0u);
+    uint32 view = r_u32(r_u32(0x8007741Cu)+12u);
+    sint32 width = (sint16)r_u32(view+24u);
+    sint32 height = (sint16)r_u32(view+28u);
+    sint32 minimum = height < width ? height : width;
+    sint32 numerator = (sint32)((uint32)minimum << 16) >> 2;
+    sint32 depth = (sint32)((r_u32(r_u32(0x800770C0u)+8u)*2u)&65535u);
+    if (width == 0 || height == 0 || depth == 0)
+        return (sint32)ob_native_missing_value(0x800427ACu,"BREAK 7 signed division by zero");
+    sint32 scale_x = numerator/width;
+    sint32 scale_y = numerator/height;
+    sint32 scale_z = numerator/depth;
+    w_u16(0x800895C2u,0u); w_u16(0x800895C4u,0u); w_u16(0x800895C6u,0u);
+    w_u16(0x800895CAu,0u); w_u16(0x800895CCu,0u); w_u16(0x800895CEu,0u);
+    uint32 result = r_u32(0x800895F0u)|0x12u;
+    w_u32(0x800895F0u,result);
+    w_u16(0x800895C0u,(uint32)scale_x);
+    w_u16(0x800895C8u,(uint32)scale_y);
+    w_u16(0x800895D0u,(uint32)scale_z);
+    return (sint32)result;
 }
 
 
@@ -1171,56 +1092,32 @@ uint32 sub_800217B4(sint32 a1)
 }
 
 
-sint32 sub_80028614(uint32 a1)
+sint32 sub_80028614(uint32 vector)
 {
     FUNCTION_MARKER(0x80028614u, "SLES_008.65");
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Resolve external symbol __trap instead of the owning function adapter placeholder */
-    /* TODO: Bind external adapter for __trap */
-  uint16 v2;
-  sint32 v3;
-  sint32 v4;
-  sint16 v5;
-  sint32 v6;
-  sint32 v7;
-  sint32 v8;
-  sint32 v9;
-  sint32 v10;
-  v2 = sub_8002B868((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)((sint16)r_u16(a1)) * (uint32)((sint16)r_u16(a1)))) + (uint32)((sint32)((uint32)((sint16)r_u16((a1 + (1) * 2u))) * (uint32)((sint16)r_u16((a1 + (1) * 2u))))))) + (uint32)((sint32)((uint32)((sint16)r_u16((a1 + (2) * 2u))) * (uint32)((sint16)r_u16((a1 + (2) * 2u)))))));
-  if (v2)
-  {
-    v3 = (v2 >> 1);
-    if ((v2 > 0x7FFFu))
+    uint32 sum = 0u;
+    for (uint32 i=0u; i<3u; ++i)
     {
-      v4 = ((uint32)((uint16)((sint16)r_u16((a1 + (1) * 2u)))) << (uint32)(16));
-      w_u16(a1, ((uint32)((sint16)r_u16(a1)) >> (uint32)(1)));
-      v5 = (sint16)r_u16((a1 + (2) * 2u));
-      w_u16((a1 + (1) * 2u), (v4 >> 17));
-      w_u16((a1 + (2) * 2u), (v5 >> 1));
+        uint32 value = (uint32)(sint32)r_s16(vector+i*2u);
+        sum += value*value;
     }
-    else
+    uint32 length = (uint32)sub_8002B868((sint32)sum) & 65535u;
+    if (length != 0u)
     {
-      v3 = ((uint32)(v3) & ~(65535u << 0) | (((uint32)(v2) & 65535u) << 0));
+        sint32 divisor = (sint32)length;
+        if (length > 32767u)
+        {
+            divisor = (sint32)(length >> 1);
+            for (uint32 i=0u; i<3u; ++i)
+                w_u16(vector+i*2u,(uint32)((sint32)r_s16(vector+i*2u) >> 1));
+        }
+        for (uint32 i=0u; i<3u; ++i)
+        {
+            sint32 value = (sint32)((uint32)(sint32)r_s16(vector+i*2u) << 14);
+            w_u16(vector+i*2u,(uint32)(value/divisor));
+        }
     }
-    v6 = (sint16)(v3);
-    v7 = (sint32)((uint32)((sint16)r_u16(a1)) << (uint32)(14));
-    v8 = (v7 / (sint16)(v3));
-    if (!((uint16)(v3)))
-      ob_draft_unresolved_call(0x80028614u, 2u, 7u, 0);
-    if ((((sint16)(v3) == (0u - (uint32)(1))) && (v7 == 0x80000000)))
-      ob_draft_unresolved_call(0x80028614u, 1u, 0x5Du);
-    v9 = (sint32)((uint32)((sint16)r_u16((a1 + (1) * 2u))) << (uint32)(14));
-    if (((v6 == (0u - (uint32)(1))) && (v9 == 0x80000000)))
-      ob_draft_unresolved_call(0x80028614u, 1u, 0x5Du);
-    v10 = (sint32)((uint32)((sint16)r_u16((a1 + (2) * 2u))) << (uint32)(14));
-    if (((v6 == (0u - (uint32)(1))) && (v10 == 0x80000000)))
-      ob_draft_unresolved_call(0x80028614u, 1u, 0x5Du);
-    w_u16(a1, v8);
-    w_u16((a1 + (1) * 2u), (v9 / v6));
-    w_u16((a1 + (2) * 2u), (v10 / v6));
-  }
-  return v2;
+    return (sint32)length;
 }
 
 
@@ -1302,8 +1199,6 @@ sint32 sub_800508D0(uint32 a1)
 sint32 sub_80041BB8(void)
 {
     FUNCTION_MARKER(0x80041bb8u, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
   sint32 v0;
   sint32 v1;
   sint32 v2;
@@ -1320,7 +1215,7 @@ sint32 sub_80041BB8(void)
   w_u16(0x8007753Eu, 0);
   w_u16(0x80077540u, (0u - (uint32)(((sint16)r_u16(0x800774E0u) >> 1))));
   w_u16(0x8007753Cu, v1);
-  sub_8003042C((0x80077544u), (sint8)r_u8(0x80077348u));
+  sub_8003042C((0x80077544u), 0x80077348u);
   sub_8003042C((0x8007753Cu), (0x80077340u));
   v2 = r_u32((uint32)((sint32)((uint32)((sint32)r_u32(0x800770C0u)) + (uint32)(8))));
   w_u16(0x8007750Eu, 0);
@@ -1330,14 +1225,14 @@ sint32 sub_80041BB8(void)
   v3 = (sint32)((uint32)(4700) * (uint32)((sint32)((uint32)((sint16)r_u16(0x8007732Cu)) - (uint32)((sint16)r_u16(0x80077340u)))));
   v4 = ((sint32)((uint32)((sint32)((uint32)((0u - (uint32)((sint16)r_u16(0x80077344u)))) * (uint32)((sint16)r_u16(0x8007732Cu)))) + (uint32)((sint32)((uint32)((sint16)r_u16(0x80077330u)) * (uint32)((sint16)r_u16(0x80077340u))))) >> 14);
   if (!v4)
-    ob_draft_unresolved_call(0x80041bb8u, 2u, 7u, 0);
+    return (sint32)ob_native_missing_value(0x80041BB8u,"BREAK 7 signed division by zero");
   if (((v4 == (0u - (uint32)(1))) && (v3 == 0x80000000)))
-    ob_draft_unresolved_call(0x80041bb8u, 2u, 6u, 0);
+    return (sint32)ob_native_missing_value(0x80041BB8u,"BREAK 6 signed division overflow");
   v5 = (v3 / v4);
   v6 = (sint32)((uint32)((sint16)r_u16(0x80077330u)) - (uint32)((sint16)r_u16(0x80077344u)));
   result = (sint32)((uint32)(4700) * (uint32)(v6));
   if (((v4 == (0u - (uint32)(1))) && (result == 0x80000000)))
-    ob_draft_unresolved_call(0x80041bb8u, 2u, 6u, 0);
+    return (sint32)ob_native_missing_value(0x80041BB8u,"BREAK 6 signed division overflow");
   w_u32(0x800775C8u, (0u - (uint32)(v5)));
   w_u32(0x80077338u, ((sint32)((uint32)(4700) * (uint32)(v6)) / v4));
   return result;
@@ -1421,7 +1316,7 @@ sint32 sub_8004D910(uint32 a1, uint32 a2, uint32 a3, sint32 a4, sint32 a5, sint3
         v14 += (sint32)((uint32)(4) * (uint32)(((uint32)(((uint32)((r_u16(a1) & 0xFFF0)) + (uint32)((sint8)r_u8((uint32)(v13))))) + (uint32)((sint32)((uint32)(4) * (uint32)((sint8)r_u8((uint32)(v11))))))));
       v15 = a4;
       if (a4)
-        v15 = sub_8004DAA4((sint8)(((uint32)(r_u8((uint32)(v13))) + (uint32)((sint32)((uint32)(4) * (uint32)(a5))))), (sint8)(((uint32)(r_u8((uint32)(v11))) + (uint32)((sint32)((uint32)(4) * (uint32)(a6))))), 2, (((uint32)((r_u16((uint32)((sint32)((uint32)(v14) + (uint32)(2)))) & 0xFFFC)) << (uint32)(16)) >> 14));
+        v15 = sub_8004DAA4((sint8)(((uint32)(r_u8((uint32)(v13))) + (uint32)((sint32)((uint32)(4) * (uint32)(a5))))), (sint8)(((uint32)(r_u8((uint32)(v11))) + (uint32)((sint32)((uint32)(4) * (uint32)(a6))))), 2, (uint32)((sint32)((r_u16((uint32)v14 + 2u) & 0xFFFCu) << 16u) >> 14));
       if ((v15 != (0u - (uint32)(1))))
         sub_8004E028((sint32)((uint32)(((sint32)((uint32)(a5) << (uint32)(24)) >> 22)) + (uint32)((sint8)r_u8((uint32)(v13)))), (sint32)((uint32)(((sint32)((uint32)(a6) << (uint32)(24)) >> 22)) + (uint32)((sint8)r_u8((uint32)(v11)))), v14);
       ++v12;
@@ -1479,7 +1374,6 @@ sint32 sub_800123E4(void)
 sint32 sub_8004D76C(uint32 a1, uint32 a2, uint32 a3, sint32 a4, sint32 a5, sint32 a6)
 {
     FUNCTION_MARKER(0x8004d76cu, "SLES_008.65");
-    /* TODO: Resolve meaningful argument carriers for sub_8004D910 without dropping supplied values */
   sint32 v13;
   uint32 v14;
   sint32 v15;
@@ -1504,7 +1398,11 @@ sint32 sub_8004D76C(uint32 a1, uint32 a2, uint32 a3, sint32 a4, sint32 a5, sint3
       if (a6)
         v19 = sub_8004DAA4((sint8)(((uint32)(r_u8((uint32)(v17))) + (uint32)((sint32)((uint32)(4) * (uint32)(r_u8(a3)))))), (sint8)(((uint32)(r_u8((uint32)(v14))) + (uint32)((sint32)((uint32)(4) * (uint32)(r_u8(a2)))))), 1, 0);
       if ((v19 != (0u - (uint32)(1))))
-        ob_draft_unresolved_call(0x8004d910u, 3u, v18, a4, v16);
+      {
+        sint32 cell_x = (sint8)(r_u8(v17) + 4u * r_u8(a3));
+        sint32 cell_z = (sint8)(r_u8(v14) + 4u * r_u8(a2));
+        sub_8004D910((uint32)v18, (uint32)a4, (uint32)v16, v19, cell_x, cell_z);
+      }
       v17 = (uint32)(((uint32)(v17) + (1) * 1u));
       ++v15;
       ++v16;
@@ -1522,7 +1420,6 @@ sint32 sub_8004D76C(uint32 a1, uint32 a2, uint32 a3, sint32 a4, sint32 a5, sint3
 sint32 sub_80024938(void)
 {
     FUNCTION_MARKER(0x80024938u, "SLES_008.65");
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
     /* TODO: Bind external adapter for sub_8001DF34 */
     /* TODO: Bind external adapter for sub_8004B70C */
     /* TODO: Bind external adapter for sub_80045D44 */
@@ -1536,7 +1433,6 @@ sint32 sub_80024938(void)
   uint32 v2;
   sint32 v3;
   uint32 v4;
-  sint32 v5;
   if (((uint8)((sint8)r_u8(0x8006C231u)) >= 0x14u))
   {
     v2 = 1;
@@ -1552,13 +1448,13 @@ sint32 sub_80024938(void)
     v2 = ((v1 < 6) || (v1 != (sint32)((uint32)(v0) + (uint32)(9))));
   }
   sub_8001F9B0(r_u32(0x8008CEBC), v2);
-  sub_8001DF58((sint8)r_u8(0x8006C22Eu));
-  ob_draft_unresolved_call(0x8001df34u, 1u, (sint8)r_u8(0x8006C22Du));
+  sub_8001DF58(r_u8(0x8006C22Eu));
+  ob_draft_unresolved_call(0x8001df34u, 1u, r_u8(0x8006C22Du));
   w_u32(0x800C546C, 0);
   v3 = 0;
   if ((sint8)r_u8(0x8006C230u))
   {
-    v4 = (sint32)r_u32(0x8006C138u);
+    v4 = 0x8006C138u;
     do
     {
       w_u32(v4, 0);
@@ -1568,9 +1464,9 @@ sint32 sub_80024938(void)
     while ((v3 < (uint8)((sint8)r_u8(0x8006C230u))));
   }
   w_u32(0x8006C134u, 0);
-  ob_draft_unresolved_call(r_u32(0x8009450C), 3u, 0, 0, 0);
-  ob_draft_unresolved_call(r_u32(0x800AE0C4), 0u);
-  ob_draft_unresolved_call(r_u32(0x800C190C), 0u);
+  ob_draft_unresolved_call(0x8009450Cu, 2u, 0u, 0u);
+  ob_draft_unresolved_call(0x800AE0C4u, 0u);
+  ob_draft_unresolved_call(0x800C190Cu, 0u);
   ob_draft_unresolved_call(0x8004b70cu, 0u);
   w_u8(0x800C9980, 0);
   w_u8(0x800C99B8, 0);
@@ -1581,19 +1477,17 @@ sint32 sub_80024938(void)
   w_u32(0x800C8358, 0);
   w_u32(0x800D5C8C, 0);
   w_u16(0x80089B24, 0);
-  ob_draft_unresolved_call(r_u32(0x800A309C), 0u);
+  ob_draft_unresolved_call(0x800A309Cu, 0u);
   ob_draft_unresolved_call(0x80045d44u, 0u);
   ob_draft_unresolved_call(0x80054ca8u, 0u);
-  ob_draft_unresolved_call(0x80034530u, 0u);
-  ob_draft_unresolved_call(r_u32(0x800923F8), 0u);
-  ob_draft_unresolved_call(r_u32(0x800ADAC8), 0u);
+  ob_stamp_object_records();
+  ob_draft_unresolved_call(0x800923F8u, 0u);
+  ob_draft_unresolved_call(0x800ADAC8u, 0u);
   sub_80019EE0(0);
-  ob_draft_unresolved_call(r_u32(0x800C15E4), 0u);
-  /* TODO Recover incoming carrier left by external 800C15E4 */
-  v5 = (sint32)ob_native_missing_value(0x80024938u, "800544EC incoming a0");
-  ob_draft_unresolved_call(0x800544ecu, 1u, v5);
+  ob_draft_unresolved_call(0x800C15E4u, 0u);
+  sub_800544EC();
   ob_draft_unresolved_call(0x80063ff8u, 1u, 0);
-  ob_draft_unresolved_call(0x8001b048u, 1u, 0);
+  ob_set_scene_callback(0u);
   sub_800224A0();
   return sub_800224A0();
 }
@@ -1609,7 +1503,7 @@ uint32 sub_800487B8(uint32 a1)
   uint32 v4;
   uint32 result;
   v2 = (uint32)(r_u32((a1 + (5) * 4u)));
-  v3 = ob_draft_unresolved_call(0x80048fecu, 0u);
+  v3 = sub_80048FEC(a1);
   if ((v3 != 0x7FFFFFFF))
   {
     v4 = r_u32(v2);

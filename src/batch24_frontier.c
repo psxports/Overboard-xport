@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "batch24_frontier.h"
 #include "batch17_frontier.h"
 

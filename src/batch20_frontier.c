@@ -1,15 +1,20 @@
+#include "psx.h"
 #include "batch20_frontier.h"
+#include "draft_signatures.h"
 #include "batch19_frontier.h"
 #include "audit_frontier.h"
 #include "memory_frontier.h"
 #include "batch5_frontier.h"
 
-uint32 ob_free_object_record(uint32 object, uint32 guest_sp)
+uint32 ob_free_object_record(uint32 object)
 {
     FUNCTION_MARKER(0x800436ACu, "SLES_008.65");
-    w_u32(guest_sp, object);
+    uint32 cell = ob_draft_scratch_acquire(4u);
+    w_u32(cell, object);
     ob_unlink_object_record(object);
-    return ob_release_pool_cell(guest_sp);
+    uint32 result = ob_release_pool_cell(cell);
+    ob_draft_scratch_release(cell);
+    return result;
 }
 
 uint32 ob_swap_pool_heads(uint32 first, uint32 second)
@@ -53,14 +58,12 @@ uint32 ob_init_effect_callbacks(void)
     return ob_memory_set_tail_for_payload(0x80066A04u, 0x8004B98Cu);
 }
 
-uint32 ob_effect_stub_result(uint32 incoming_result)
+void ob_effect_stub_result(void)
 {
     FUNCTION_MARKER(0x800170B8u, "SLES_008.65");
-    return incoming_result;
 }
 
-uint32 ob_scene_stub_result(uint32 incoming_result)
+void ob_scene_stub_result(void)
 {
     FUNCTION_MARKER(0x8004F064u, "SLES_008.65");
-    return incoming_result;
 }

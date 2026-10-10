@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "draft_signatures.h"
 
 /* Unverified draft bodies */
@@ -8,7 +9,6 @@ uint32 sub_8001E298(uint32 a1, uint32 a2)
     /* TODO: Bind external adapter for sub_80061104 */
     /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
     /* TODO: Bind external adapter for sub_80062A24 */
-    /* TODO: Recover missing meaningful carriers for sub_800629C4 before binding the native call */
     /* TODO: Bind external adapter for sub_80062AAC */
   sint32 result;
   sint32 v5;
@@ -80,74 +80,46 @@ uint32 sub_8001E298(uint32 a1, uint32 a2)
 }
 
 
-uint32 sub_8001A4B0(uint32 a1, uint32 a2, uint32 a3, uint32 divisor_address)
+uint32 sub_8001A4B0(uint32 x, uint32 z, uint32 x_origin, uint32 divisor_address)
 {
-    FUNCTION_MARKER(0x8001a4b0u, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    uint32 local_objects = ob_draft_scratch_acquire(4u);
-  uint32 v3 = divisor_address;
-  sint32 v4;
-  ;
-  sint32 v6;
-  sint32 v7;
-  sint32 result;
-  sint16 v9;
-  uint32 v10;
-  sint32 v11;
-  sint32 v12;
-  v4 = (sint32)r_u32(v3);
-  w_u32(local_objects + 0u, ((uint32)(a1) + (uint32)(a3)));
-  if (!((sint32)r_u32(v3)))
-    ob_draft_unresolved_call(0x8001a4b0u, 2u, 7u, 0);
-  if (((v4 == (sint32)(0u - (uint32)(1))) && ((sint32)r_u32(local_objects + 0u) == 0x80000000)))
-    ob_draft_unresolved_call(0x8001a4b0u, 2u, 6u, 0);
-  v6 = ((sint32)((sint32)r_u32(local_objects + 0u)) / (sint32)((sint32)r_u32(v3)));
-  v7 = ((sint32)((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)(a2))) / (sint32)(v4));
-  if (((v4 == (sint32)(0u - (uint32)(1))) && ((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)(a2)) == 0x80000000)))
-    ob_draft_unresolved_call(0x8001a4b0u, 2u, 6u, 0);
-  if (((sub_8004BF54((sint16)(v6), (sint16)(v7)) & 3) == 1))
-  {
-    result = ((uint32)(result) & ~((uint32)65535u << 0) | (((uint32)(v6) & 65535u) << 0));
-    LABEL_18:
-    v9 = v7;
-
-    goto LABEL_19;
-  }
-  if (((sub_8004BF54((sint16)(v6), (sint32)((uint32)((sint16)(v7)) - (uint32)(1))) & 3) == 1))
-  {
-    result = ((uint32)(result) & ~((uint32)65535u << 0) | (((uint32)(v6) & 65535u) << 0));
-    v9 = (sint32)((uint32)(v7) - (uint32)(1));
-  }
-  else
-  {
-    if (((sub_8004BF54((sint16)(v6), (sint32)((uint32)((sint16)(v7)) + (uint32)(1))) & 3) != 1))
+    FUNCTION_MARKER(0x8001A4B0u, "SLES_008.65");
+    sint32 divisor = r_s32(divisor_address);
+    sint32 numerator_x = (sint32)(x + x_origin);
+    sint32 numerator_z = (sint32)(r_u32(0x80077468u) - z);
+    sint32 cell_x, cell_z;
+    sint32 chosen_x, chosen_z;
+    uint32 step, result;
+    if (divisor == 0)
+        return ob_native_missing_value(0x8001A4B0u, "BREAK 7 signed division by zero");
+    if (divisor == -1 && ((uint32)numerator_x == 0x80000000u || (uint32)numerator_z == 0x80000000u))
+        return ob_native_missing_value(0x8001A4B0u, "BREAK 6 signed division overflow");
+    cell_x = numerator_x / divisor;
+    cell_z = numerator_z / divisor;
+    chosen_x = cell_x;
+    chosen_z = cell_z;
+    if ((sub_8004BF54((uint32)(sint32)(sint16)cell_x, (uint32)(sint32)(sint16)cell_z) & 3u) != 1u)
     {
-      if (((sub_8004BF54((sint32)((uint32)((sint16)(v6)) - (uint32)(1)), (sint16)(v7)) & 3) == 1))
-      {
-        result = ((uint32)(result) & ~((uint32)65535u << 0) | (((uint32)((sint32)((uint32)(v6) - (uint32)(1))) & 65535u) << 0));
-      }
-      else
-      {
-        v10 = ((sub_8004BF54((sint32)((uint32)((sint16)(v6)) + (uint32)(1)), (sint16)(v7)) & 3) != 1);
-        result = (sint32)((uint32)(v6) + (uint32)(1));
-        if (v10)
-          { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
-      }
-      goto LABEL_18;
+        if ((sub_8004BF54((uint32)(sint32)(sint16)cell_x, (uint32)(sint32)(sint16)cell_z - 1u) & 3u) == 1u)
+            chosen_z = (sint32)((uint32)cell_z - 1u);
+        else if ((sub_8004BF54((uint32)(sint32)(sint16)cell_x, (uint32)(sint32)(sint16)cell_z + 1u) & 3u) == 1u)
+            chosen_z = (sint32)((uint32)cell_z + 1u);
+        else if ((sub_8004BF54((uint32)(sint32)(sint16)cell_x - 1u, (uint32)(sint32)(sint16)cell_z) & 3u) == 1u)
+            chosen_x = (sint32)((uint32)cell_x - 1u);
+        else
+        {
+            uint32 adjacent = sub_8004BF54((uint32)(sint32)(sint16)cell_x + 1u, (uint32)(sint32)(sint16)cell_z);
+            chosen_x = (sint32)((uint32)cell_x + 1u);
+            if ((adjacent & 3u) != 1u)
+                return (uint32)chosen_x;
+        }
     }
-    result = ((uint32)(result) & ~((uint32)65535u << 0) | (((uint32)(v6) & 65535u) << 0));
-    v9 = (sint32)((uint32)(v7) + (uint32)(1));
-  }
-  LABEL_19:
-  v11 = r_u32((uint32)((sint32)r_u32(0x80077644u)));
-
-  v12 = (sint32)((uint32)((sint16)(result)) * (uint32)(r_u32((uint32)((sint32)r_u32(0x80077644u)))));
-  w_u32(0x8008C6EC, 0);
-  w_u32(0x8008C6E8, (sint32)((uint32)((sint32)((uint32)(v12) - (uint32)((sint32)r_u32(0x80077458u)))) + (uint32)(((sint32)(v11) >> 1))));
-  result = (sint32)((uint32)((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)((sint32)((uint32)(v9) * (uint32)(r_u32((uint32)((sint32)r_u32(0x80077644u)))))))) - (uint32)(((sint32)((sint32)r_u32((uint32)((sint32)r_u32(0x80077644u)))) >> 1)));
-  w_u32(0x8008C6F0, result);
-  { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
+    step = r_u32(r_u32(0x80077644u));
+    w_u32(0x8008C6ECu, 0u);
+    w_u32(0x8008C6E8u, (uint32)(sint32)(sint16)chosen_x * step - r_u32(0x80077458u) + (uint32)((sint32)step >> 1));
+    step = r_u32(r_u32(0x80077644u));
+    result = r_u32(0x80077468u) - (uint32)(sint32)(sint16)chosen_z * step - (uint32)((sint32)step >> 1);
+    w_u32(0x8008C6F0u, result);
+    return result;
 }
 
 
@@ -169,7 +141,6 @@ uint32 sub_80050380(uint32 a1)
   sint32 v13;
   sint8 v14;
   ;
-  uint32 v17;
   ;
   ;
   ;
@@ -183,7 +154,7 @@ uint32 sub_80050380(uint32 a1)
   v5 = r_u32((a1 + (35) * 4u));
   v6 = r_u32((a1 + (36) * 4u));
   w_u32(local_objects + 0u, v3);
-  v17 = v4;
+  w_u32(local_objects + 4u, v4);
   w_u32(local_objects + 8u, v5);
   w_u32(local_objects + 12u, v6);
   v7 = r_u32((a1 + (38) * 4u));
@@ -204,7 +175,7 @@ uint32 sub_80050380(uint32 a1)
         if ((((uint8)(v12) & r_u8((uint32)((sint32)((uint32)((sint32)r_u32(local_objects + 12u)) + (uint32)(22))))) != 0))
         {
           v14 = 1;
-          if ((((uint16)(v12) & r_u16(v17)) == 0))
+          if ((((uint16)(v12) & r_u16(r_u32(local_objects + 4u))) == 0))
             v14 = 2;
           w_u8(((uint32)(a1) + (148) * 1u), v14);
         }
@@ -239,64 +210,51 @@ uint32 sub_80050380(uint32 a1)
 }
 
 
-uint32 sub_8004C2C4(uint32 a1, uint32 a2, uint32 a3)
+uint32 sub_8004C2C4(uint32 output, uint32 x, uint32 z)
 {
-    FUNCTION_MARKER(0x8004c2c4u, "SLES_008.65");
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Recover missing meaningful carriers for sub_8004B514 before binding the native call */
-  sint32 v4;
-  sint32 v7;
-  sint32 v8;
-  sint32 v9;
-  sint32 v10;
-  sint32 i;
-  uint32 v12;
-  sint16 v13;
-  sint32 v14;
-  uint32 v15;
-  sint32 v16;
-  sint32 v17;
-  sint32 v18;
-  v4 = (sint32)r_u32(0x800665d8u);
-  if ((((sint32)r_u32(0x800665d8u) & 3) != 0))
-    v4 = sub_800257CC((sint32)((0x800665d8u)));
-  else
-    (w_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x800665d8u)) - (uint32)(6))), (r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x800665d8u)) - (uint32)(6)))) + 1u)), r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x800665d8u)) - (uint32)(6)))));
-  w_u32(0x80077644u, v4);
-  v7 = ((uint32)(a2) + (uint32)((sint32)r_u32(0x80077458u)));
-  v8 = (sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)(a3));
-  if ((((sint32)(v7) < (sint32)(0)) || ((sint32)(v8) < (sint32)(0))))
-    goto LABEL_10;
-  v9 = (v7 / r_u32((uint32)(v4)));
-  if (!(r_u32((uint32)(v4))))
-    ob_draft_unresolved_call(0x8004c2c4u, 2u, 7u, 0);
-  v10 = (v7 / r_u32((uint32)(v4)));
-  if ((((sint32)(v9) < (sint32)((sint32)((uint32)(16) * (uint32)((sint16)r_u16((uint32)((sint32)((uint32)(v4) + (uint32)(4)))))))) && ((sint32)((sint32)(0u - (uint32)(v8))) < (sint32)((sint32)((uint32)(16) * (uint32)((sint16)r_u16((uint32)((sint32)((uint32)(v4) + (uint32)(6))))))))))
-  {
-    v12 = (uint32)(ob_draft_unresolved_call(0x8004b514u, 2u, ((uint32)(((uint8)(v10) | ((uint32)((uint8)((sint32)(0u - (uint32)((sint8)(v8))))) << (uint32)(8)))) << (uint32)(16)), v4));
-    v13 = r_u16(((uint32)(v12) + (1) * 2u));
-    v14 = 0;
-    v15 = ((uint32)((sint32)r_u32(0x800739fcu)) + ((sint32)((uint32)(9) * (uint32)((v13 & 3)))) * 1u);
-    v16 = ((sint32)((sint32)((uint32)((v13 & 0xFFFC)) << (uint32)(16))) >> 14);
-    v17 = ((uint32)(r_u32((uint32)((sint32)((uint32)((sint32)r_u32(0x80077644u)) + (uint32)(24))))) + (uint32)((sint32)((uint32)(24) * (uint32)(r_u8(v12)))));
-    do
+    FUNCTION_MARKER(0x8004C2C4u, "SLES_008.65");
+    uint32 map = r_u32(0x800665D8u);
+    sint32 local_x;
+    sint32 local_z;
+    if ((map & 3u) != 0u)
+        map = sub_800257CC(0x800665D8u);
+    else
+        w_u16(map - 6u, (uint16)(r_u16(map - 6u) + 1u));
+    w_u32(0x80077644u, map);
+    local_x = (sint32)(x + r_u32(0x80077458u));
+    local_z = (sint32)(r_u32(0x80077468u) - z);
+    if (local_x < 0 || local_z < 0)
+        goto outside;
     {
-      v18 = (sint8)r_u8(((v15 += 1u) - 1u));
-      ++v14;
-      w_u32(a1++, (sint32)((uint32)(v16) + (uint32)((sint32)((uint32)((sint8)r_u8((uint32)((sint32)((uint32)((sint32)((uint32)(v17) + (uint32)(v18))) + (uint32)(12))))) << (uint32)(6)))));
+        sint32 divisor = r_s32(map);
+        sint32 cell_x, cell_z;
+        uint32 cell, orientation, heights, packed;
+        sint32 base;
+        if (divisor == 0)
+            return ob_native_missing_value(0x8004C2C4u, "BREAK 7 signed division by zero");
+        cell_x = local_x / divisor;
+        if (cell_x >= (sint32)r_s16(map + 4u) * 16)
+            goto outside;
+        cell_z = local_z / divisor;
+        if (cell_z >= (sint32)r_s16(map + 6u) * 16)
+            goto outside;
+        packed = (((uint32)cell_x & 255u) | (((uint32)cell_z & 255u) << 8)) << 16;
+        cell = ob_draft_unresolved_call(0x8004B514u, 2u, packed, map);
+        orientation = r_u16(cell + 2u);
+        base = (sint32)((orientation & 65532u) << 16) >> 14;
+        heights = r_u32(r_u32(0x80077644u) + 24u) + 24u * r_u8(cell);
+        for (uint32 i = 0u; i < 9u; ++i)
+        {
+            sint32 offset = r_s8(0x800739FCu + 9u * (orientation & 3u) + i);
+            uint32 height = (uint32)(sint32)r_s8(heights + (uint32)offset + 12u);
+            w_u32(output + 4u * i, (uint32)base + (height << 6));
+        }
+        return sub_800257A0(0x800665D8u);
     }
-    while (((sint32)(v14) < (sint32)(9)));
-  }
-  else
-  {
-    LABEL_10:
-    for (i = 8; ((sint32)(i) >= (sint32)(0)); --i)
-      w_u32(a1++, 233450262);
-
-
-  }
-  return sub_800257A0((0x800665d8u));
+outside:
+    for (uint32 i = 0u; i < 9u; ++i)
+        w_u32(output + 4u * i, 0x0DEA2B16u);
+    return sub_800257A0(0x800665D8u);
 }
 
 
@@ -414,8 +372,6 @@ uint32 sub_80025ABC(uint32 a1)
 uint32 sub_80050088(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
 {
     FUNCTION_MARKER(0x80050088u, "SLES_008.65");
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
   sint32 v4;
   sint32 v5;
   sint32 v6;
@@ -454,7 +410,7 @@ uint32 sub_80050088(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
     v7 = ((uint32)(v7) + (uint32)(r_u32((a1 + (21) * 4u))));
     if (((sint32)(v7) >= (sint32)(v8)))
     {
-      ++v6;
+      v6 = (sint32)((uint32)v6 + 1u);
       v7 = ((uint32)(v7) - (uint32)(v8));
     }
   }
@@ -466,9 +422,11 @@ uint32 sub_80050088(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
   v10 = ((uint32)(a2) + (uint32)(a3));
   if ((((sint32)((sint32)(0u - (uint32)(v9))) >= (sint32)(v10)) || ((sint32)(v10) > (sint32)(0))))
   {
-    v12 = ((sint32)((sint32)(0u - (uint32)(v10))) % (sint32)(v9));
-    if (((v9 == (sint32)(0u - (uint32)(1))) && ((sint32)(0u - (uint32)(v10)) == 0x80000000)))
-      ob_draft_unresolved_call(0x80050088u, 2u, 6u, 0);
+    if (v9 == 0)
+      return ob_native_missing_value(0x80050088u, "BREAK 7 signed division by zero");
+    if (v9 == -1 && (0u - (uint32)v10) == 0x80000000u)
+      return ob_native_missing_value(0x80050088u, "BREAK 6 signed division overflow");
+    v12 = ((sint32)(0u - (uint32)v10)) % v9;
     v11 = ((sint32)((sint32)(0u - (uint32)(v10))) / (sint32)(v9));
     v13 = v11;
     v14 = ((sint32)((sint32)(0u - (uint32)(v10))) % (sint32)(v9));
@@ -483,14 +441,16 @@ uint32 sub_80050088(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
     v6 = ((uint32)(v6) + (uint32)(v13));
     if (((sint32)(v7) >= (sint32)(v9)))
     {
-      ++v6;
+      v6 = (sint32)((uint32)v6 + 1u);
       v7 = ((uint32)(v7) - (uint32)(v9));
     }
   }
   v15 = r_u32((a1 + (19) * 4u));
-  v16 = ((sint32)((sint32)r_u32(0x800775d8u)) % (sint32)(v15));
-  if (((v15 == (sint32)(0u - (uint32)(1))) && ((sint32)r_u32(0x800775d8u) == 0x80000000)))
-    ob_draft_unresolved_call(0x80050088u, 2u, 6u, 0);
+  if (v15 == 0)
+    return ob_native_missing_value(0x80050088u, "BREAK 7 signed division by zero");
+  if (v15 == -1 && r_u32(0x800775D8u) == 0x80000000u)
+    return ob_native_missing_value(0x80050088u, "BREAK 6 signed division overflow");
+  v16 = ((sint32)r_u32(0x800775D8u)) % v15;
   v17 = ((sint32)((sint32)r_u32(0x800775d8u)) / (sint32)(v15));
   v18 = ((sint32)((sint32)r_u32(0x800775d8u)) % (sint32)(v15));
   if (((sint32)(v16) < (sint32)(0)))
@@ -502,7 +462,7 @@ uint32 sub_80050088(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
   v20 = (sint32)((uint32)(v6) + (uint32)(v17));
   if (((sint32)(v19) >= (sint32)(v15)))
   {
-    ++v20;
+    v20 = (sint32)((uint32)v20 + 1u);
     v19 = ((uint32)(v19) - (uint32)(v15));
   }
   if (((sint32)a4 >= v20))
@@ -520,14 +480,14 @@ uint32 sub_80050088(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
   v23 = (sint32)((uint32)(v4) + (uint32)(v17));
   if (((sint32)(v22) >= (sint32)(v21)))
   {
-    ++v23;
+    v23 = (sint32)((uint32)v23 + 1u);
     v22 = ((uint32)(v22) - (uint32)(v21));
   }
   v24 = (sint32)((uint32)(v19) + (uint32)(v18));
   v25 = (sint32)((uint32)(v20) + (uint32)(v17));
   if (((sint32)(v24) >= (sint32)(v21)))
   {
-    ++v25;
+    v25 = (sint32)((uint32)v25 + 1u);
     v24 = ((uint32)(v24) - (uint32)(v21));
   }
   if (((sint32)a4 >= v25))
@@ -543,12 +503,12 @@ uint32 sub_80050088(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
   v26 = r_u32((a1 + (19) * 4u));
   v27 = (sint32)((uint32)(v23) + (uint32)(v17));
   if (((sint32)((sint32)((uint32)(v22) + (uint32)(v18))) >= (sint32)(v26)))
-    ++v27;
+    v27 = (sint32)((uint32)v27 + 1u);
   v28 = (sint32)((uint32)(v24) + (uint32)(v18));
   result = ((sint32)(v28) < (sint32)(v26));
   v30 = (sint32)((uint32)(v25) + (uint32)(v17));
   if (((sint32)(v28) >= (sint32)(v26)))
-    ++v30;
+    v30 = (sint32)((uint32)v30 + 1u);
   w_u32((a1 + (28) * 4u), v27);
   w_u32((a1 + (29) * 4u), v30);
   return result;
@@ -771,8 +731,7 @@ uint32 sub_8004F758(uint32 a1, uint32 a2)
 {
     FUNCTION_MARKER(0x8004f758u, "SLES_008.65");
     /* TODO: Bind external adapter for sub_8004F9A0 */
-    /* TODO: Recover missing meaningful carriers for sub_8004FA0C before binding the native call */
-    /* TODO: Recover missing meaningful carriers for sub_8004F354 before binding the native call */
+    /* TODO Reconcile ground collision helper phantom stack contract */
     uint32 local_objects = ob_draft_scratch_acquire(16u);
   uint32 v4;
   uint32 v5;
@@ -807,7 +766,7 @@ uint32 sub_8004F758(uint32 a1, uint32 a2)
     w_u32(((local_objects + 0u) + (0) * 4u), (sint32)((uint32)((sint32)r_u32((v4 + (30) * 4u))) + (uint32)(r_u32((uint32)(((uint32)(a1) + (uint32)(80)))))));
     w_u32(((local_objects + 0u) + (1) * 4u), (sint32)((uint32)((sint32)r_u32((v4 + (31) * 4u))) + (uint32)(r_u32((uint32)(((uint32)(a1) + (uint32)(84)))))));
     w_u32(((local_objects + 0u) + (2) * 4u), (sint32)((uint32)((sint32)r_u32((v4 + (32) * 4u))) + (uint32)(r_u32((uint32)(((uint32)(a1) + (uint32)(88)))))));
-    ob_draft_unresolved_call(0x8004fa0cu, 4u, v5, ((uint32)(a1) + (uint32)(68)), (local_objects + 0u), (v4 + (33) * 4u));
+    sub_8004FA0C(v5, a1 + 68u, local_objects, v4 + 132u, v7, (sint32)a2);
     if (((r_u32((uint32)(((uint32)(a1) + (uint32)(208)))) & 2) != 0))
     {
       w_u32((v5 + (14) * 4u), (sint32)(0u - (uint32)(1)));
@@ -867,56 +826,30 @@ uint32 sub_8004F758(uint32 a1, uint32 a2)
 uint32 sub_80016768(void)
 {
     FUNCTION_MARKER(0x80016768u, "SLES_008.65");
-    /* TODO: Recover missing meaningful carriers for sub_80020450 before binding the native call */
-  sint32 v0;
-  sint32 v1;
-  sint32 v2;
-  uint32 v3;
-  sint32 v4;
-  sint32 v5;
-  sint32 v6;
-  sint32 v7;
-  sint32 v8;
-  uint32 v9;
-  sint32 v10;
-  sint32 v11;
-  sint32 result;
-  v0 = 0;
-  v1 = 24;
-  v2 = 0;
-  v3 = r_u32((uint32)(((uint32)((0x80065f24u)) + (((sint8)r_u8(0x8006c231u) & 0xFC)) * 1u)));
-  do
-  {
-    v4 = r_u8(((v3 += 1u) - 1u));
-    v5 = (sint32)((sint32)r_u32(((0x80065f48u) + (v4) * 4u)));
-    ++v0;
-    ob_draft_unresolved_call(0x80020450u, 4u, v5, 1, 1, 14);
-    ob_draft_unresolved_call(0x80020450u, 4u, v5, 0, 1, 14);
-    ob_draft_unresolved_call(0x80020450u, 4u, v5, 1, 0, 14);
-    ob_draft_unresolved_call(0x80020450u, 4u, v5, 0, 0, 14);
-    v1 = ((uint32)(v1) + (uint32)(14));
-    v2 = ((uint32)(v2) + (uint32)(14));
-  }
-  while ((v0 != 12));
-  v6 = 0;
-  v7 = 30;
-  v8 = 0;
-  v9 = r_u32((uint32)(((uint32)((0x80065f38u)) + (((sint8)r_u8(0x8006c231u) & 0xFC)) * 1u)));
-  do
-  {
-    v10 = r_u8(((v9 += 1u) - 1u));
-    v11 = (sint32)((sint32)r_u32(((0x80065f48u) + (v10) * 4u)));
-    ++v6;
-    ob_draft_unresolved_call(0x80020450u, 4u, v11, 1, 1, 14);
-    ob_draft_unresolved_call(0x80020450u, 4u, v11, 0, 1, 14);
-    ob_draft_unresolved_call(0x80020450u, 4u, v11, 1, 0, 14);
-    ob_draft_unresolved_call(0x80020450u, 4u, v11, 0, 0, 14);
-    v7 = ((uint32)(v7) + (uint32)(14));
-    result = 7;
-    v8 = ((uint32)(v8) + (uint32)(14));
-  }
-  while ((v6 != 7));
-  return result;
+    uint32 phase = r_u8(0x8006C231u) & 252u;
+    uint32 sequence = r_u32(0x80065F24u + phase);
+    for (uint32 i = 0u; i < 12u; ++i)
+    {
+        uint32 glyph = r_u32(0x80065F48u + 4u * r_u8(sequence + i));
+        uint32 left = 24u + 14u * i;
+        uint32 right = 346u - 14u * i;
+        ob_append_textured_glyph(glyph, 1u, 1u, 14u, 14u, left, 16u, 0u);
+        ob_append_textured_glyph(glyph, 0u, 1u, 14u, 14u, right, 16u, 2u);
+        ob_append_textured_glyph(glyph, 1u, 0u, 14u, 14u, left, 226u, 4u);
+        ob_append_textured_glyph(glyph, 0u, 0u, 14u, 14u, right, 226u, 6u);
+    }
+    sequence = r_u32(0x80065F38u + (r_u8(0x8006C231u) & 252u));
+    for (uint32 i = 0u; i < 7u; ++i)
+    {
+        uint32 glyph = r_u32(0x80065F48u + 4u * r_u8(sequence + i));
+        uint32 top = 30u + 14u * i;
+        uint32 bottom = 212u - 14u * i;
+        ob_append_textured_glyph(glyph, 1u, 1u, 14u, 14u, 24u, top, 0u);
+        ob_append_textured_glyph(glyph, 0u, 1u, 14u, 14u, 346u, top, 2u);
+        ob_append_textured_glyph(glyph, 1u, 0u, 14u, 14u, 24u, bottom, 4u);
+        ob_append_textured_glyph(glyph, 0u, 0u, 14u, 14u, 346u, bottom, 6u);
+    }
+    return 7u;
 }
 
 
@@ -949,7 +882,6 @@ uint32 sub_80054EFC(uint32 a1)
   sint32 v18;
   int64_t v19;
   ;
-  uint32 file_info_available = 0u;
   ;
   ;
   v1 = a1;
@@ -1022,7 +954,6 @@ uint32 sub_80054EFC(uint32 a1)
     }
 
     v9 = 1;
-    file_info_available = 1u;
     LABEL_26:
     result = (sint32)(0u - (uint32)(1));
 
@@ -1034,8 +965,8 @@ uint32 sub_80054EFC(uint32 a1)
 
       w_u32((uint32)((sint32)((uint32)((sint32)((uint32)(16) * (uint32)(v4))) - (uint32)(2146920184))), ((uint32)(r_u32((uint32)((sint32)((uint32)((sint32)((uint32)(16) * (uint32)(v4))) - (uint32)(2146920184))))) | (uint32)(1u)));
       /* CdSearchFile writes the size field beside its four-byte position output */
-      /* TODO Recover cached-file size when the original local CDFILE output was not filled */
-      v16 = file_info_available ? (sint32)r_u32(local_objects + 4u) : (sint32)ob_native_missing_value(0x80054EFCu, "Cached CDFILE size");
+      /* TODO Original cache-hit size is indeterminate and no prior local writer is identified */
+      v16 = (sint32)r_u32(local_objects + 4u);
       v17 = (sint32)r_u32(local_objects + 48u);
       w_u32((uint32)((sint32)((uint32)((sint32)((uint32)(16) * (uint32)(v4))) - (uint32)(2146920180))), 0);
       w_u32((uint32)((sint32)((uint32)((sint32)((uint32)(16) * (uint32)(v4))) - (uint32)(2146920176))), v17);
@@ -1052,130 +983,46 @@ uint32 sub_80054EFC(uint32 a1)
 }
 
 
-uint32 sub_80048D2C(uint32 a1)
+uint32 sub_80048D2C(uint32 state)
 {
-    FUNCTION_MARKER(0x80048d2cu, "SLES_008.65");
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    uint32 local_objects = ob_draft_scratch_acquire(8u);
-  sint32 v2;
-  sint32 v3;
-  sint32 v4;
-  sint32 v5;
-  sint32 v6;
-  sint32 v7;
-  sint32 v8;
-  ;
-  sint32 v10;
-  sint32 v11;
-  ;
-  sint32 result;
-  sint32 v14;
-  sint32 v15;
-  sint32 v16;
-  sint32 v17;
-  sint32 v18;
-  sint32 v19;
-  sint32 v20;
-  sint32 v21;
-  sint32 v22;
-  v2 = r_u32((a1 + (21) * 4u));
-  v3 = r_u32((a1 + (6) * 4u));
-  w_u32((a1 + (27) * 4u), 2147483393);
-  v4 = (sint32)((uint32)(v2) + (uint32)(v3));
-  v14 = v4;
-  v15 = ((uint32)(r_u32((a1 + (22) * 4u))) + (uint32)(r_u32((a1 + (7) * 4u))));
-  v16 = ((uint32)(r_u32((a1 + (23) * 4u))) + (uint32)(r_u32((a1 + (8) * 4u))));
-  v5 = r_u32((a1 + (24) * 4u));
-  v6 = (sint32)(0u - (uint32)(1));
-  if (v5)
-  {
-    v6 = 0;
-    if (((sint32)(v4) < (sint32)(0)))
+    FUNCTION_MARKER(0x80048D2Cu, "SLES_008.65");
+    uint32 offset[3];
+    sint32 entry[3];
+    uint32 selected;
+    uint32 result;
+    w_u32(state + 108u, 0x7FFFFF01u);
+    for (uint32 axis = 0u; axis < 3u; ++axis)
     {
-      if (((v5 == (sint32)(0u - (uint32)(1))) && ((sint32)(0u - (uint32)(v4)) == 0x80000000)))
-        ob_draft_unresolved_call(0x80048d2cu, 2u, 6u, 0);
-      v6 = ((sint32)((sint32)(0u - (uint32)(v4))) / (sint32)(v5));
-    }
-  }
-  v7 = r_u32((a1 + (25) * 4u));
-  v8 = (sint32)(0u - (uint32)(1));
-  if (v7)
-  {
-    v8 = 0;
-    if (((sint32)(v15) < (sint32)(0)))
-    {
-      w_u32(local_objects + 0u, (sint32)(0u - (uint32)(v15)));
-      if (((v7 == (sint32)(0u - (uint32)(1))) && ((sint32)r_u32(local_objects + 0u) == 0x80000000)))
-        ob_draft_unresolved_call(0x80048d2cu, 2u, 6u, 0);
-      v8 = ((sint32)((sint32)r_u32(local_objects + 0u)) / (sint32)(v7));
-    }
-  }
-  v10 = r_u32((a1 + (26) * 4u));
-  v11 = (sint32)(0u - (uint32)(1));
-  if (v10)
-  {
-    v11 = 0;
-    if (((sint32)(v16) < (sint32)(0)))
-    {
-      w_u32(local_objects + 4u, (sint32)(0u - (uint32)(v16)));
-      if (((v10 == (sint32)(0u - (uint32)(1))) && ((sint32)r_u32(local_objects + 4u) == 0x80000000)))
-        ob_draft_unresolved_call(0x80048d2cu, 2u, 6u, 0);
-      v11 = ((sint32)((sint32)r_u32(local_objects + 4u)) / (sint32)(v10));
-    }
-  }
-  if (((sint32)(v6) >= (sint32)(v8)))
-  {
-    if (((sint32)(v6) >= (sint32)(v11)))
-    {
-      v19 = (sint32)((uint32)(v15) + (uint32)((sint32)((uint32)(v6) * (uint32)(r_u32((a1 + (25) * 4u))))));
-      result = ((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (7) * 4u))))) < (sint32)(v19));
-      if (((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (7) * 4u))))) >= (sint32)(v19)))
-      {
-        v21 = (sint32)((uint32)(v16) + (uint32)((sint32)((uint32)(v6) * (uint32)(r_u32((a1 + (26) * 4u))))));
-        result = ((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (8) * 4u))))) < (sint32)(v21));
-        if (((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (8) * 4u))))) >= (sint32)(v21)))
+        sint32 velocity;
+        offset[axis] = r_u32(state + 84u + axis * 4u) + r_u32(state + 24u + axis * 4u);
+        velocity = r_s32(state + 96u + axis * 4u);
+        entry[axis] = -1;
+        if (velocity != 0)
         {
-          result = ((uint32)(r_u32(a1)) + (uint32)(v6));
-          LABEL_31:
-          w_u32((a1 + (27) * 4u), result);
-
-          { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
+            entry[axis] = 0;
+            if ((sint32)offset[axis] < 0)
+            {
+                sint32 numerator = (sint32)(0u - offset[axis]);
+                if (velocity == -1 && (uint32)numerator == 0x80000000u)
+                    return ob_native_missing_value(0x80048D2Cu, "BREAK 6 signed division overflow");
+                entry[axis] = numerator / velocity;
+            }
         }
-      }
-      { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
     }
-    LABEL_28:
-    v18 = (sint32)((uint32)(v14) + (uint32)((sint32)((uint32)(v11) * (uint32)(r_u32((a1 + (24) * 4u))))));
-
-    result = ((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (6) * 4u))))) < (sint32)(v18));
-    if (((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (6) * 4u))))) >= (sint32)(v18)))
+    selected = entry[0] >= entry[1] ? (entry[0] >= entry[2] ? 0u : 2u) :
+                                    (entry[1] >= entry[2] ? 1u : 2u);
+    for (uint32 axis = 0u; axis < 3u; ++axis)
     {
-      v20 = (sint32)((uint32)(v15) + (uint32)((sint32)((uint32)(v11) * (uint32)(r_u32((a1 + (25) * 4u))))));
-      result = ((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (7) * 4u))))) < (sint32)(v20));
-      if (((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (7) * 4u))))) >= (sint32)(v20)))
-      {
-        result = ((uint32)(r_u32(a1)) + (uint32)(v11));
-        goto LABEL_31;
-      }
+        if (axis == selected)
+            continue;
+        uint32 position = offset[axis] + (uint32)entry[selected] * r_u32(state + 96u + axis * 4u);
+        result = (sint32)(r_u32(state + 24u + axis * 4u) << 1) < (sint32)position;
+        if (result != 0u)
+            return result;
     }
-    { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
-  }
-  if (((sint32)(v8) < (sint32)(v11)))
-    goto LABEL_28;
-  v17 = (sint32)((uint32)(v14) + (uint32)((sint32)((uint32)(v8) * (uint32)(r_u32((a1 + (24) * 4u))))));
-  result = ((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (6) * 4u))))) < (sint32)(v17));
-  if (((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (6) * 4u))))) >= (sint32)(v17)))
-  {
-    v22 = (sint32)((uint32)(v16) + (uint32)((sint32)((uint32)(v8) * (uint32)(r_u32((a1 + (26) * 4u))))));
-    result = ((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (8) * 4u))))) < (sint32)(v22));
-    if (((sint32)((sint32)((uint32)(2) * (uint32)(r_u32((a1 + (8) * 4u))))) >= (sint32)(v22)))
-    {
-      result = ((uint32)(r_u32(a1)) + (uint32)(v8));
-      goto LABEL_31;
-    }
-  }
-  { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
+    result = r_u32(state) + (uint32)entry[selected];
+    w_u32(state + 108u, result);
+    return result;
 }
 
 
@@ -1257,7 +1104,7 @@ uint32 sub_800461E8(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
   w_u32((a1 + (33) * 4u), ((uint32)(a4) + (uint32)(10000)));
   w_u32((a1 + (29) * 4u), v18);
   w_u32((a1 + (30) * 4u), v19);
-  sub_80043BAC(((uint32)(a1) + (uint32)(51)), (sint32)(a1));
+  sub_80043BAC(a1 + 204u, a1);
   v20 = r_u32((a1 + (54) * 4u));
   w_u32((a1 + (57) * 4u), 2);
   w_u32((a1 + (60) * 4u), 0x80047b54u);
@@ -1268,259 +1115,147 @@ uint32 sub_800461E8(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
   w_u32((a1 + (46) * 4u), 0);
   w_u32((a1 + (54) * 4u), (sint32)((uint32)(v20) + (uint32)(1)));
   sub_80046914(a1, a4);
-  sub_80043BAC(((uint32)(a1) + (uint32)(9)), (sint32)(a1));
+  sub_80043BAC(a1 + 36u, a1);
   v21 = r_u32((a1 + (8) * 4u));
   v22 = r_u32((a1 + (12) * 4u));
   w_u32((a1 + (18) * 4u), 0x8004670cu);
   w_u32((a1 + (12) * 4u), (sint32)((uint32)(v22) + (uint32)(1)));
-  sub_800451E4(v21, ((uint32)(a1) + (uint32)(9)));
+  sub_800451E4(v21, a1 + 36u);
   return a1;
 }
 
 
-uint32 sub_80048124(uint32 a1)
+uint32 sub_80048124(uint32 state)
 {
     FUNCTION_MARKER(0x80048124u, "SLES_008.65");
-    /* TODO: Recover missing meaningful carriers for sub_80048FEC before binding the native call */
-    uint32 local_objects = ob_draft_scratch_acquire(4u);
-  uint32 v2;
-  sint32 v3;
-  sint32 v4;
-  sint32 result;
-  sint32 v6;
-  ;
-  sint32 v8;
-  sint32 v9;
-  sint32 v10;
-  sint32 v11;
-  sint32 v12;
-  sint32 v13;
-  sint32 v14;
-  sint32 v15;
-  sint32 v16;
-  sint32 v17;
-  v2 = (uint32)(r_u32((a1 + (5) * 4u)));
-  v3 = ob_draft_unresolved_call(0x80048fecu, 0u);
-  if ((v3 != 0x7FFFFFFF))
-  {
-    v4 = (sint32)r_u32(v2);
-    w_u32((v2 + (1) * 4u), v3);
-    result = (v4 & 0xFFFF7FFF);
-    w_u32(v2, result);
-    { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
-  }
-  w_u32(v2, ((uint32)((sint32)r_u32(v2)) | (uint32)(0x8000u)));
-  if (((!r_u32((a1 + (15) * 4u)) && !r_u32((a1 + (16) * 4u))) && !r_u32((a1 + (17) * 4u))))
-  {
-    v6 = r_u32((a1 + (19) * 4u));
-    w_u32(local_objects + 0u, r_u32((a1 + (20) * 4u)));
-    if (((sint32)(v6) < (sint32)((sint32)r_u32(local_objects + 0u))))
-      v6 = r_u32((a1 + (20) * 4u));
-    v8 = r_u32((a1 + (18) * 4u));
-    if (((sint32)(v8) < (sint32)(v6)))
-      v8 = v6;
-    if (v8)
+    uint32 pair = r_u32(state + 20u);
+    uint32 result = ob_world_axis_entry_time(state);
+    if (result != 0x7FFFFFFFu)
     {
-      LABEL_45:
-      result = 2147483393;
-
-      goto LABEL_46;
+        w_u32(pair + 4u, result);
+        result = r_u32(pair) & 0xFFFF7FFFu;
+        w_u32(pair, result);
+        return result;
     }
-    if (r_u32((a1 + (18) * 4u)))
+    w_u32(pair, r_u32(pair) | 0x8000u);
+    if (r_u32(state + 60u) == 0u && r_u32(state + 64u) == 0u && r_u32(state + 68u) == 0u)
     {
-      v9 = r_u32((a1 + (19) * 4u));
+        sint32 x = r_s32(state + 72u), y = r_s32(state + 76u), z = r_s32(state + 80u);
+        sint32 maximum = x > y ? x : y;
+        if (maximum < z) maximum = z;
+        if (maximum == 0 && ((x == 0 && y < 0 && z < 0) ||
+                             (y == 0 && x < 0 && z < 0) ||
+                             (z == 0 && x < 0 && y < 0)))
+            result = r_u32(state);
+        else
+            result = 0x7FFFFF01u;
+        w_u32(pair + 4u, result);
+        return result;
     }
-    else
+    sub_80048B60(state);
+    for (uint32 axis = 0u; axis < 3u; ++axis)
     {
-      v9 = r_u32((a1 + (19) * 4u));
-      if ((((sint32)(v9) < (sint32)(0)) && ((sint32)((sint32)r_u32(local_objects + 0u)) < (sint32)(0))))
-      {
-        result = r_u32(a1);
-        w_u32((v2 + (1) * 4u), r_u32(a1));
-        { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
-      }
-    }
-    if (!v9)
-    {
-      v10 = r_u32((a1 + (20) * 4u));
-      if (((sint32)(v10) >= (sint32)(0)))
-      {
-        LABEL_21:
-        if (((!v10 && (r_u32((a1 + (18) * 4u)) < 0)) && (r_u32((a1 + (19) * 4u)) < 0)))
+        if ((r_u32(state + 96u + axis * 4u) == 0u && r_s32(state + 72u + axis * 4u) > 0) ||
+             r_s32(state + 24u + axis * 4u) < r_s32(state + 84u + axis * 4u))
         {
-          result = r_u32(a1);
-          w_u32((v2 + (1) * 4u), r_u32(a1));
-          { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
+            w_u32(pair + 4u, 0x7FFFFF01u);
+            return 0x7FFFFF01u;
         }
-
-        goto LABEL_45;
-      }
-      if ((r_u32((a1 + (18) * 4u)) < 0))
-      {
-        result = r_u32(a1);
-        w_u32((v2 + (1) * 4u), r_u32(a1));
-        { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
-      }
     }
-    v10 = r_u32((a1 + (20) * 4u));
-    goto LABEL_21;
-  }
-  sub_80048B60(a1);
-  if (((((((!r_u32((a1 + (24) * 4u)) && (r_u32((a1 + (18) * 4u)) > 0)) || (!r_u32((a1 + (25) * 4u)) && (r_u32((a1 + (19) * 4u)) > 0))) || (!r_u32((a1 + (26) * 4u)) && (r_u32((a1 + (20) * 4u)) > 0))) || (r_u32((a1 + (6) * 4u)) < r_u32((a1 + (21) * 4u)))) || (r_u32((a1 + (7) * 4u)) < r_u32((a1 + (22) * 4u)))) || (r_u32((a1 + (8) * 4u)) < r_u32((a1 + (23) * 4u)))))
-  {
-    goto LABEL_45;
-  }
-  sub_80048D2C(a1);
-  v11 = r_u32((a1 + (27) * 4u));
-  w_u32((v2 + (1) * 4u), v11);
-  v12 = r_u32((a1 + (27) * 4u));
-  result = ((sint32)(v12) > (sint32)(2147483392));
-  if (((sint32)(v12) > (sint32)(2147483392)))
-    { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
-  v13 = 0;
-  if (!r_u32((a1 + (24) * 4u)))
-    v13 = (r_u32((a1 + (18) * 4u)) == 0);
-  v14 = 0;
-  if (!r_u32((a1 + (25) * 4u)))
-    v14 = (r_u32((a1 + (19) * 4u)) == 0);
-  v15 = 0;
-  v16 = (sint32)((uint32)(v13) + (uint32)(v14));
-  if (!r_u32((a1 + (26) * 4u)))
-    v15 = (r_u32((a1 + (20) * 4u)) == 0);
-  v17 = (sint32)((uint32)(v16) + (uint32)(v15));
-  if (!v17)
-  {
-    result = ((sint32)r_u32(v2) | 0x10000);
-    w_u32(v2, result);
-    { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
-  }
-  if ((v17 != 1))
-    goto LABEL_45;
-  result = (sint32)((uint32)(v11) + (uint32)(1));
-  LABEL_46:
-  w_u32((v2 + (1) * 4u), result);
-
-  { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
+    sub_80048D2C(state);
+    result = r_u32(state + 108u);
+    w_u32(pair + 4u, result);
+    if ((sint32)result > 0x7FFFFF00)
+        return 1u;
+    {
+        uint32 stationary_axes = 0u;
+        for (uint32 axis = 0u; axis < 3u; ++axis)
+            if (r_u32(state + 96u + axis * 4u) == 0u && r_u32(state + 72u + axis * 4u) == 0u)
+                ++stationary_axes;
+        if (stationary_axes == 0u)
+        {
+            result = r_u32(pair) | 0x10000u;
+            w_u32(pair, result);
+            return result;
+        }
+        result = stationary_axes == 1u ? result + 1u : 0x7FFFFF01u;
+    }
+    w_u32(pair + 4u, result);
+    return result;
 }
 
 
+static sint32 ob_a_cell_divide(sint32 value, sint32 divisor)
+{
+    if (divisor == 0)
+        return (sint32)ob_native_missing_value(0x8004A5C4u, "BREAK 7 signed division by zero");
+    if (divisor == -1 && (uint32)value == 0x80000000u)
+        return (sint32)ob_native_missing_value(0x8004A5C4u, "BREAK 6 signed division overflow");
+    return value / divisor;
+}
+
 void sub_8004A5C4(void)
 {
-    FUNCTION_MARKER(0x8004a5c4u, "SLES_008.65");
-    /* TODO: Confirm divide zero and overflow exception paths in the draft arithmetic */
-    /* TODO: Recover inline assembly or exception adapter semantics from the original listing */
-    uint32 local_objects = ob_draft_scratch_acquire(12u);
-  sint32 i;
-  sint16 v1;
-  uint32 v2;
-  uint32 v3;
-  uint32 v4;
-  sint32 v5;
-  ;
-  sint32 v7;
-  sint8 v8;
-  ;
-  sint32 v10;
-  sint32 v11;
-  sint32 v12;
-  sint32 v13;
-  sint32 v14;
-  sint32 v15;
-  sint32 v16;
-  ;
-  sint32 v18;
-  sint32 v19;
-  sint32 v20;
-  sint32 v21;
-  sint32 v22;
-  sint16 v23;
-  for (i = (sint32)r_u32(0x80077490u); i; i = r_u32((uint32)((sint32)((uint32)(i) + (uint32)(28)))))
-  {
-    v1 = r_u16((uint32)((sint32)((uint32)(i) + (uint32)(38))));
-    w_u16((uint32)((sint32)((uint32)(i) + (uint32)(38))), (v1 & 0xFC2F));
-    if (((r_u32((uint32)((sint32)((uint32)(i) + (uint32)(36)))) & 0x90000) != 0x10000))
+    FUNCTION_MARKER(0x8004A5C4u, "SLES_008.65");
+    for (uint32 item = r_u32(0x80077490u); item != 0u; item = r_u32(item + 28u))
     {
-      if (((v1 & 8) != 0))
-        w_u16((uint32)((sint32)((uint32)(i) + (uint32)(38))), ((v1 & 0xFC26) | 1));
-      v2 = r_u32((uint32)(((uint32)(r_u32((uint32)((sint32)((uint32)(i) + (uint32)(24))))) + (uint32)(40))));
-      if (((r_u32(v2) & 3) != 0))
-        sub_800257CC((sint32)(v2));
-      else
-        (w_u16((uint32)(((uint32)(r_u32(v2)) - (uint32)(6))), (r_u16((uint32)(((uint32)(r_u32(v2)) - (uint32)(6)))) + 1u)), r_u16((uint32)(((uint32)(r_u32(v2)) - (uint32)(6)))));
-      v3 = (uint32)(sub_80045464(r_u32((uint32)(((uint32)(r_u32((uint32)((sint32)((uint32)(i) + (uint32)(24))))) + (uint32)(52)))), (sint32)r_u32(0x800775fcu)));
-      v4 = v3;
-      if ((((r_u16((uint32)((sint32)((uint32)(i) + (uint32)(38)))) & 4) != 0) && (sint32)r_u32(0x800774f4u)))
-      {
-        v16 = r_u32((uint32)((sint32)((uint32)(i) + (uint32)(40))));
-        w_u32(local_objects + 8u, (sint32)r_u32(v3));
-        if (((sint32)r_u32(v3) >= ((uint32)(r_u32((uint32)((sint32)r_u32(0x800774f4u)))) - (uint32)(((sint32)(v16) / (sint32)(2))))))
+        uint16 flags = r_u16(item + 38u);
+        uint32 handle, map, position, reference;
+        sint32 x, z, cell_x, cell_z, divisor;
+        w_u16(item + 38u, flags & 0xFC2Fu);
+        if ((r_u32(item + 36u) & 0x90000u) == 0x10000u)
+            continue;
+        if ((flags & 8u) != 0u)
+            w_u16(item + 38u, (flags & 0xFC27u) | 1u);
+        handle = r_u32(r_u32(item + 24u) + 40u);
+        map = r_u32(handle);
+        if ((map & 3u) != 0u)
+            sub_800257CC(handle);
+        else
+            w_u16(map - 6u, (uint16)(r_u16(map - 6u) + 1u));
+        position = sub_80045464(r_u32(r_u32(item + 24u) + 52u), r_u32(0x800775FCu));
+        reference = r_u32(0x800774F4u);
+        x = r_s32(position);
+        z = r_s32(position + 8u);
+        if ((r_u16(item + 38u) & 4u) != 0u && reference != 0u)
         {
-          if ((((uint32)(r_u32((uint32)((sint32)r_u32(0x800774f4u)))) + (uint32)(((sint32)(v16) / (sint32)(2)))) < (sint32)r_u32(local_objects + 8u)))
-            w_u32(local_objects + 8u, ((uint32)((sint32)r_u32(local_objects + 8u)) - (uint32)(v16)));
+            sint32 period = r_s32(item + 40u);
+            sint32 half = period / 2;
+            sint32 center = r_s32(reference);
+            if (x < (sint32)((uint32)center - (uint32)half))
+                x = (sint32)((uint32)x + (uint32)period);
+            else if ((sint32)((uint32)center + (uint32)half) < x)
+                x = (sint32)((uint32)x - (uint32)period);
+            divisor = r_s32(r_u32(0x80077644u));
+            cell_x = ob_a_cell_divide((sint32)((uint32)x + r_u32(0x80077458u)), divisor);
+            center = r_s32(r_u32(0x800774F4u) + 8u);
+            if (z < (sint32)((uint32)center - (uint32)half))
+                z = (sint32)((uint32)z + (uint32)period);
+            else if ((sint32)((uint32)center + (uint32)half) < z)
+                z = (sint32)((uint32)z - (uint32)period);
+            cell_z = ob_a_cell_divide((sint32)(r_u32(0x80077468u) - (uint32)z), r_s32(r_u32(0x80077644u)));
+            w_u8(item + 37u, (uint8)(((uint32)cell_x & 15u) + 16u * ((uint32)cell_z & 15u)));
+            w_u16(item + 38u, r_u16(item + 38u) | 0x40u);
+            map = r_u32(0x80077644u);
+            w_u8(item + 36u, (uint8)(((sint32)((uint32)cell_x << 16) >> 20) +
+                (uint32)((sint32)((uint32)cell_z << 16) >> 20) * (uint32)(sint32)r_s16(map + 4u)));
         }
         else
         {
-          w_u32(local_objects + 8u, ((uint32)((sint32)r_u32(local_objects + 8u)) + (uint32)(v16)));
+            map = r_u32(0x80077644u);
+            divisor = r_s32(map);
+            cell_z = ob_a_cell_divide((sint32)(r_u32(0x80077468u) - (uint32)z), divisor);
+            cell_x = ob_a_cell_divide((sint32)((uint32)x + r_u32(0x80077458u)), divisor);
+            w_u8(item + 37u, (uint8)(((uint32)cell_x & 15u) | (((uint32)cell_z & 15u) << 4)));
+            w_u8(item + 36u, (uint8)(((sint32)((uint32)cell_x << 16) >> 20) +
+                (uint32)((sint32)((uint32)cell_z << 16) >> 20) * (uint32)(sint32)r_s16(map + 4u)));
+            if ((r_u16(item + 38u) & 2u) == 0u &&
+                (((uint32)cell_x & 15u) == 0u || ((uint32)cell_z & 15u) == 0u ||
+                 ((uint32)cell_x & 15u) == 15u || ((uint32)cell_z & 15u) == 15u))
+                sub_8004AAFC(item, position);
         }
-        v18 = ((sint32)((uint32)((sint32)r_u32(local_objects + 8u)) + (uint32)((sint32)r_u32(0x80077458u))) / r_u32((uint32)((sint32)r_u32(0x80077644u))));
-        if (!(r_u32((uint32)((sint32)r_u32(0x80077644u)))))
-          ob_draft_unresolved_call(0x8004a5c4u, 2u, 7u, 0);
-        if (((r_u32((uint32)((sint32)r_u32(0x80077644u))) == (sint32)(0u - (uint32)(1))) && ((sint32)((uint32)((sint32)r_u32(local_objects + 8u)) + (uint32)((sint32)r_u32(0x80077458u))) == 0x80000000)))
-          ob_draft_unresolved_call(0x8004a5c4u, 2u, 6u, 0);
-        v19 = (sint32)r_u32((v3 + (2) * 4u));
-        v20 = r_u32((uint32)((sint32)((uint32)((sint32)r_u32(0x800774f4u)) + (uint32)(8))));
-        v21 = v18;
-        if (((sint32)(v19) >= (sint32)((sint32)((uint32)(v20) - (uint32)(((sint32)(v16) / (sint32)(2)))))))
-        {
-          if (((sint32)((sint32)((uint32)(v20) + (uint32)(((sint32)(v16) / (sint32)(2))))) < (sint32)(v19)))
-            v19 = ((uint32)(v19) - (uint32)(v16));
-        }
-        else
-        {
-          v19 = ((uint32)(v19) + (uint32)(v16));
-        }
-        if (!(r_u32((uint32)((sint32)r_u32(0x80077644u)))))
-          ob_draft_unresolved_call(0x8004a5c4u, 2u, 7u, 0);
-        if (((r_u32((uint32)((sint32)r_u32(0x80077644u))) == (sint32)(0u - (uint32)(1))) && ((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)(v19)) == 0x80000000)))
-          ob_draft_unresolved_call(0x8004a5c4u, 2u, 6u, 0);
-        v22 = (sint32)((uint32)(((sint32)((sint32)((uint32)(((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)(v19)) / r_u32((uint32)((sint32)r_u32(0x80077644u))))) << (uint32)(16))) >> 20)) * (uint32)((sint16)r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x80077644u)) + (uint32)(4))))));
-        v23 = r_u16((uint32)((sint32)((uint32)(i) + (uint32)(38))));
-        w_u8((uint32)((sint32)((uint32)(i) + (uint32)(37))), (sint32)((uint32)((v21 & 0xF)) + (uint32)((sint32)((uint32)(16) * (uint32)((((sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)(v19)) / r_u32((uint32)((sint32)r_u32(0x80077644u)))) & 0xF))))));
-        w_u16((uint32)((sint32)((uint32)(i) + (uint32)(38))), (v23 | 0x40));
-        w_u8((uint32)((sint32)((uint32)(i) + (uint32)(36))), (sint32)((uint32)(((sint32)((sint32)((uint32)(v21) << (uint32)(16))) >> 20)) + (uint32)(v22)));
-      }
-      else
-      {
-        v5 = r_u32((uint32)((sint32)r_u32(0x80077644u)));
-        w_u32(local_objects + 0u, (sint32)((uint32)((sint32)r_u32(0x80077468u)) - (uint32)((sint32)r_u32((v3 + (2) * 4u)))));
-        v7 = ((sint32)r_u32(local_objects + 0u) / r_u32((uint32)((sint32)r_u32(0x80077644u))));
-        if (!(r_u32((uint32)((sint32)r_u32(0x80077644u)))))
-          ob_draft_unresolved_call(0x8004a5c4u, 2u, 7u, 0);
-        if (((v5 == (sint32)(0u - (uint32)(1))) && ((sint32)r_u32(local_objects + 0u) == 0x80000000)))
-          ob_draft_unresolved_call(0x8004a5c4u, 2u, 6u, 0);
-        v8 = ((sint32)r_u32(local_objects + 0u) / r_u32((uint32)((sint32)r_u32(0x80077644u))));
-        w_u32(local_objects + 4u, (sint32)((uint32)((sint32)r_u32(v3)) + (uint32)((sint32)r_u32(0x80077458u))));
-        if (((v5 == (sint32)(0u - (uint32)(1))) && ((sint32)r_u32(local_objects + 4u) == 0x80000000)))
-          ob_draft_unresolved_call(0x8004a5c4u, 2u, 6u, 0);
-        v10 = ((sint32)((sint32)r_u32(local_objects + 4u)) / (sint32)(v5));
-        v11 = (sint32)((uint32)(((sint32)((sint32)((uint32)(v7) << (uint32)(16))) >> 20)) * (uint32)((sint16)r_u16((uint32)((sint32)((uint32)((sint32)r_u32(0x80077644u)) + (uint32)(4))))));
-        v12 = (v8 & 0xF);
-        v13 = (v10 & 0xF);
-        w_u8((uint32)((sint32)((uint32)(i) + (uint32)(37))), ((v10 & 0xF) | (sint32)((uint32)(16) * (uint32)(v12))));
-        v14 = (r_u16((uint32)((sint32)((uint32)(i) + (uint32)(38)))) & 2);
-        w_u8((uint32)((sint32)((uint32)(i) + (uint32)(36))), (sint32)((uint32)(((sint32)((sint32)((uint32)(v10) << (uint32)(16))) >> 20)) + (uint32)(v11)));
-        if (!v14)
-        {
-          v15 = (v10 & 0xF);
-          if ((((!v13 || !v12) || (v15 == 15)) || (v12 == 15)))
-            sub_8004AAFC(i, v4);
-        }
-      }
-      sub_800257A0(r_u32((uint32)(((uint32)(r_u32((uint32)((sint32)((uint32)(i) + (uint32)(24))))) + (uint32)(40)))));
+        sub_800257A0(r_u32(r_u32(item + 24u) + 40u));
     }
-  }
-
-    ob_draft_scratch_release(local_objects); 
 }
 
 
@@ -1613,8 +1348,7 @@ uint32 sub_8001E7B0(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a9, uint3
 uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
 {
     FUNCTION_MARKER(0x80047450u, "SLES_008.65");
-    /* TODO: Recover missing meaningful carriers for sub_80047A60 before binding the native call */
-    uint32 local_objects = ob_draft_scratch_acquire(4u);
+    sint32 other_index = r_s32(a2 + 24u);
   ;
   sint32 v6;
   sint32 v7;
@@ -1632,7 +1366,6 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
   sint32 v19;
   sint32 v20;
   sint32 v21;
-  w_u32(local_objects + 0u, r_u32((uint32)(((uint32)(a2) + (uint32)(24)))));
   v6 = r_u32(a3);
   if (((a4 & 0x80) != 0))
   {
@@ -1644,23 +1377,23 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
         (w_u32((a1 + (45) * 4u), (r_u32((a1 + (45) * 4u)) + 1u)), r_u32((a1 + (45) * 4u)));
         (w_u32((uint32)(((uint32)(a2) + (uint32)(184))), (r_u32((uint32)(((uint32)(a2) + (uint32)(184)))) + 1u)), r_u32((uint32)(((uint32)(a2) + (uint32)(184)))));
         v8 = r_u32((a1 + (47) * 4u));
-        if ((((sint32)(v7) < (sint32)(v8)) || ((v7 == v8) && ((sint32)r_u32(local_objects + 0u) < r_u32((a1 + (48) * 4u))))))
+        if ((((sint32)(v7) < (sint32)(v8)) || ((v7 == v8) && (other_index < r_s32(a1 + 192u)))))
         {
           w_u32((a1 + (47) * 4u), v7);
-          w_u32((a1 + (48) * 4u), (sint32)r_u32(local_objects + 0u));
+          w_u32((a1 + (48) * 4u), other_index);
         }
       }
       else
       {
         v9 = r_u32((a1 + (49) * 4u));
-        if ((((sint32)(v7) < (sint32)(v9)) || ((v7 == v9) && ((sint32)r_u32(local_objects + 0u) < r_u32((a1 + (50) * 4u))))))
+        if ((((sint32)(v7) < (sint32)(v9)) || ((v7 == v9) && (other_index < r_s32(a1 + 200u)))))
         {
           w_u32((a1 + (49) * 4u), v7);
-          w_u32((a1 + (50) * 4u), (sint32)r_u32(local_objects + 0u));
+          w_u32((a1 + (50) * 4u), other_index);
         }
       }
     }
-    { uint32 draft_return = ob_draft_unresolved_call(0x80047a60u, 1u, a1); ob_draft_scratch_release(local_objects);  return draft_return; }
+    { uint32 draft_return = ob_draft_unresolved_call(0x80047a60u, 1u, a1); return draft_return; }
   }
   v10 = r_u32((a3 + (1) * 4u));
   if (((a4 & 0x8000) != 0))
@@ -1669,14 +1402,14 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
     {
       (w_u32((a1 + (45) * 4u), (r_u32((a1 + (45) * 4u)) - 1u)), r_u32((a1 + (45) * 4u)));
       (w_u32((uint32)(((uint32)(a2) + (uint32)(184))), (r_u32((uint32)(((uint32)(a2) + (uint32)(184)))) - 1u)), r_u32((uint32)(((uint32)(a2) + (uint32)(184)))));
-      if ((r_u32((a1 + (48) * 4u)) == (sint32)r_u32(local_objects + 0u)))
+      if ((r_u32((a1 + (48) * 4u)) == other_index))
         goto LABEL_21;
       goto LABEL_50;
     }
     if (((v6 & 0x8000) != 0))
     {
       v11 = r_u32((a1 + (48) * 4u));
-      if ((v11 == (sint32)r_u32(local_objects + 0u)))
+      if ((v11 == other_index))
       {
         v12 = r_u32((a1 + (47) * 4u));
         if (((sint32)(v10) >= (sint32)(v12)))
@@ -1704,10 +1437,10 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
         LABEL_40:
         w_u32((a1 + (47) * 4u), v10);
 
-        w_u32((a1 + (48) * 4u), (sint32)r_u32(local_objects + 0u));
+        w_u32((a1 + (48) * 4u), other_index);
         goto LABEL_50;
       }
-      v14 = ((sint32)((sint32)r_u32(local_objects + 0u)) < (sint32)(v11));
+      v14 = ((sint32)(other_index) < (sint32)(v11));
       if ((v10 != v13))
         goto LABEL_50;
       LABEL_39:
@@ -1718,7 +1451,7 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
     }
     (w_u32((a1 + (45) * 4u), (r_u32((a1 + (45) * 4u)) - 1u)), r_u32((a1 + (45) * 4u)));
     (w_u32((uint32)(((uint32)(a2) + (uint32)(184))), (r_u32((uint32)(((uint32)(a2) + (uint32)(184)))) - 1u)), r_u32((uint32)(((uint32)(a2) + (uint32)(184)))));
-    if ((r_u32((a1 + (48) * 4u)) == (sint32)r_u32(local_objects + 0u)))
+    if ((r_u32((a1 + (48) * 4u)) == other_index))
     {
       w_u32((a1 + (47) * 4u), 0x7FFFFFFF);
       w_u32((a1 + (48) * 4u), (sint32)(0u - (uint32)(1)));
@@ -1729,12 +1462,12 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
       LABEL_49:
       w_u32((a1 + (49) * 4u), v10);
 
-      w_u32((a1 + (50) * 4u), (sint32)r_u32(local_objects + 0u));
+      w_u32((a1 + (50) * 4u), other_index);
       goto LABEL_50;
     }
     if ((v10 != v15))
       goto LABEL_50;
-    v16 = ((sint32)r_u32(local_objects + 0u) < r_u32((a1 + (50) * 4u)));
+    v16 = (other_index < r_s32(a1 + 200u));
     LABEL_48:
     if (!v16)
       goto LABEL_50;
@@ -1747,7 +1480,7 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
     {
       (w_u32((a1 + (45) * 4u), (r_u32((a1 + (45) * 4u)) + 1u)), r_u32((a1 + (45) * 4u)));
       (w_u32((uint32)(((uint32)(a2) + (uint32)(184))), (r_u32((uint32)(((uint32)(a2) + (uint32)(184)))) + 1u)), r_u32((uint32)(((uint32)(a2) + (uint32)(184)))));
-      if ((r_u32((a1 + (50) * 4u)) == (sint32)r_u32(local_objects + 0u)))
+      if ((r_u32((a1 + (50) * 4u)) == other_index))
       {
         w_u32((a1 + (49) * 4u), 0x7FFFFFFF);
         w_u32((a1 + (50) * 4u), (sint32)(0u - (uint32)(1)));
@@ -1757,16 +1490,16 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
         goto LABEL_40;
       if ((v10 != v18))
         goto LABEL_50;
-      v14 = ((sint32)r_u32(local_objects + 0u) < r_u32((a1 + (48) * 4u)));
+      v14 = (other_index < r_s32(a1 + 192u));
       goto LABEL_39;
     }
     v19 = r_u32((a1 + (50) * 4u));
-    if ((v19 != (sint32)r_u32(local_objects + 0u)))
+    if ((v19 != other_index))
     {
       v21 = r_u32((a1 + (49) * 4u));
       if (((sint32)(v10) < (sint32)(v21)))
         goto LABEL_49;
-      v16 = ((sint32)((sint32)r_u32(local_objects + 0u)) < (sint32)(v19));
+      v16 = ((sint32)(other_index) < (sint32)(v19));
       if ((v10 != v21))
         goto LABEL_50;
       goto LABEL_48;
@@ -1786,7 +1519,7 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
     goto LABEL_50;
   }
   v17 = r_u32((a1 + (50) * 4u));
-  if ((v17 == (sint32)r_u32(local_objects + 0u)))
+  if ((v17 == other_index))
     goto LABEL_45;
   LABEL_51:
   if ((v17 == (sint32)(0u - (uint32)(1))))
@@ -1794,7 +1527,8 @@ uint32 sub_80047450(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
 
   if ((r_u32((a1 + (48) * 4u)) == (sint32)(0u - (uint32)(1))))
     sub_800479E0(a1);
-  { uint32 draft_return = ob_draft_unresolved_call(0x80047a60u, 1u, a1); ob_draft_scratch_release(local_objects);  return draft_return; }
+  { uint32 draft_return = ob_draft_unresolved_call(0x80047a60u, 1u, a1); return draft_return; }
 }
+
 
 

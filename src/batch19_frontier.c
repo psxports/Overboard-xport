@@ -1,4 +1,6 @@
+#include "psx.h"
 #include "batch19_frontier.h"
+#include "draft_signatures.h"
 
 void ob_restore_heap_pointer(uint32 pointer)
 {
@@ -94,37 +96,38 @@ uint32 ob_reset_reference_record(uint32 record)
     return ob_clear_optional_link(record + 16u);
 }
 
-uint32 ob_free_reference_record(uint32 record, uint32 guest_sp)
+uint32 ob_free_reference_record(uint32 record)
 {
     FUNCTION_MARKER(0x80043C6Cu, "SLES_008.65");
-    w_u32(guest_sp, record);
+    uint32 cell = ob_draft_scratch_acquire(4u);
+    w_u32(cell, record);
     ob_reset_reference_record(record);
-    return ob_release_pool_cell(guest_sp);
+    uint32 result = ob_release_pool_cell(cell);
+    ob_draft_scratch_release(cell);
+    return result;
 }
 
-uint32 ob_clear_reference_list(uint32 list, uint32 incoming_result, uint32 guest_sp)
+void ob_clear_reference_list(uint32 list)
 {
     FUNCTION_MARKER(0x80043AF4u, "SLES_008.65");
     uint32 node = r_u32(list);
     uint32 next = r_u32(node);
-    uint32 result = incoming_result;
     while (next != 0u)
     {
         ob_unlink_reference_node(node);
-        result = r_u32(node + 12u);
-        if (result == 0u)
-            result = ob_free_reference_record(node, guest_sp - 0x20u);
+        if (r_u32(node + 12u) == 0u)
+            ob_free_reference_record(node);
         node = next;
         next = r_u32(next);
     }
-    return result;
 }
 
-uint32 ob_clear_owner_references(uint32 list, uint32 incoming_result, uint32 guest_sp)
+void ob_clear_owner_references(uint32 list)
 {
     FUNCTION_MARKER(0x80043974u, "SLES_008.65");
-    return ob_clear_reference_list(list, incoming_result, guest_sp - 0x18u);
+    ob_clear_reference_list(list);
 }
+
 
 static uint32 ob_detach_child_list(uint32 object)
 {
@@ -220,7 +223,7 @@ uint32 ob_unlink_object_record(uint32 object)
     return object;
 }
 
-uint32 ob_destroy_geometry_object(uint32 object, uint32 guest_sp)
+uint32 ob_destroy_geometry_object(uint32 object)
 {
     FUNCTION_MARKER(0x80043FD0u, "SLES_008.65");
     uint32 child = r_u32(object + 0x20u);
@@ -228,7 +231,7 @@ uint32 ob_destroy_geometry_object(uint32 object, uint32 guest_sp)
     {
         uint32 owner = r_u32(child + 12u);
         if (owner == object)
-            ob_free_geometry_object(child, guest_sp - 0x18u);
+            ob_free_geometry_object(child);
         else
             ob_detach_foreign_geometry_child(child);
         child = r_u32(object + 0x20u);
@@ -240,10 +243,14 @@ uint32 ob_destroy_geometry_object(uint32 object, uint32 guest_sp)
     return ob_unlink_object_record(object);
 }
 
-uint32 ob_free_geometry_object(uint32 object, uint32 guest_sp)
+uint32 ob_free_geometry_object(uint32 object)
 {
     FUNCTION_MARKER(0x80044058u, "SLES_008.65");
-    w_u32(guest_sp, object);
-    ob_destroy_geometry_object(object, guest_sp - 0x18u);
-    return ob_release_pool_cell(guest_sp);
+    uint32 cell = ob_draft_scratch_acquire(4u);
+    w_u32(cell, object);
+    ob_destroy_geometry_object(object);
+    uint32 result = ob_release_pool_cell(cell);
+    ob_draft_scratch_release(cell);
+    return result;
 }
+

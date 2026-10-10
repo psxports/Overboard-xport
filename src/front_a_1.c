@@ -1,3 +1,4 @@
+#include "psx.h"
 #include "front_signatures.h"
 #include "native_runtime.h"
 
@@ -5,18 +6,7 @@
 static uint32 front_a_glyph(uint32 texture, uint32 u, uint32 v, uint32 x, uint32 y,
                            uint32 red, uint32 green, uint32 blue, uint32 flags)
 {
-    uint32 storage = ob_draft_scratch_acquire(124u);
-    uint32 fields = storage + 80u;
-    w_u32(fields + 16u, 15u);
-    w_u32(fields + 20u, x);
-    w_u32(fields + 24u, y);
-    w_u32(fields + 28u, flags);
-    w_u32(fields + 32u, red);
-    w_u32(fields + 36u, green);
-    w_u32(fields + 40u, blue);
-    uint32 result = ob_append_colored_texture_quad(texture, u, v, 15u, fields);
-    ob_draft_scratch_release(storage);
-    return result;
+    return ob_append_colored_texture_quad(texture, u, v, 15u, 15u, x, y, flags, red, green, blue);
 }
 
 uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 second)
@@ -45,17 +35,17 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x80013794u: count=0u; break;
     case 0x80013818u: count=0u; break;
     case 0x80013820u: count=0u; break;
-    case 0x80013908u: count=0u; break;
-    case 0x80013C00u: count=0u; break;
+    case 0x80013908u: count=3u; break;
+    case 0x80013C00u: count=3u; break;
     case 0x80013FA4u: count=1u; break;
-    case 0x80014BF8u: count=0u; break;
+    case 0x80014BF8u: count=1u; break;
     case 0x8001578Cu: count=4u; break;
     case 0x800159C8u: count=0u; break;
     case 0x80015FA8u: count=3u; break;
     case 0x80016220u: count=1u; break;
     case 0x80016254u: count=0u; break;
     case 0x8001627Cu: count=1u; break;
-    case 0x80016390u: count=1u; break;
+    case 0x80016390u: count=4u; break;
     case 0x80016598u: count=1u; break;
     case 0x80016768u: count=0u; break;
     case 0x800169D0u: count=2u; break;
@@ -85,7 +75,7 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x8001A4B0u: count=4u; break;
     case 0x8001A6FCu: count=0u; break;
     case 0x8001B008u: count=0u; break;
-    case 0x8001B048u: count=0u; break;
+    case 0x8001B048u: count=1u; break;
     case 0x8001B058u: count=0u; break;
     case 0x8001CF58u: count=0u; break;
     case 0x8001D048u: count=1u; break;
@@ -105,7 +95,7 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x8001E540u: count=0u; break;
     case 0x8001E7B0u: count=6u; break;
     case 0x8001EBBCu: count=6u; break;
-    case 0x8001F454u: count=2u; break;
+    case 0x8001F454u: count=1u; break;
     case 0x8001F56Cu: count=2u; break;
     case 0x8001F5DCu: count=2u; break;
     case 0x8001F64Cu: count=2u; break;
@@ -117,16 +107,16 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x80020260u: count=0u; break;
     case 0x80020288u: count=0u; break;
     case 0x800202E8u: count=0u; break;
-    case 0x80020450u: count=0u; break;
-    case 0x80020864u: count=0u; break;
-    case 0x80020A70u: count=0u; break;
-    case 0x80020D64u: count=0u; break;
-    case 0x80020FD4u: count=0u; break;
-    case 0x8002140Cu: count=0u; break;
+    case 0x80020450u: count=8u; break;
+    case 0x80020864u: count=11u; break;
+    case 0x80020A70u: count=8u; break;
+    case 0x80020D64u: count=10u; break;
+    case 0x80020FD4u: count=10u; break;
+    case 0x8002140Cu: count=13u; break;
     case 0x80021460u: count=8u; break;
     case 0x800215FCu: count=11u; break;
     case 0x800217B4u: count=1u; break;
-    case 0x8002192Cu: count=0u; break;
+    case 0x8002192Cu: count=1u; break;
     case 0x80021A38u: count=1u; break;
     case 0x80021AD8u: count=0u; break;
     case 0x80021B20u: count=1u; break;
@@ -241,7 +231,7 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x800283C0u: count=0u; break;
     case 0x800283DCu: count=2u; break;
     case 0x80028614u: count=1u; break;
-    case 0x80029290u: count=0u; break;
+    case 0x80029290u: count=2u; break;
     case 0x800292B0u: count=2u; break;
     case 0x800292ECu: count=2u; break;
     case 0x80029B70u: count=3u; break;
@@ -350,9 +340,9 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x80043824u: count=0u; break;
     case 0x8004389Cu: count=0u; break;
     case 0x8004395Cu: count=0u; break;
-    case 0x80043974u: count=0u; break;
+    case 0x80043974u: count=1u; break;
     case 0x800439BCu: count=0u; break;
-    case 0x80043AB0u: count=0u; break;
+    case 0x80043AB0u: count=2u; break;
     case 0x80043AF4u: count=0u; break;
     case 0x80043B68u: count=1u; break;
     case 0x80043BACu: count=0u; break;
@@ -372,7 +362,7 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x80043E3Cu: count=2u; break;
     case 0x80043EACu: count=3u; break;
     case 0x80043FD0u: count=0u; break;
-    case 0x80044058u: count=0u; break;
+    case 0x80044058u: count=1u; break;
     case 0x800440E8u: count=0u; break;
     case 0x80044130u: count=1u; break;
     case 0x800441ACu: count=0u; break;
@@ -412,7 +402,7 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x80045D44u: count=0u; break;
     case 0x80045D70u: count=1u; break;
     case 0x80045EF4u: count=0u; break;
-    case 0x80045F20u: count=0u; break;
+    case 0x80045F20u: count=1u; break;
     case 0x80045F4Cu: count=1u; break;
     case 0x800460B0u: count=0u; break;
     case 0x80046124u: count=1u; break;
@@ -440,7 +430,7 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x800477B8u: count=4u; break;
     case 0x8004795Cu: count=1u; break;
     case 0x800479E0u: count=0u; break;
-    case 0x80047A60u: count=0u; break;
+    case 0x80047A60u: count=1u; break;
     case 0x80047B24u: count=1u; break;
     case 0x80047B54u: count=3u; break;
     case 0x80047E2Cu: count=4u; break;
@@ -451,12 +441,12 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x80048124u: count=1u; break;
     case 0x800486E4u: count=1u; break;
     case 0x800487B8u: count=1u; break;
-    case 0x80048978u: count=0u; break;
+    case 0x80048978u: count=5u; break;
     case 0x80048994u: count=1u; break;
     case 0x80048B60u: count=0u; break;
     case 0x80048BF4u: count=1u; break;
     case 0x80048D2Cu: count=1u; break;
-    case 0x80048FECu: count=0u; break;
+    case 0x80048FECu: count=1u; break;
     case 0x800491B0u: count=4u; break;
     case 0x800493F8u: count=1u; break;
     case 0x8004954Cu: count=1u; break;
@@ -472,9 +462,9 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x8004A5C4u: count=0u; break;
     case 0x8004A908u: count=1u; break;
     case 0x8004AAFCu: count=2u; break;
-    case 0x8004B0B0u: count=0u; break;
+    case 0x8004B0B0u: count=3u; break;
     case 0x8004B3C4u: count=0u; break;
-    case 0x8004B3E8u: count=0u; break;
+    case 0x8004B3E8u: count=2u; break;
     case 0x8004B450u: count=2u; break;
     case 0x8004B514u: count=0u; break;
     case 0x8004B634u: count=0u; break;
@@ -524,9 +514,9 @@ uint32 ob_front_a_callback(uint32 target,uint32 available,uint32 first,uint32 se
     case 0x8004F288u: count=1u; break;
     case 0x8004F2C4u: count=2u; break;
     case 0x8004F31Cu: count=1u; break;
-    case 0x8004F354u: count=0u; break;
+    case 0x8004F354u: count=1u; break;
     case 0x8004F418u: count=3u; break;
-    case 0x8004F478u: count=2u; break;
+    case 0x8004F478u: count=3u; break;
     case 0x8004F51Cu: count=3u; break;
     case 0x8004F610u: count=2u; break;
     case 0x8004F758u: count=2u; break;
@@ -777,7 +767,6 @@ void ob_front_80092D14(void)
 uint32 ob_front_80092280(uint32 a1, uint32 a2)
 {
     FUNCTION_MARKER(0x80092280u, "FRONT.BIN");
-    (void)a1;
     uint32 value = r_u32(a2 + 8u), sound;
     if (value == 0u) { ob_draft_unresolved_call(0x80011870u,1u,1u); sound = 0x8006AC1Cu; }
     else if (value == 1u) { ob_draft_unresolved_call(0x80011870u,1u,2u); sound = 0x8006AC3Cu; }
@@ -1158,7 +1147,6 @@ uint32 ob_front_80096550(uint32 action,uint32 card,uint32 choice,uint32 mode)
 uint32 ob_front_800994B0(uint32 player,uint32 unused_a1,uint32 locked,uint32 selected)
 {
     FUNCTION_MARKER(0x800994B0u,"FRONT.BIN");
-    (void)unused_a1;
     uint32 text=ob_draft_scratch_acquire(8u),x=150u+player*40u;
     ob_draft_unresolved_call(0x80064028u,3u,text,0x8008D968u,player+1u);
     uint32 heading_selected=!locked&&selected==0xFFFFFFFFu;
