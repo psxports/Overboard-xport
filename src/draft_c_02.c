@@ -467,11 +467,12 @@ sint32 sub_80053D20(sint32 x, sint32 z)
             return (sint32)ob_native_missing_value(0x80053D20u,"BREAK 6 signed division overflow");
         sint32 cell_x = numerator_x / scale;
         sint32 cell_z = numerator_z / scale;
-        uint32 objects = ob_draft_scratch_acquire(24u);
+        uint32 objects = ob_draft_scratch_acquire(40u);
         w_u32(objects,(uint32)cell_x*(uint32)scale-origin_x);
         w_u32(objects+8u,origin_z-(uint32)cell_z*r_u32(scale_address));
-        sub_80051400(objects,(sint32)(objects+12u));
-        uint32 surface = r_u32(objects+20u);
+        /* The locator writes a full 24-byte state after the 16-byte position */
+        sub_80051400(objects,objects+16u);
+        uint32 surface = r_u32(objects+24u);
         sub_8004E028(cell_x,cell_z,surface);
         ob_draft_scratch_release(objects);
     }

@@ -1104,7 +1104,7 @@ uint32 sub_80047E2C(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
 }
 
 
-uint32 sub_8001F454(uint32 voice)
+static uint32 ob_stop_voice(uint32 voice, uint32 mask, uint32 mask_defined)
 {
     FUNCTION_MARKER(0x8001F454u, "SLES_008.65");
     uint32 enabled = r_u8(0x8006C00Cu);
@@ -1116,8 +1116,6 @@ uint32 sub_8001F454(uint32 voice)
     if (active == 0u) return active;
     sint32 first = (sint8)r_u8(0x80078554u + offset);
     uint32 channel = (uint32)first * 28u;
-    uint32 mask = 0u;
-    uint32 mask_defined = 0u;
     if (r_u32(0x800782B4u + channel) == voice)
     {
         mask = 1u << ((uint32)first & 31u);
@@ -1149,6 +1147,17 @@ uint32 sub_8001F454(uint32 voice)
     w_u32(0x80078544u + offset, 0u);
     return offset;
 }
+
+uint32 sub_8001F454(uint32 voice)
+{
+    return ob_stop_voice(voice, 0, 0);
+}
+
+uint32 ob_stop_voice_with_mask(uint32 voice, uint32 mask)
+{
+    return ob_stop_voice(voice, mask, 1);
+}
+
 
 
 uint32 sub_80050550(uint32 a1)

@@ -11,6 +11,11 @@ uint32 sub_8001195C(uint32 a1)
     return a1 != UINT32_MAX ? sub_8001F454(a1) : UINT32_MAX;
 }
 
+uint32 ob_stop_sound_with_mask(uint32 voice, uint32 mask)
+{
+    return voice != UINT32_MAX ? ob_stop_voice_with_mask(voice, mask) : UINT32_MAX;
+}
+
 uint32 sub_80016254(void)
 {
     FUNCTION_MARKER(0x80016254u, "SLES_008.65");

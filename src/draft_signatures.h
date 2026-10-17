@@ -87,6 +87,8 @@ sint32 sub_8001E540(void);
 uint32 sub_8001E7B0(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 a9, uint32 a10);
 sint32 sub_8001EBBC(sint32 a1, uint32 a2, sint32 a3, sint32 a4, sint32 a5, sint32 a6);
 uint32 sub_8001F454(uint32 voice);
+uint32 ob_stop_voice_with_mask(uint32 voice, uint32 mask);
+uint32 ob_stop_sound_with_mask(uint32 voice, uint32 mask);
 sint32 sub_8001F56C(uint32 a1, sint32 a2);
 uint32 sub_8001F5DC(uint32 a1, uint32 a2);
 uint32 sub_8001F64C(uint32 a1, uint32 a2);

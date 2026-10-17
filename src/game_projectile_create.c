@@ -52,6 +52,22 @@ uint32 ob_game_800B6C38(uint32 object)
     return result;
 }
 
+uint32 ob_game_800B7EEC(uint32 node, uint32 unused, uint32 time)
+{
+    FUNCTION_MARKER(0x800B7EEC, "GAME.BIN");
+    uint32 record = ob_draft_scratch_acquire(96);
+    ob_game_800B8E40(node, record, time);
+    w_u32(record + 44, 0x800C4938);
+    w_u32(record + 56, 500);
+    w_u16(record + 86, 360);
+    w_u16(record + 88, 360);
+    w_u8(record + 92, 8);
+    w_u8(record + 93, 1);
+    uint32 result = ob_game_80092408(r_u32(0x80083E34), record, time, 6);
+    ob_draft_scratch_release(record);
+    return result;
+}
+
 uint32 ob_game_800B7FDC(uint32 node, uint32 unused, uint32 size, uint32 time)
 {
     FUNCTION_MARKER(0x800B7FDCu, "GAME.BIN");

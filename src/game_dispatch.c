@@ -436,6 +436,567 @@ uint32 ob_native_game_dispatch(uint32 target, uint32 count, const uint32 *args)
     case 0x800B6C38u:
         if (count != 1u) ob_native_missing(target, 1u, count);
         return ob_game_800B6C38(args[0]);
+    case 0x800B7EEC:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B7EEC(args[0], args[1], args[2]);
+    case 0x800AEB60:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800AEB60(args[0], args[1]);
+    case 0x800AEFCC:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800AEFCC(args[0]);
+    case 0x8009B0F0:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_8009B0F0(args[0]);
+    case 0x800A0B6C:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800A0B6C(args[0]);
+    case 0x800BC958:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800BC958(args[0]);
+    case 0x800BCAD4:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800BCAD4(args[0]);
+    case 0x800BCAA0:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800BCAA0(args[0]);
+    case 0x800BE25C:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800BE25C(args[0]);
+    case 0x800A9E48:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800A9E48(args[0]);
+    case 0x800997F4:
+        if (count != 0) ob_native_missing(target, 0, count);
+        ob_game_800997F4(); return 0;
+    case 0x800A2C78:
+        if (count != 1) ob_native_missing(target, 1, count);
+        ob_game_800A2C78(args[0]); return 0;
+    case 0x800A499C:
+        if (count != 0) ob_native_missing(target, 0, count);
+        ob_game_800A499C(); return 0;
+    case 0x800BB3C4:
+        if (count != 0) ob_native_missing(target, 0, count);
+        ob_game_800BB3C4(); return 0;
+    case 0x800BCA98:
+        if (count != 0) ob_native_missing(target, 0, count);
+        ob_game_800BCA98(); return 0;
+    case 0x800A2C80:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800A2C80(args[0]);
+    case 0x80097FC4:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_80097FC4(args[0], args[1]);
+    case 0x800BC3C4:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800BC3C4(args[0]);
+    case 0x800C191C:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800C191C(args[0]);
+    case 0x800C1930:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800C1930(args[0]);
+    case 0x800C1944:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800C1944(args[0]);
+    case 0x800A9E30:
+        if (count != 5) ob_native_missing(target, 5, count);
+        return ob_game_800A9E30(args[0], args[1], args[2], args[3], args[4]);
+    case 0x800C0F54:
+        if (count != 2) ob_native_missing(target, 2, count);
+        ob_game_800C0F54(args[0], args[1]); return 0;
+    case 0x800A1BB4:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A1BB4(args[0], args[1]);
+    case 0x800A2D4C:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800A2D4C(args[0]);
+    case 0x800ADD1C:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800ADD1C(args[0]);
+    case 0x800BCB90:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800BCB90(args[0], args[1], args[2]);
+    case 0x800BB630:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800BB630(args[0], args[1], args[2]);
+    case 0x80094D6C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_80094D6C(args[0], args[1], args[2]);
+    case 0x800AFF34:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AFF34(args[0], args[1], args[2]);
+    case 0x800C0594:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800C0594(args[0]);
+    case 0x800A1BD4:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A1BD4(args[0], args[1]);
+    case 0x800B41B8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B41B8(args[0], args[1], args[2]);
+    case 0x800A1C68:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800A1C68(args[0]);
+    case 0x8009F660:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_8009F660(args[0]);
+    case 0x800B4164:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800B4164(args[0], args[1]);
+    case 0x800954CC:
+        if (count != 0) ob_native_missing(target, 0, count);
+        return ob_game_800954CC();
+    case 0x8009F6A4:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_8009F6A4(args[0]);
+    case 0x8009F728:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_8009F728(args[0]);
+    case 0x800A73F0:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A73F0(args[0], args[1], args[2]);
+    case 0x800A1B60:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A1B60(args[0], args[1], args[2]);
+    case 0x800A76A8:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A76A8(args[0], args[1]);
+    case 0x800AA62C:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800AA62C(args[0], args[1]);
+    case 0x8009F6CC:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_8009F6CC(args[0], args[1]);
+    case 0x800AB0C4:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AB0C4(args[0], args[1], args[2]);
+    case 0x800B36D0:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B36D0(args[0], args[1], args[2]);
+    case 0x800BB848:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800BB848(args[0], args[1]);
+    case 0x800B31B4:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B31B4(args[0], args[1], args[2]);
+    case 0x800A1AF8:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A1AF8(args[0], args[1]);
+    case 0x800A296C:
+        if (count != 0) ob_native_missing(target, 0, count);
+        return ob_game_800A296C();
+    case 0x800955F8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800955F8(args[0], args[1], args[2]);
+    case 0x8009A0C4:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009A0C4(args[0], args[1], args[2]);
+    case 0x8009A7E8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009A7E8(args[0], args[1], args[2]);
+    case 0x8009C57C:
+        if (count != 0) ob_native_missing(target, 0, count);
+        return ob_game_8009C57C();
+    case 0x8009F784:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009F784(args[0], args[1], args[2]);
+    case 0x800A1258:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A1258(args[0], args[1], args[2]);
+    case 0x800A2E24:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A2E24(args[0], args[1], args[2]);
+    case 0x800A4E4C:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800A4E4C(args[0]);
+    case 0x800A52C4:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A52C4(args[0], args[1], args[2]);
+    case 0x800A5B44:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A5B44(args[0], args[1], args[2]);
+    case 0x800A9720:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A9720(args[0], args[1], args[2]);
+    case 0x800AC640:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800AC640(args[0], args[1]);
+    case 0x800AD720:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AD720(args[0], args[1], args[2]);
+    case 0x800AF798:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AF798(args[0], args[1], args[2]);
+    case 0x800B5904:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B5904(args[0], args[1], args[2]);
+    case 0x800BBA70:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800BBA70(args[0], args[1], args[2], args[3]);
+    case 0x800ADD44:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800ADD44(args[0], args[1], args[2]);
+    case 0x800A0C34:
+        if (count != 0) ob_native_missing(target, 0, count);
+        return ob_game_800A0C34();
+    case 0x800AEEE8:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800AEEE8(args[0]);
+    case 0x800BABEC:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800BABEC(args[0], args[1]);
+    case 0x800C1094:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800C1094(args[0]);
+    case 0x800A9188:
+        if (count != 3) ob_native_missing(target, 3, count);
+        ob_game_800A9188(args[0], args[1], args[2]); return 0;
+    case 0x800AAC34:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800AAC34(args[0], args[1]);
+    case 0x800A7AA8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A7AA8(args[0], args[1], args[2]);
+    case 0x800A2284:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800A2284(args[0], args[1], args[2], args[3]);
+    case 0x800A08A0:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A08A0(args[0], args[1]);
+    case 0x800ADAD8:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800ADAD8(args[0], args[1], args[2], args[3]);
+    case 0x800B979C:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800B979C(args[0], args[1], args[2], args[3]);
+    case 0x800BB9E8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800BB9E8(args[0], args[1], args[2]);
+    case 0x800C0EB0:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800C0EB0(args[0], args[1], args[2]);
+    case 0x800B9584:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800B9584(args[0], args[1], args[2], args[3]);
+    case 0x80092098:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_80092098(args[0], args[1]);
+    case 0x800AFE94:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800AFE94(args[0], args[1]);
+    case 0x800A7CEC:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A7CEC(args[0], args[1]);
+    case 0x800A8A40:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A8A40(args[0], args[1], args[2]);
+    case 0x800A9680:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A9680(args[0], args[1]);
+    case 0x80094CC0:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_80094CC0(args[0], args[1]);
+    case 0x800AAB84:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AAB84(args[0], args[1], args[2]);
+    case 0x800A2C8C:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800A2C8C(args[0]);
+    case 0x800ADB68:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800ADB68(args[0]);
+    case 0x800BB8A4:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800BB8A4(args[0], args[1]);
+    case 0x800AC338:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800AC338(args[0]);
+    case 0x800B8F08:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800B8F08(args[0], args[1], args[2], args[3]);
+    case 0x800A200C:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A200C(args[0], args[1]);
+    case 0x800A6D2C:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A6D2C(args[0], args[1]);
+    case 0x8009DE18:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009DE18(args[0], args[1], args[2]);
+    case 0x800ADDA8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800ADDA8(args[0], args[1], args[2]);
+    case 0x800BA108:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800BA108(args[0], args[1], args[2], args[3]);
+    case 0x800B4FF8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B4FF8(args[0], args[1], args[2]);
+    case 0x800A1CA8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A1CA8(args[0], args[1], args[2]);
+    case 0x800B9260:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B9260(args[0], args[1], args[2]);
+    case 0x800BAB08:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800BAB08(args[0], args[1]);
+    case 0x8009A704:
+        if (count != 1) ob_native_missing(target, 1, count);
+        ob_game_8009A704(args[0]); return 0;
+    case 0x800B7DA8:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800B7DA8(args[0], args[1]);
+    case 0x80094884:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_80094884(args[0], args[1], args[2]);
+    case 0x800B50C4:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B50C4(args[0], args[1], args[2]);
+    case 0x800C0CF4:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800C0CF4(args[0], args[1]);
+    case 0x800A6C34:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A6C34(args[0], args[1], args[2]);
+    case 0x800AB8BC:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AB8BC(args[0], args[1], args[2]);
+    case 0x800A6A30:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A6A30(args[0], args[1], args[2]);
+    case 0x800B4068:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800B4068(args[0], args[1]);
+    case 0x800AC238:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AC238(args[0], args[1], args[2]);
+    case 0x800B8FBC:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800B8FBC(args[0], args[1]);
+    case 0x800AFF6C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AFF6C(args[0], args[1], args[2]);
+    case 0x800A2AEC:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800A2AEC(args[0], args[1], args[2], args[3]);
+    case 0x800A8ADC:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A8ADC(args[0], args[1]);
+    case 0x800A29E0:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A29E0(args[0], args[1]);
+    case 0x800BAD88:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800BAD88(args[0]);
+    case 0x800A6B28:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A6B28(args[0], args[1]);
+    case 0x800ADF84:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800ADF84(args[0]);
+    case 0x800ADC1C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800ADC1C(args[0], args[1], args[2]);
+    case 0x800ADE68:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800ADE68(args[0], args[1]);
+    case 0x8009EF5C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009EF5C(args[0], args[1], args[2]);
+    case 0x8009C428:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009C428(args[0], args[1], args[2]);
+    case 0x800BAC58:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800BAC58(args[0], args[1]);
+    case 0x800AB4E4:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800AB4E4(args[0], args[1]);
+    case 0x800AC414:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AC414(args[0], args[1], args[2]);
+    case 0x8009C2C8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009C2C8(args[0], args[1], args[2]);
+    case 0x80094DA4:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_80094DA4(args[0], args[1], args[2]);
+    case 0x80091F3C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_80091F3C(args[0], args[1], args[2]);
+    case 0x800B3EF0:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B3EF0(args[0], args[1], args[2]);
+    case 0x800BB658:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800BB658(args[0], args[1], args[2]);
+    case 0x80091918:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_80091918(args[0], args[1]);
+    case 0x800A8B44:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A8B44(args[0], args[1], args[2]);
+    case 0x800BBEE0:
+        if (count != 0) ob_native_missing(target, 0, count);
+        return ob_game_800BBEE0();
+    case 0x8009E750:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009E750(args[0], args[1], args[2]);
+    case 0x800A20D0:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800A20D0(args[0], args[1], args[2], args[3]);
+    case 0x800949FC:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800949FC(args[0], args[1], args[2]);
+    case 0x800B8818:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800B8818(args[0], args[1], args[2], args[3]);
+    case 0x80091AC8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_80091AC8(args[0], args[1], args[2]);
+    case 0x800AA198:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AA198(args[0], args[1], args[2]);
+    case 0x8009172C:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_8009172C(args[0], args[1]);
+    case 0x800A2760:
+        if (count != 6) ob_native_missing(target, 6, count);
+        return ob_game_800A2760(args[0], args[1], args[2], args[3], args[4], args[5]);
+    case 0x800B820C:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800B820C(args[0], args[1], args[2], args[3]);
+    case 0x800A7D94:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A7D94(args[0], args[1], args[2]);
+    case 0x800A9204:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800A9204(args[0], args[1], args[2], args[3]);
+    case 0x800A2558:
+        if (count != 6) ob_native_missing(target, 6, count);
+        return ob_game_800A2558(args[0], args[1], args[2], args[3], args[4], args[5]);
+    case 0x800A8CE0:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A8CE0(args[0], args[1]);
+    case 0x800B349C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B349C(args[0], args[1], args[2]);
+    case 0x8009CC64:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009CC64(args[0], args[1], args[2]);
+    case 0x800A0010:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A0010(args[0], args[1], args[2]);
+    case 0x8009A4A8:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_8009A4A8(args[0], args[1]);
+    case 0x800B3210:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800B3210(args[0], args[1]);
+    case 0x8009C9E0:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009C9E0(args[0], args[1], args[2]);
+    case 0x800A7440:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A7440(args[0], args[1], args[2]);
+    case 0x800966EC:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800966EC(args[0], args[1], args[2]);
+    case 0x8009C018:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009C018(args[0], args[1], args[2]);
+    case 0x800AA390:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AA390(args[0], args[1], args[2]);
+    case 0x800AB640:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AB640(args[0], args[1], args[2]);
+    case 0x800A1D74:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A1D74(args[0], args[1]);
+    case 0x8009F090:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009F090(args[0], args[1], args[2]);
+    case 0x800BADAC:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800BADAC(args[0], args[1]);
+    case 0x800BB07C:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800BB07C(args[0], args[1]);
+    case 0x800963B4:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800963B4(args[0], args[1], args[2]);
+    case 0x800B372C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B372C(args[0], args[1], args[2]);
+    case 0x8009E3B0:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009E3B0(args[0], args[1], args[2]);
+    case 0x800AB120:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800AB120(args[0], args[1], args[2]);
+    case 0x800A0278:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A0278(args[0], args[1], args[2]);
+    case 0x800B41FC:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800B41FC(args[0], args[1]);
+    case 0x800B83FC:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_800B83FC(args[0], args[1], args[2], args[3]);
+    case 0x800AD01C:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800AD01C(args[0], args[1]);
+    case 0x8009DEDC:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009DEDC(args[0], args[1], args[2]);
+    case 0x800B51B0:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B51B0(args[0], args[1], args[2]);
+    case 0x800BA234:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800BA234(args[0], args[1], args[2]);
+    case 0x800AC6F8:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800AC6F8(args[0], args[1]);
+    case 0x800B271C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800B271C(args[0], args[1], args[2]);
+    case 0x800A7F88:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800A7F88(args[0], args[1]);
+    case 0x800A6624:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_800A6624(args[0], args[1], args[2]);
+    case 0x800A6DF0:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_game_800A6DF0(args[0]);
+    case 0x80095D2C:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_80095D2C(args[0], args[1], args[2]);
+    case 0x80095DD4:
+        if (count != 5) ob_native_missing(target, 5, count);
+        return ob_game_80095DD4(args[0], args[1], args[2], args[3], args[4]);
+    case 0x80095EEC:
+        if (count != 5) ob_native_missing(target, 5, count);
+        return ob_game_80095EEC(args[0], args[1], args[2], args[3], args[4]);
+    case 0x8009A860:
+        if (count != 4) ob_native_missing(target, 4, count);
+        return ob_game_8009A860(args[0], args[1], args[2], args[3]);
+    case 0x8009A9A8:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009A9A8(args[0], args[1], args[2]);
+    case 0x8009AB64:
+        if (count != 3) ob_native_missing(target, 3, count);
+        return ob_game_8009AB64(args[0], args[1], args[2]);
+    case 0x800B9AF4:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800B9AF4(args[0], args[1]);
+    case 0x800B9C24:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_game_800B9C24(args[0], args[1]);
     default:
         ob_native_missing(target, UINT32_MAX, count);
     }

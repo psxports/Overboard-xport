@@ -53,6 +53,5 @@ uint32 ob_game_800AEEB8(uint32 time, uint32 distance, uint32 descriptor,
     FUNCTION_MARKER(0x800AEEB8u, "GAME.BIN");
     if (distance < threshold)
         return time;
-    /* TODO Bind the conditional actor deactivation helper when reached */
-    return ob_draft_unresolved_call(0x800AEB60u, 2u, descriptor, time);
+    return ob_game_800AEB60(descriptor, time);
 }

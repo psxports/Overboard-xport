@@ -223,6 +223,42 @@ uint32 ob_native_movie_dispatch(uint32 target, uint32 count, const uint32 *args)
     case 0x8008D0D8u:
         if (count != 5u) ob_native_missing(target, 5u, count);
         return ob_movie_8008D0D8(args[0], args[1], args[2], args[3], args[4]);
+    case 0x8008E3B4:
+        if (count != 0) ob_native_missing(target, 0, count);
+        return ob_movie_8008E3B4();
+    case 0x8008DFE0:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_movie_8008DFE0(args[0]);
+    case 0x8008DF84:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_movie_8008DF84(args[0], args[1]);
+    case 0x8008E1F4:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_movie_8008E1F4(args[0], args[1]);
+    case 0x8008E31C:
+        if (count != 0) ob_native_missing(target, 0, count);
+        return ob_movie_8008E31C();
+    case 0x8008E284:
+        if (count != 0) ob_native_missing(target, 0, count);
+        return ob_movie_8008E284();
+    case 0x8008E160:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_movie_8008E160(args[0], args[1]);
+    case 0x8008DF08:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_movie_8008DF08(args[0], args[1]);
+    case 0x8008E064:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_movie_8008E064(args[0]);
+    case 0x8008E3CC:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_movie_8008E3CC(args[0]);
+    case 0x8008E530:
+        if (count != 2) ob_native_missing(target, 2, count);
+        return ob_movie_8008E530(args[0], args[1]);
+    case 0x8008E500:
+        if (count != 1) ob_native_missing(target, 1, count);
+        return ob_movie_8008E500(args[0]);
     default:
         ob_native_missing(target, UINT32_MAX, count);
     }

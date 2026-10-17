@@ -518,21 +518,21 @@ uint32 sub_80050088(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
 uint32 sub_800352B4(uint32 a1)
 {
     FUNCTION_MARKER(0x800352b4u, "SLES_008.65");
-  sint32 v2;
-  sint16 v3;
-  sint16 v4;
-  sint16 v5;
-  sint16 v6;
+  uint32 v2;
+  uint16 v3;
+  uint16 v4;
+  uint16 v5;
+  uint16 v6;
   uint32 v7;
   uint32 v8;
   uint32 v9;
   uint32 v10;
   sint32 result;
-  v2 = r_u32((a1 + (5) * 4u));
-  v3 = r_u32((a1 + (7) * 4u));
-  v4 = r_u32((a1 + (6) * 4u));
-  v5 = r_u32((a1 + (8) * 4u));
-  v6 = r_u32((a1 + (9) * 4u));
+  v2 = r_u16(a1 + 10);
+  v3 = r_u16(a1 + 14);
+  v4 = r_u16(a1 + 12);
+  v5 = r_u16(a1 + 16);
+  v6 = r_u16(a1 + 18);
   w_u32(0x80077598u, (sint32)(a1));
   w_u16(0x800775f0u, v3);
   w_u16(0x800775a4u, v4);
@@ -560,10 +560,10 @@ uint32 sub_800352B4(uint32 a1)
     w_u32(0x80077518u, (sint32)r_u32(0x80077530u));
     w_u32(0x80077530u, ((uint32)((sint32)r_u32(0x80077530u)) + (uint32)(v7)));
   }
-  v8 = ((sint32)((uint32)((sint32)((uint32)(2) * (uint32)(((uint32)((uint16)((sint16)r_u16(0x800775f0u))) + (uint32)((sint32)((uint32)(3) * (uint32)(r_u32(a1)))))))) + (uint32)(3)) & 0xFFFFFFFC);
+  v8 = ((sint32)((uint32)((sint32)((uint32)(2) * (uint32)(((uint32)((uint16)((sint16)r_u16(0x800775f0u))) + (uint32)((sint32)((uint32)(3) * (uint32)(r_u16(a1)))))))) + (uint32)(3)) & 0xFFFFFFFC);
   if ((v8 >= (sint32)r_u32(0x8007759cu)))
   {
-    w_u32(0x800775e4u, sub_8002D98C(((sint32)((uint32)((sint32)((uint32)(2) * (uint32)(((uint32)((uint16)((sint16)r_u16(0x800775f0u))) + (uint32)((sint32)((uint32)(3) * (uint32)(r_u32(a1)))))))) + (uint32)(3)) & 0xFFFFFFFC)));
+    w_u32(0x800775e4u, sub_8002D98C(((sint32)((uint32)((sint32)((uint32)(2) * (uint32)(((uint32)((uint16)((sint16)r_u16(0x800775f0u))) + (uint32)((sint32)((uint32)(3) * (uint32)(r_u16(a1)))))))) + (uint32)(3)) & 0xFFFFFFFC)));
   }
   else
   {
@@ -582,12 +582,12 @@ uint32 sub_800352B4(uint32 a1)
     w_u32(0x800773a4u, (sint32)r_u32(0x80077530u));
     w_u32(0x80077530u, ((uint32)((sint32)r_u32(0x80077530u)) + (uint32)(v9)));
   }
-  if (((r_u32((a1 + (3) * 4u)) & 1) != 0))
+  if (((r_u16(a1 + 6) & 1) != 0))
   {
-    v10 = (sint32)((uint32)(16) * (uint32)(r_u32((a1 + (10) * 4u))));
+    v10 = (sint32)((uint32)(16) * (uint32)(r_u16(a1 + 20)));
     if ((v10 >= (sint32)r_u32(0x8007759cu)))
     {
-      w_u32(0x80077648u, sub_8002D98C((sint32)((uint32)(16) * (uint32)(r_u32((a1 + (10) * 4u))))));
+      w_u32(0x80077648u, sub_8002D98C((sint32)((uint32)(16) * (uint32)(r_u16(a1 + 20)))));
     }
     else
     {

@@ -1,5 +1,6 @@
 #include "xport.h"
 #include "psx.h"
+#include "psx_gpu.h"
 #include "draft_signatures.h"
 #include "native_runtime.h"
 #include "native_callbacks.h"
@@ -11,6 +12,7 @@ const uint32 xport_gpu_graph_type_address = 0x80075BECu;
 
 void xport_main(void)
 {
+    gpu_set_frame_skip(0);
     const PSX_EXE executable = {
         "../orig/SLES_008.65", 0x80010000u, 0x800771F8u, 0x8008D018u,
         0x80075EA0u, 0x800D6768u, 0x801FDFF8u - 0x800D6768u

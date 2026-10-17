@@ -2,10 +2,10 @@
 #include "native_timers.h"
 #include "native_runtime.h"
 #include "psx.h"
+#include "psx_spu.h"
 
 /* These canonical SDK entry points lack shared header declarations */
 uint32 _SpuInit(uint32 mode);
-uint32 SpuInitMalloc(uint32 count, uint32 table);
 
 static void service_arguments(uint32 target, uint32 count, uint32 required)
 {
@@ -208,7 +208,10 @@ sint32 ob_native_services_call(uint32 target, uint32 count, const uint32 *args, 
             return 1;
         case 0x800610B0u:
             service_arguments(target, count, 2u);
-            *result = SpuInitMalloc(args[0], args[1]);
+            *result = (uint32)SpuInitMalloc((sint32)args[0],
+                (sint32)args[0] > 0 && args[1] != 0
+                    ? (char *)psx_addr(args[1], ((size_t)args[0] + 1) * 8)
+                    : NULL);
             return 1;
         case 0x80061104u:
             service_arguments(target, count, 1u);

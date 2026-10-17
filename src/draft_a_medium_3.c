@@ -1048,7 +1048,7 @@ void sub_80022CD4(void)
     sub_8002439C();
     sub_800123E4();
     sub_80024320();
-    sub_80023A10();
+    /* Skip the startup warning resource load, display and countdown */
     sub_80024320();
     sub_800170D0();
     sub_80023C08();
