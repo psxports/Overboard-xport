@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{F0F360C9-9656-45F5-A263-D7C09487C67F}</ProjectGuid>
-    <RootNamespace>OB</RootNamespace>
+    <RootNamespace>O</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,10 +40,10 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetName>OB_debug</TargetName>
+    <TargetName>O_debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <TargetName>OB</TargetName>
+    <TargetName>O</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -58,14 +58,14 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ProgramDataBaseFileName>$(IntDir)OB-compile.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(IntDir)O-compile.pdb</ProgramDataBaseFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)OB_debug.pdb</ProgramDatabaseFile>
-      <ImportLibrary>$(IntDir)OB_debug.lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)O_debug.pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)O_debug.lib</ImportLibrary>
       <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -88,7 +88,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ImportLibrary>$(IntDir)OB.lib</ImportLibrary>
+      <ImportLibrary>$(IntDir)O.lib</ImportLibrary>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -272,7 +272,7 @@
       <ForcedIncludeFiles />
     </ClCompile>
     <ClCompile Include="..\..\..\..\xport\src\platform\win\main.c">
-      <PreprocessorDefinitions>SHORT_NAME="OB";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SHORT_NAME="O";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)xport_main.obj</ObjectFileName>
     </ClCompile>
   </ItemGroup>
@@ -297,7 +297,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="XportTemplateSync">
-    <TargetName>OB_debug</TargetName>
+    <TargetName>O_debug</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="XportTemplateSync">
     <ClCompile>
@@ -307,7 +307,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ProgramDataBaseFileName>$(IntDir)OB-compile.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(IntDir)O-compile.pdb</ProgramDataBaseFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4100;4244;4554;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>GAPI_OGL;_DEBUG;XPORT_ENABLE_AUDIT;XPORT_MEMORY_DIAGNOSTICS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -315,13 +315,13 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)OB_debug.pdb</ProgramDatabaseFile>
-      <ImportLibrary>$(IntDir)OB_debug.lib</ImportLibrary>
+      <ProgramDatabaseFile>$(IntDir)O_debug.pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(IntDir)O_debug.lib</ImportLibrary>
       <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="XportTemplateSync">
-    <TargetName>OB</TargetName>
+    <TargetName>O</TargetName>
     <GenerateManifest>false</GenerateManifest>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -349,7 +349,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ImportLibrary>$(IntDir)OB.lib</ImportLibrary>
+      <ImportLibrary>$(IntDir)O.lib</ImportLibrary>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
