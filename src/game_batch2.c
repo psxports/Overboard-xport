@@ -1681,8 +1681,8 @@ uint32 ob_main_80024B98(void)
     ob_game_800954CC();
     w_u32(0x8006C228, 0);
     ob_game_800A0C34();
-    ob_draft_unresolved_call(0x80045E98, 0);
-    return ob_draft_unresolved_call(0x800C1914, 0);
+    /* The following original nullsub preserves the cleanup result */
+    return ob_draft_unresolved_call(0x80045E98, 0);
 }
 
 uint32 ob_game_80092098(uint32 object, uint32 time)

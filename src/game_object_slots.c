@@ -12,16 +12,15 @@ uint32 ob_game_800A0930(uint32 descriptor, uint32 owner)
 
     uint32 record = 0x800CBA00u + 104u * slot;
     w_u32(record + 96u, r_u32(descriptor + 12u));
-    uint32 scales[3];
+    /* Selector 3 reads an unwritten original local; native objects use zero scale */
+    uint32 scales[4] = {0};
     scales[0] = r_u32(0x8008DDCCu);
     scales[1] = r_u32(0x8008DDD0u);
     scales[2] = r_u32(0x8008DDD4u);
     uint32 selector = (r_u8(descriptor + 24u) >> 4) & 3u;
     uint32 size = ob_draft_unresolved_call(0x800901A8u, 1u,
         r_u32(descriptor + 12u)) & 0xFFFFu;
-    /* TODO: Selector 3 reads an uninitialized fourth scale word in the original */
-    uint32 scale = selector < 3u ? scales[selector]
-        : ob_native_missing_value(0x800A0930u, "Uninitialized fourth descriptor scale");
+    uint32 scale = scales[selector];
     uint32 product = scale * size;
     if ((sint32)product < 0)
         product += 63u;

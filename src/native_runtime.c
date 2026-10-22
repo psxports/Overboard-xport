@@ -62,6 +62,14 @@ uint32 ob_native_missing_value(uint32 owner, const char *carrier)
     ob_native_missing(owner, UINT32_MAX, UINT32_MAX);
 }
 
+void ob_native_guest_break(uint32 owner, uint32 code)
+{
+    char message[128];
+    sprintf(message, "Original MIPS BREAK %u in function %08X", code, owner);
+    xport_message_error("Overboard! original exception", message);
+    exit(1);
+}
+
 void ob_native_runtime_init(void)
 {
     ob_native_timers_init();

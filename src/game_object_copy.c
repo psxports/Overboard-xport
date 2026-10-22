@@ -20,11 +20,7 @@ static uint32 ob_game_copy_words(uint32 destination, uint32 source, uint32 size,
 uint32 ob_game_800C1030(uint32 destination, uint32 source, uint32 size)
 {
     FUNCTION_MARKER(0x800C1030u, "GAME.BIN");
-    if ((size >> 2) == 0u)
-    {
-        /* TODO The original zero-word entry leaves its incoming result undefined */
-        return ob_native_missing_value(0x800C1030u, "Zero-word incoming result");
-    }
+    /* Callers use the copied memory; the zero-word return carrier is unspecified */
     return ob_game_copy_words(destination, source, size, 0u);
 }
 

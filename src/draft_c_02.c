@@ -1728,7 +1728,7 @@ sint32 sub_80027274(uint32 a1, sint32 a2)
   sint32 v11;
   sint32 v12;
   if ((((r_u8((uint32)((sint32)((uint32)(a1) + (uint32)(32)))) & 1) != 0) && !(r_u16((uint32)((sint32)((uint32)(a1) + (uint32)(34)))))))
-    return ob_draft_unresolved_call(0x8002755cu, 0u);
+    return ob_draft_unresolved_call(0x8002755cu, 2u, a1, (uint32)a2);
   v5 = ((sint32)((uint32)(a2) + (uint32)(7)) & 0xFFFFFFFC);
   ob_draft_unresolved_call(0x800277d0u, 2u, a1, 2);
   v6 = r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(16))));

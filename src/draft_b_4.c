@@ -334,7 +334,7 @@ uint32 sub_8004C64C(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
     while (((sint32)((sint32)((uint32)(v19) - (uint32)(v20))) < (sint32)((sint32)(0u - (uint32)((sint32)r_u32(0x80077468u))))));
   }
   if (v9)
-    ob_draft_unresolved_call(0x80024d24u, 3u, a4, (sint32)((uint32)((sint32)((uint32)(36) * (uint32)(a2))) * (uint32)(a3)), 2147483639);
+    ob_draft_unresolved_call(0x80024d24u, 4u, a4, (sint32)((uint32)((sint32)((uint32)(36) * (uint32)(a2))) * (uint32)(a3)), 2147483639, 0);
   sub_80051400(a1, (local_objects + 0u));
   v21 = 0;
   if (((sint32)(v6) > (sint32)(0)))

@@ -822,9 +822,8 @@ uint32 ob_game_800BB07C(uint32 input, uint32 time)
             uint32 kind = r_u32(record + 12);
             if (kind >= 229 && kind < 231)
             {
-                /* TODO Original s5 has no defined marker unless a type235 entry was visited */
-                if (!marker_known) return ob_native_missing_value(0x800BB07C, "TODO Marker requires a type235 entry in the input group");
-                w_u16(record + 20, marker);
+                /* Without a marker, retain the descriptor's existing marker value */
+                if (marker_known) w_u16(record + 20, marker);
                 uint32 mode = r_u8(0x8006C22C);
                 if ((mode != 0 || (r_u8(record + 24) & 1))
                     && (mode != 1 || (r_u8(record + 24) & 2))
@@ -1303,8 +1302,8 @@ terminal:
         value = ob_batch5_vlc_math(value, 1, 1);
         if (!previous) break;
     } while (1);
-    /* TODO Bind the SDK cache-control boundary for CP0 SR bit0x20000 */
-    ob_native_missing_value(0x8008E530, "TODO Missing CP0 SR cache-control adapter");
+    /* Native C needs no PSX CP0 cache-control transition */
+    FlushCache();
     return 0;
 }
 

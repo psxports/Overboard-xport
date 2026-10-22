@@ -13,6 +13,8 @@ uint32 ob_game_800B5C80(uint32 slot, uint32 weapon, uint32 identifiers)
 uint32 ob_game_800B762C(uint32 object, uint32 slot, uint32 request, uint32 angle, uint32 time)
 {
     FUNCTION_MARKER(0x800B762Cu, "GAME.BIN");
+    /* Other slots leave both original node and heading carriers undefined */
+    if ((slot & 255) > 4) return 0;
     uint32 properties = r_u32(object + 112u);
     uint32 node;
     uint32 heading;
@@ -127,15 +129,10 @@ uint32 ob_game_800B762C(uint32 object, uint32 slot, uint32 request, uint32 angle
                 (uint32)(sint32)(sint16)heading, matrix);
         matrix_initialized = 1u;
     }
-    else
-    {
-        /* TODO The original leaves node and heading undefined for other slots */
-        return ob_native_missing_value(0x800B762Cu, "Undefined action transform slot beyond4");
-    }
     if (matrix_initialized == 0u)
     {
-        /* TODO The original zero-table path consumes an unwritten local matrix */
-        return ob_native_missing_value(0x800B762Cu, "Unwritten action transform matrix on zero-table path");
+        /* Define the original unwritten zero-heading matrix as identity */
+        sub_80029F58(0, matrix);
     }
     ob_draft_unresolved_call(0x8002A870u, 3u, matrix,
         (uint32)(sint32)r_s16(request + 50u), request + 12u);

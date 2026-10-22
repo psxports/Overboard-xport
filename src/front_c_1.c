@@ -1215,9 +1215,8 @@ uint32 ob_front_800974E4(uint32 a1, uint32 a2, uint32 a3)
     /* TODO: Recover original call carrier Call operand a0 */
     /* TODO: Recover original call carrier Call operand v0 */
   uint32 a4;
-  /* TODO: Invalid level indices leave original text carriers undefined */
-  if (a1 >= 20u)
-      return ob_native_missing_value(0x800974E4u, "Level index outside 0..19");
+  /* The save grid defines exactly five columns of four slots */
+  if (a1 >= 20u) return 0;
   sint32 v4 = (sint32)((a1 == a3 ? 0x8006AD10u : 0x8006AD14u) + 8u * (a1 % 4u));
   sint32 v8;
   sint32 v9;
@@ -1252,8 +1251,7 @@ uint32 ob_front_800974E4(uint32 a1, uint32 a2, uint32 a3)
         break;
 
       default:
-        a4 = ob_native_missing_value(0x800974E4u, "Undefined level text");
-        break;
+        return 0;
 
     }
 
@@ -1307,8 +1305,7 @@ uint32 ob_front_800974E4(uint32 a1, uint32 a2, uint32 a3)
         break;
 
       default:
-        a4 = ob_native_missing_value(0x800974E4u, "Undefined level text");
-        break;
+        return 0;
 
     }
 
@@ -1335,9 +1332,9 @@ uint32 ob_front_800974E4(uint32 a1, uint32 a2, uint32 a3)
       v4 = (sint32)(0u - (uint32)(2147046124));
     }
   }
-  result = sub_80021460(a4, 0u, 0u, 32u, 32u, 96u + 40u * (a1 / 4u), 61u + 34u * (a1 % 4u), 0u);
+  result = sub_80021460(a4, 0u, 0u, 32u, 32u, 96u + 40u * (a1 / 4u), 61u + 34u * (a1 % 4u), a2 == 0);
   if (((sint32)(a1) > (sint32)(0)))
-    result = sub_80021460(v4, 0u, 0u, 16u, 16u, 120u + 40u * (a1 / 4u), 77u + 34u * (a1 % 4u), 0u);
+    result = sub_80021460(v4, 0u, 0u, 16u, 16u, 120u + 40u * (a1 / 4u), 77u + 34u * (a1 % 4u), a2 == 0);
   if ((a3 == a1))
   {
     if (a2)

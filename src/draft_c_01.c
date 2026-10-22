@@ -641,13 +641,14 @@ sint32 sub_80054A24(sint32 a1, uint32 a2)
         ob_draft_scratch_release(cell);
         return 0;
     }
+    if (!a2) ob_native_guest_break(0x80054A24, 7);
+    uint32 interval = 0x3840 / a2;
     uint32 next = r_u32(0x800771D4u);
     uint32 now = r_u32(0x800771D8u);
     w_u32(node + 12u, 0u);
     w_u32(node + 16u, 0u);
     w_u32(node + 20u, (uint32)a1);
     w_u32(node, next);
-    uint32 interval = a2 != 0u ? 0x3840u / a2 : ob_draft_unresolved_call(0x80054A80u, 1u, 7u);
     w_u32(node + 4u, interval);
     w_u32(node + 8u, now + interval);
     sub_800558E4();
@@ -663,19 +664,20 @@ sint32 sub_80024D54(uint32 a1)
     FUNCTION_MARKER(0x80024D54u, "SLES_008.65");
     uint32 previous = r_u8(0x8006C22Eu);
     uint32 step = a1 - 1u;
-    /* TODO: Original result carrier is unspecified for a1 equal to one */
+    /* No known caller consumes the unspecified result on this no-op path */
     if (a1 == 1u)
-        return (sint32)ob_draft_unresolved_call(0x80024DE8u, 0u);
+        return 0;
     sint32 result;
     do
     {
         uint32 product = step * r_u8(0x8006C22Eu);
-        uint32 volume = a1 != 0u ? product / a1 : ob_draft_unresolved_call(0x80024DA8u, 1u, 7u);
+        if (!a1) ob_native_guest_break(0x80024D54, 7);
+        uint32 volume = product / a1;
         sint32 difference = (sint32)previous - (sint32)(volume & 255u);
         result = difference < 3;
         if (difference >= 3)
         {
-            result = sub_8001DF58(volume);
+            result = sub_8001DF58(volume & 255);
             previous = volume & 255u;
         }
         --step;

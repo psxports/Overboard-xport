@@ -3,9 +3,33 @@
 #include "native_runtime.h"
 #include "psx.h"
 #include "psx_spu.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /* These canonical SDK entry points lack shared header declarations */
 uint32 _SpuInit(uint32 mode);
+
+static uint32 cd_data_guest_callback;
+
+static void ob_cd_data_callback(void)
+{
+    ob_native_dispatch(cd_data_guest_callback, 0, NULL);
+}
+
+static uint32 ob_format_console(uint32 count, const uint32 *args, sint32 font)
+{
+    uint32 buffer = ob_draft_scratch_acquire(4096);
+    uint32 arguments[17];
+    arguments[0] = buffer;
+    for (uint32 i = 0; i < count; ++i) arguments[i + 1] = args[i];
+    uint32 length = ob_native_sprintf(count + 1, arguments);
+    const char *message = (const char *)psx_addr(buffer, length + 1);
+    uint32 result;
+    if (font) result = (uint32)FntPrint("%s", message);
+    else { fputs(message, stdout); result = length; }
+    ob_draft_scratch_release(buffer);
+    return result;
+}
 
 static void service_arguments(uint32 target, uint32 count, uint32 required)
 {
@@ -17,6 +41,83 @@ sint32 ob_native_services_call(uint32 target, uint32 count, const uint32 *args, 
 {
     switch (target)
     {
+        case 0x80064018:
+        case 0x8005B38C:
+            if (!count) ob_native_missing(target, 1, count);
+            *result = ob_format_console(count, args, target == 0x8005B38C);
+            return 1;
+        case 0x80055904:
+            service_arguments(target, count, 2);
+            *result = (uint32)openPSX((const char *)psx_addr(args[0], 1), args[1]);
+            return 1;
+        case 0x80055914:
+            service_arguments(target, count, 3);
+            *result = (uint32)readPSX((sint32)args[0], psx_addr(args[1], args[2]), args[2]);
+            return 1;
+        case 0x80055924:
+            service_arguments(target, count, 3);
+            *result = (uint32)writePSX((sint32)args[0], psx_addr(args[1], args[2]), args[2]);
+            return 1;
+        case 0x80055944:
+            service_arguments(target, count, 1);
+            *result = (uint32)format((const char *)psx_addr(args[0], 1));
+            return 1;
+        case 0x80055974:
+            service_arguments(target, count, 1);
+            *result = (uint32)erase((const char *)psx_addr(args[0], 1));
+            return 1;
+        case 0x80063BB4:
+            service_arguments(target, count, 3);
+            *result = psx_bios_card_write_guest(args[0], args[1], args[2]);
+            return 1;
+        case 0x80055934:
+            service_arguments(target, count, 1);
+            *result = (uint32)closePSX((sint32)args[0]);
+            return 1;
+        case 0x80055964:
+            service_arguments(target, count, 1);
+            *result = nextfile(psx_addr(args[0], 40)) ? args[0] : 0;
+            return 1;
+        case 0x80063BC4:
+            service_arguments(target, count, 3);
+            *result = psx_bios_card_read_guest(args[0], args[1], args[2]);
+            return 1;
+        case 0x80063F28:
+            service_arguments(target, count, 1);
+            exit((sint32)args[0]);
+        case 0x8005FB18:
+            service_arguments(target, count, 2);
+            InitHeap(args[0], args[1]);
+            *result = 0;
+            return 1;
+        case 0x80056438:
+        {
+            service_arguments(target, count, 1);
+            uint32 previous = cd_data_guest_callback;
+            CdDataCallback(args[0] ? ob_cd_data_callback : NULL);
+            cd_data_guest_callback = args[0];
+            *result = previous;
+            return 1;
+        }
+        case 0x80061010:
+            service_arguments(target, count, 1);
+            *result = _SpuDataCallback(args[0]);
+            return 1;
+        case 0x8005D398:
+        {
+            service_arguments(target, count, 5);
+            void *packet = psx_addr(args[0], 12);
+            PSX_RECT *window = args[4] ? (PSX_RECT *)psx_addr(args[4], sizeof(PSX_RECT)) : NULL;
+            SetDrawMode(packet, args[1], args[2], (uint16)args[3], window);
+            *result = r_u32(args[0] + 8);
+            return 1;
+        }
+        case 0x8005B068:
+            service_arguments(target, count, 1);
+            /* The diagnostic caller discards the native font packet pointer */
+            FntFlush((sint32)args[0]);
+            *result = 0;
+            return 1;
         case 0x80064028u:
             *result = ob_native_sprintf(count, args);
             return 1;

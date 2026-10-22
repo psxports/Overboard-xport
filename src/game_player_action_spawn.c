@@ -2,7 +2,6 @@
 #include "game_signatures.h"
 #include "draft_signatures.h"
 
-/* TODO Conditional action helpers retain their real literal call contracts */
 uint32 ob_game_800B5CB4(uint32 object, uint32 slot, uint32 angle, uint32 time)
 {
     FUNCTION_MARKER(0x800B5CB4u, "GAME.BIN");
@@ -195,10 +194,9 @@ uint32 ob_game_800B5CB4(uint32 object, uint32 slot, uint32 angle, uint32 time)
             w_u16(attributes + 154u, r_u16(0x800C5A80u + index * 2u));
             w_u8(attributes + 177u, r_u8(weapon + 135u));
         }
-        /* TODO Recover the conditional sound mask carried by the prior helper */
+        /* B7C7C preserves A1, including the selected weapon used as the incoming mask */
         uint32 voice = (uint32)(sint32)r_s16(attributes + 104u);
-        uint32 mask = ob_native_missing_value(0x8001195Cu, "B5CB4 sound mask at800B64FC");
-        ob_draft_unresolved_call(0x8001195Cu, 2u, voice, mask);
+        ob_stop_sound_with_mask(voice, selected);
         w_u16(attributes + 104u, 0xFFFFu);
         w_u32(attributes + 160u, 0u);
     }

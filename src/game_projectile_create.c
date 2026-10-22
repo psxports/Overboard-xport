@@ -332,8 +332,7 @@ uint32 ob_game_80092B30(uint32 object, uint32 unused, uint32 time)
     uint32 callback = r_u32(object + 196u);
     if (callback != 0u)
     {
-        /* TODO Recover callback-specific carriers if this optional hook is reached */
-        ob_native_missing_value(callback, "92B30 optional cleanup hook ABI");
+        ob_draft_unresolved_call(callback, 3, object, unused, time);
     }
     uint32 output = ob_draft_scratch_acquire(4u);
     w_u32(output, object);

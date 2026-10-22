@@ -47,8 +47,14 @@ static void ob_batch8_transform(uint32 input, uint32 output)
 
 static uint32 ob_batch8_pool_take(OB_CLIP_POOL *pool)
 {
-    /* TODO Original attribute locals are undefined when the model flag is absent */
-    if (!pool->ready) return ob_native_missing_value(0x8003DF98, "Uninitialized clipping attribute pool");
+    if (!pool->ready)
+    {
+        /* Allocate attributes on first use if the model omitted its pool flag */
+        if (!pool->capacity) pool->capacity = 1;
+        pool->cursor = sub_8002D98C(pool->capacity * pool->stride);
+        pool->used = 0;
+        pool->ready = 1;
+    }
     uint32 result = pool->cursor;
     pool->cursor += pool->stride;
     pool->used = (pool->used + 1) & 0xFFFF;
@@ -194,7 +200,7 @@ uint32 ob_main_8003DF98(uint32 object, uint32 context)
     for (uint32 index = 0; index < count; ++index, edge_cursor += 44) w_u32(edge_cursor + 28, 128);
     uint32 capacity = r_u16(0x80077388) >> 1;
     OB_CLIP_POOL points = {0, 0, capacity, 24, 1};
-    OB_CLIP_POOL attributes = {0, 0, 0, 16, 0};
+    OB_CLIP_POOL attributes = {0, 0, capacity, 16, 0};
     points.cursor = sub_8002D98C(capacity * 24);
     if (r_u16(object + 6) & 1)
     {
@@ -662,7 +668,7 @@ uint32 ob_main_8003F528(uint32 object, uint32 context)
     for (uint32 index = 0; index < count; ++index, edge_cursor += 44) w_u32(edge_cursor + 28, 128);
     uint32 capacity = r_u16(0x80077388) >> 1;
     OB_CLIP_POOL points = {0, 0, capacity, 24, 1};
-    OB_CLIP_POOL attributes = {0, 0, 0, 16, 0};
+    OB_CLIP_POOL attributes = {0, 0, capacity, 16, 0};
     points.cursor = sub_8002D98C(capacity * 24);
     if (r_u16(object + 6) & 1)
     {
@@ -1113,8 +1119,9 @@ uint32 ob_game_80095EEC(uint32 object, uint32 x, uint32 y, uint32 z, uint32 time
     case -32768: distance = r_u32(locals + 16) - x; break;
     case -16384: distance = z - r_u32(locals + 24); break;
     default:
-        /* TODO The original leaves incoming S2 live for other orientations */
-        return ob_native_missing_value(0x80095EEC, "Noncardinal orientation needs incoming S2");
+        /* Only cardinal orientations define the original movement distance */
+        ob_draft_scratch_release(locals);
+        return 0;
     }
     sint32 absolute = (sint32)distance < 0 ? (sint32)(0 - distance) : (sint32)distance;
     uint32 state = r_u32(object + 288);

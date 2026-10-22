@@ -222,9 +222,9 @@ void sub_80061034(void)
     sub_800558E4();
     w_u32(0x80076374u, 0);
     w_u32(0x80076378u, 0);
-    ob_draft_unresolved_call(0x80061010u, 0u);
-    ob_draft_unresolved_call(0x80055894u, 0u);
-    ob_draft_unresolved_call(0x800558c4u, 0u);
+    ob_draft_unresolved_call(0x80061010u, 1u, 0u);
+    ob_draft_unresolved_call(0x80055894u, 1u, r_u32(0x80075ED0u));
+    ob_draft_unresolved_call(0x800558c4u, 1u, r_u32(0x80075ED0u));
     sub_800558F4();
   }
 }
@@ -1104,7 +1104,7 @@ uint32 sub_80047E2C(uint32 a1, uint32 a2, uint32 a3, uint32 a4)
 }
 
 
-static uint32 ob_stop_voice(uint32 voice, uint32 mask, uint32 mask_defined)
+static uint32 ob_stop_voice(uint32 voice, uint32 mask)
 {
     FUNCTION_MARKER(0x8001F454u, "SLES_008.65");
     uint32 enabled = r_u8(0x8006C00Cu);
@@ -1119,7 +1119,6 @@ static uint32 ob_stop_voice(uint32 voice, uint32 mask, uint32 mask_defined)
     if (r_u32(0x800782B4u + channel) == voice)
     {
         mask = 1u << ((uint32)first & 31u);
-        mask_defined = 1u;
         w_u32(0x800782A0u + channel, 0u);
     }
     sint32 second = (sint8)r_u8(0x80078555u + offset);
@@ -1128,20 +1127,9 @@ static uint32 ob_stop_voice(uint32 voice, uint32 mask, uint32 mask_defined)
         channel = (uint32)second * 28u;
         if (r_u32(0x800782B4u + channel) == voice)
         {
-            if (mask_defined == 0u)
-            {
-                /* TODO Recover incoming mask when the first channel has a different owner */
-                mask = ob_native_missing_value(0x8001F454u, "Incoming sound mask");
-                mask_defined = 1u;
-            }
             mask |= 1u << ((uint32)second & 31u);
             w_u32(0x800782A0u + channel, 0u);
         }
-    }
-    if (mask_defined == 0u)
-    {
-        /* TODO Recover incoming mask when neither channel belongs to this voice */
-        mask = ob_native_missing_value(0x8001F454u, "Incoming sound mask");
     }
     ob_draft_unresolved_call(0x8006272Cu, 2u, 0u, mask);
     w_u32(0x80078544u + offset, 0u);
@@ -1150,12 +1138,13 @@ static uint32 ob_stop_voice(uint32 voice, uint32 mask, uint32 mask_defined)
 
 uint32 sub_8001F454(uint32 voice)
 {
-    return ob_stop_voice(voice, 0, 0);
+    /* A one-argument native call has no additional channels to stop */
+    return ob_stop_voice(voice, 0);
 }
 
 uint32 ob_stop_voice_with_mask(uint32 voice, uint32 mask)
 {
-    return ob_stop_voice(voice, mask, 1);
+    return ob_stop_voice(voice, mask);
 }
 
 
@@ -1208,7 +1197,8 @@ uint32 sub_80050550(uint32 a1)
   else
     if (r_u32((uint32)((sint32)((uint32)(a1) + (uint32)(56)))))
   {
-    return ob_draft_unresolved_call(0x80050868u, 1u, a1);
+    /* The original nullsub preserves V0 from this field load */
+    return r_u32(a1 + 56);
   }
   else
   {

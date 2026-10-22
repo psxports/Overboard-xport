@@ -474,7 +474,7 @@ void sub_8005F998(void)
   w_u32(0x80075ea4u, (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)((sint32)r_u32(0x80075ec4u)) - (uint32)(8))) - (uint32)((sint32)r_u32(0x80075ec0u)))) - (uint32)(878440)));
   w_u32(0x80075ea0u, (sint32)(0u - (uint32)(2146605208)));
   /* Native entry has no guest return-address continuation to save */
-  ob_draft_unresolved_call(0x8005fb18u, 1u, (sint32)(0u - (uint32)(2146605204)));
+  ob_draft_unresolved_call(0x8005FB18, 2, 0x800D676C, r_u32(0x80075EA4));
   sub_80022CD4();
 }
 

@@ -83,8 +83,7 @@ void sub_800558F4(void)
 void sub_80063CD8(void)
 {
     FUNCTION_MARKER(0x80063CD8u, "SLES_008.65");
-    /* TODO Bind BIOS B0 selector 0x4A */
-    ob_draft_unresolved_call(0xB0u, 1u, 0x4Au);
+    xport_bios_stop_card();
 }
 
 uint32 sub_80017554(void)

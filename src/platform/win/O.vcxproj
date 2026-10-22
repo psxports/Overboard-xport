@@ -256,6 +256,10 @@
     <ClCompile Include="..\..\game_batch6.c" />
     <ClCompile Include="..\..\game_batch7.c" />
     <ClCompile Include="..\..\game_batch8.c" />
+    <ClCompile Include="..\..\batch_2.c" />
+    <ClCompile Include="..\..\batch_3.c" />
+    <ClCompile Include="..\..\batch_1.c" />
+    <ClCompile Include="..\..\batch_4.c" />
     <ClCompile Include="..\..\batch25_frontier.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_stream.c" />
@@ -263,6 +267,7 @@
     <ClCompile Include="..\..\..\..\xport\src\psx_press.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_mdec.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_gpu.c" />
+    <ClCompile Include="..\..\..\..\xport\src\psx_font.c" />
     <ClCompile Include="..\..\..\..\xport\src\vid_ogl.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_xa.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_spu.c">

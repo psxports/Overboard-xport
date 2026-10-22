@@ -379,14 +379,15 @@ uint32 ob_front_80096E3C(uint32 a1)
   ob_draft_unresolved_call(0x8001cde4u, 0u);
   if (ob_draft_unresolved_call(0x80013524u, 4u, a1, (sint32)(0u - (uint32)(2147042100)), 1, (sint32)r_u32(0x8006BCC0)))
   {
-    if ((ob_front_80097210(a1) == (sint32)(0u - (uint32)(1))))
+    sint32 slot = (sint32)ob_front_80097210(a1);
+    if (slot == -1)
     {
       ob_draft_unresolved_call(0x8001ce24u, 0u);
       { uint32 draft_return = (sint32)(0u - (uint32)(1)); ob_draft_scratch_release(local_objects);  return draft_return; }
     }
     else
     {
-      ob_draft_unresolved_call(0x8001cebcu, 1u, (local_objects + 0u));
+      ob_draft_unresolved_call(0x8001cebcu, 2u, local_objects, (uint32)slot);
       ob_draft_unresolved_call(0x8001d818u, 1u, (local_objects + 0u));
       ob_draft_unresolved_call(0x8001ce24u, 0u);
       { uint32 draft_return = 0; ob_draft_scratch_release(local_objects);  return draft_return; }
@@ -747,7 +748,7 @@ uint32 ob_front_80096EDC(uint32 a1)
     v3 = (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(552) * (uint32)(a1))) - (uint32)(2146919116))) + (uint32)((sint32)((uint32)(36) * (uint32)(v2))))) + (uint32)(12));
     if (ob_draft_unresolved_call(0x80013524u, 4u, a1, v3, 1, (sint32)r_u32(0x8006BCC0)))
     {
-      ob_draft_unresolved_call(0x800130c4u, 4u, (sint32)r_u32(0x8006BCC0), 0x8008d340u, 1, 1);
+      ob_draft_unresolved_call(0x800130C4, 6, r_u32(0x8006BCC0), 0x8008D340, 1, 1, 0x8009CE20, 0x8009CEC0);
       ob_draft_unresolved_call(0x8001ce4cu, 2u, (local_objects + 0u), (sint32)r_u32(0x8006C231));
       if (ob_draft_unresolved_call(0x8001345cu, 4u, a1, v3, 1, (sint32)r_u32(0x8006BCC0)))
         goto LABEL_7;
@@ -759,7 +760,7 @@ uint32 ob_front_80096EDC(uint32 a1)
   }
   ob_draft_unresolved_call(0x8001d5f0u, 2u, (local_objects + 0u), (sint32)r_u32(0x8006C231));
   ob_draft_unresolved_call(0x8001cde4u, 0u);
-  ob_draft_unresolved_call(0x800130c4u, 4u, (sint32)r_u32(0x8006BCC0), 0x8008d340u, 1, 1);
+  ob_draft_unresolved_call(0x800130C4, 6, r_u32(0x8006BCC0), 0x8008D340, 1, 1, 0x8009CE20, 0x8009CEC0);
   ob_draft_unresolved_call(0x8001ce4cu, 2u, (local_objects + 0u), (sint32)r_u32(0x8006C231));
   if (!ob_draft_unresolved_call(0x80013360u, 4u, a1, (sint32)(0u - (uint32)(2147042100)), 1, (sint32)r_u32(0x8006BCC0)))
     goto LABEL_6;
@@ -1140,9 +1141,9 @@ uint32 ob_front_8009AB74(uint32 a1)
   sint32 v2;
   sint32 v4;
   ;
-  ob_draft_unresolved_call(0x80020a70u, 4u, 212, 36, 132, 176);
-  ob_draft_unresolved_call(0x80064028u, 3u, (local_objects + 0u), 0x8008da14u, (sint32)((uint32)((sint32)r_u32(0x8006C247)) + (uint32)(1)));
-  switch ((sint32)r_u32(0x8006C247))
+  ob_draft_unresolved_call(0x80020a70u, 8u, 212, 36, 132, 176, 196, 196, 196, 1);
+  ob_draft_unresolved_call(0x80064028u, 3u, (local_objects + 0u), 0x8008da14u, (sint32)((uint32)((sint32)r_s8(0x8006C247)) + (uint32)(1)));
+  switch ((sint32)r_s8(0x8006C247))
   {
     case 0:
       v1 = (sint32)(0u - (uint32)(2147046272));
@@ -1195,9 +1196,9 @@ uint32 ob_front_8009AB74(uint32 a1)
       break;
 
     default:
-      v1 = ob_native_missing_value(0x8009AB74u, "Invalid arena sprite");
-      v2 = v1;
-      break;
+      /* The original has no initialized sprites outside arenas 0 through 9 */
+      ob_draft_scratch_release(local_objects);
+      return 0;
 
   }
 
@@ -1377,9 +1378,8 @@ void ob_front_8009898C(uint32 a1, uint32 a2, uint32 a3, uint32 a4, uint32 select
           break;
 
         default:
-        v14 = ob_native_missing_value(0x8009898Cu, "Invalid player index sprite carrier");
-
-          break;
+          /* The original has no sprite pair outside player slots 0 through 4 */
+          return;
 
       }
 
@@ -1473,7 +1473,7 @@ uint32 ob_front_8009AE68(uint32 a1, uint32 a2)
   sint32 v12;
   sint32 v13;
   ;
-  ob_draft_unresolved_call(0x80020a70u, 4u, 212, 36, 132, 176);
+  ob_draft_unresolved_call(0x80020a70u, 8u, 212, 36, 132, 176, 196, 196, 196, 1);
   if ((a2 || a1))
   {
     switch ((sint32)r_u32(0x8009cf38u))
@@ -1531,10 +1531,10 @@ uint32 ob_front_8009AE68(uint32 a1, uint32 a2)
         break;
 
       default:
-        v6 = ob_native_missing_value(0x8009AE68u, "Invalid weapon sprite");
-        v2 = v6;
-        v3 = v6;
-        break;
+        /* The original leaves both sprites and the label unwritten here */
+        ob_draft_scratch_release(local_objects);
+        ob_draft_scratch_release(literal_0);
+        return 0;
 
     }
 
@@ -1598,10 +1598,10 @@ uint32 ob_front_8009AE68(uint32 a1, uint32 a2)
         break;
 
       default:
-        v6 = ob_native_missing_value(0x8009AE68u, "Invalid weapon sprite");
-        v2 = v6;
-        v3 = v6;
-        break;
+        /* The original leaves both sprites and the label unwritten here */
+        ob_draft_scratch_release(local_objects);
+        ob_draft_scratch_release(literal_0);
+        return 0;
 
     }
 

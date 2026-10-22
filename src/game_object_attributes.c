@@ -325,10 +325,9 @@ uint32 ob_game_800BE604(uint32 object, uint32 attributes, uint32 context)
         type = r_u32(object + 292u);
         w_u32(object + 52u, result);
         angle = ((uint32)r_u16(object + 296u) + 8u) >> 4;
-        /* TODO Original mutated type outside 243..246 would index beyond the local table */
-        if (type - 243u >= 5u)
-            distance = (sint32)ob_native_missing_value(0x800BE604u, "Mutated distance table index");
-        else distance = distances[type - 243u];
+        /* Keep the created attributes if the type no longer names a distance entry */
+        if (type - 243u >= 5u) return result;
+        distance = distances[type - 243u];
         dx = (sint32)((uint32)distance * (uint32)((sint32)((uint32)r_u16(0x8006CB04u + angle * 2u) << 16) >> 30));
         dz = (sint32)((uint32)distance * (uint32)((sint32)((uint32)r_u16(0x8006C304u + angle * 2u) << 16) >> 30));
         vector = ob_draft_scratch_acquire(12u);

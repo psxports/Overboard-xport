@@ -2,6 +2,7 @@
 #define OB_NATIVE_RUNTIME_H
 #include "xport.h"
 __declspec(noreturn) void ob_native_missing(uint32 target, uint32 expected, uint32 supplied);
+__declspec(noreturn) void ob_native_guest_break(uint32 owner, uint32 code);
 void ob_native_runtime_init(void);
 void ob_native_pump(void);
 uint32 ob_draft_scratch_acquire(uint32 size);

@@ -23,12 +23,10 @@ uint32 ob_game_800BF4FC(uint32 object, uint32 effect_data, uint32 secondary_attr
         details = ob_game_800901FC(r_u32(object + 292u), (uint32)(sint32)(sint16)index);
         parameter = r_s16(details + 14u);
         kind = (sint16)ob_draft_unresolved_call(0x800C0868u, 1u, (uint32)(sint32)r_s16(details + 12u));
-        if (kind != 102)
+        /* The descriptor array contains the owner and at most three attachments */
+        if (kind != 102 && (uint32)(sint32)(sint16)index < 4)
         {
-            /* TODO Original descriptor variants beyond three children exceed its four-node array */
-            if ((uint32)(sint32)(sint16)index >= 4u)
-                node = ob_native_missing_value(0x800BF4FCu, "Attachment array index");
-            else node = nodes[(uint32)(sint32)(sint16)index];
+            node = nodes[(uint32)(sint32)(sint16)index];
             result = sub_8004E518(node, effect_data, context, (uint32)kind);
             w_u32(node + 60u, result);
             ob_draft_unresolved_call(0x8004E694u, 2u, r_u32(node + 60u), (uint32)parameter);
