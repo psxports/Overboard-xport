@@ -936,7 +936,8 @@ sint32 sub_800171EC(sint32 a1, sint32 a2)
     /* TODO: Bind external adapter for sub_80063FC8 */
     /* TODO: Bind external adapter for sub_80055D74 */
     uint32 local_objects = ob_draft_scratch_acquire(40u);
-  sint32 v2;
+  /* TODO Original S0 is unwritten when every file search fails; report failure */
+  sint32 v2 = -1;
   sint32 i;
   uint32 v6;
   ;

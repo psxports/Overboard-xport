@@ -349,17 +349,15 @@ uint32 sub_8001DEB4(uint32 a1)
 }
 
 
-uint32 sub_8004B634(void)
+void sub_8004B634(void)
 {
     FUNCTION_MARKER(0x8004b634u, "SLES_008.65");
   sint32 i;
-  sint32 result;
   sint32 v2;
   sint16 v3;
   sint32 v4;
   for (i = (sint32)r_u32(0x800774d0u); i; i = r_u32((uint32)((sint32)((uint32)(i) + (uint32)(32)))))
   {
-    result = (r_u16((uint32)((sint32)((uint32)(i) + (uint32)(38)))) & 0x400);
     if (((r_u16((uint32)((sint32)((uint32)(i) + (uint32)(38)))) & 0x400) != 0))
     {
       v2 = r_u8((uint32)((sint32)((uint32)(i) + (uint32)(55))));
@@ -367,11 +365,10 @@ uint32 sub_8004B634(void)
       v4 = r_u32((uint32)((sint32)((uint32)(i) + (uint32)(24))));
       w_u8((uint32)((sint32)((uint32)(i) + (uint32)(55))), 0);
       w_u16((uint32)((sint32)((uint32)(i) + (uint32)(38))), (v3 | 0x80));
-      result = sub_800442F0(v4, ((v2 != 0)) ? (0x4800) : (0), 5u);
+      sub_800442F0(v4, ((v2 != 0)) ? (0x4800) : (0), 5u);
     }
   }
 
-  return result;
 }
 
 

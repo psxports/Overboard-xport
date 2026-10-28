@@ -911,7 +911,12 @@ uint32 ob_front_8008DB20(uint32 a1)
     if (v6)
   {
     if ((v6 != 2))
-      goto LABEL_11;
+    {
+      /* TODO Original resource pointers are undefined outside indices 0 through 2 */
+      sub_80026758(local_objects + 16u);
+      ob_draft_scratch_release(local_objects);
+      return 0u;
+    }
     v1 = (sint32)(0u - (uint32)(2147046704));
     v2 = (sint32)(0u - (uint32)(2147046700));
     w_u32(((local_objects + 0u) + (0) * 4u), 2500);
@@ -925,7 +930,6 @@ uint32 ob_front_8008DB20(uint32 a1)
     v7 = 5;
   }
   w_u32((v4 + (31) * 4u), v7);
-  LABEL_11:
   w_u32(((local_objects + 0u) + (1) * 4u), (sint32)(0u - (uint32)(1400)));
 
   w_u32(((local_objects + 0u) + (2) * 4u), 2500);

@@ -463,7 +463,7 @@ uint32 ob_clear_effect_workspace(void);
 uint32 ob_border_subcell_to_tile(uint32 output, uint32 packed);
 uint32 sub_8004B450(uint32 a1, uint32 a2);
 uint32 ob_border_cell_address(uint32 packed, uint32 dimensions);
-uint32 sub_8004B634(void);
+void sub_8004B634(void);
 uint32 ob_init_effect_callbacks(void);
 uint32 ob_refresh_effect_records(void);
 sint32 sub_8004B7A0(uint32 a1);

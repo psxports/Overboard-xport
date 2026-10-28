@@ -1,5 +1,6 @@
 #include "native_cd_toc.h"
 #include "psx.h"
+#include "psx_spu.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -20,92 +21,110 @@ static sint32 toc_position(CdlLOC *position, uint32 frame)
     return 1;
 }
 
-sint32 ob_native_cd_toc_init(const char *cue_path)
+typedef struct OB_DATA_FILE
 {
-    FILE *cue;
-    FILE *raw;
-    CdlLOC toc[100];
-    char line[1024], filename[768], path[1024], mode[64];
-    const char *slash, *backslash;
-    size_t directory;
-    uint32 cumulative = 150u, file_frames = 0u;
-    sint32 tracks = 0, pending_file = 0, have_index = 1;
-    sint32 track, index, minute, second, frame;
-    long bytes;
-    if (!cue_path || !(cue = xport_fopen(cue_path, "rb")))
-        return 0;
-    slash = strrchr(cue_path, '/');
-    backslash = strrchr(cue_path, '\\');
-    if (!slash || (backslash && backslash > slash))
-        slash = backslash;
-    directory = slash ? (size_t)(slash - cue_path + 1) : 0u;
-    memset(toc, 0, sizeof(toc));
-    while (fgets(line, sizeof(line), cue))
+    const char *path;
+    uint32 sector;
+    uint32 size;
+    uint32 sector_bytes;
+    uint32 offset;
+} OB_DATA_FILE;
+
+#include "native_cd_files.inc"
+
+static FILE *data_stream;
+static const OB_DATA_FILE *data_file;
+
+static void data_close(void *context)
+{
+    (void)context;
+    if (data_stream) fclose(data_stream);
+    data_stream = NULL;
+    data_file = NULL;
+}
+
+static sint32 data_open(const OB_DATA_FILE *file)
+{
+    char path[256];
+    if (data_file == file && data_stream) return 1;
+    data_close(NULL);
+    snprintf(path, sizeof(path), "DATA/%s", file->path);
+    data_stream = xport_fopen(path, "rb");
+    if (!data_stream) return 0;
+    data_file = file;
+    return 1;
+}
+
+static CdlFILE *data_search(void *context, CdlFILE *result, const char *path)
+{
+    char name[256];
+    size_t length = 0;
+    const char *leaf = path;
+    (void)context;
+    while (*path == '/' || *path == '\\') ++path;
+    leaf = path;
+    while (*path && *path != ';')
     {
-        if (sscanf(line, " FILE \"%767[^\"]\" BINARY", filename) == 1)
-        {
-            if (pending_file || !have_index || directory + strlen(filename) >= sizeof(path))
-                goto invalid;
-            cumulative += file_frames;
-            memcpy(path, cue_path, directory);
-            strcpy(path + directory, filename);
-            raw = xport_fopen(path, "rb");
-            if (!raw)
-                goto invalid;
-            if (fseek(raw, 0, SEEK_END) != 0)
-            {
-                fclose(raw);
-                goto invalid;
-            }
-            bytes = ftell(raw);
-            fclose(raw);
-            if (bytes <= 0 || bytes % 2352L)
-                goto invalid;
-            file_frames = (uint32)(bytes / 2352L);
-            pending_file = 1;
-        }
-        else if (sscanf(line, " TRACK %d %63s", &track, mode) == 2)
-        {
-            /* This disc uses one raw file per track with contained pregaps */
-            if (!pending_file || track != tracks + 1 || track >= 100 ||
-                (strcmp(mode, "AUDIO") != 0 && strcmp(mode, "MODE2/2352") != 0))
-                goto invalid;
-            tracks = track;
-            pending_file = 0;
-            have_index = 0;
-        }
-        else if (sscanf(line, " INDEX %d %d:%d:%d", &index, &minute, &second, &frame) == 4)
-        {
-            uint32 offset;
-            if (!tracks || pending_file || index < 0 || index > 1 || minute < 0 ||
-                second < 0 || second >= 60 || frame < 0 || frame >= 75)
-                goto invalid;
-            offset = (uint32)minute * 4500u + (uint32)second * 75u + (uint32)frame;
-            if (offset >= file_frames)
-                goto invalid;
-            if (index == 1)
-            {
-                if (have_index || !toc_position(&toc[tracks], cumulative + offset))
-                    goto invalid;
-                have_index = 1;
-            }
-        }
-        else
-        {
-            size_t text = strspn(line, " \t\r\n");
-            if (line[text])
-                goto invalid;
-        }
+        char c = *path++;
+        if (length + 1u >= sizeof(name)) return NULL;
+        if (c == '\\' || c == '/') { c = '/'; leaf = path; }
+        if (c >= 'a' && c <= 'z') c -= 'a' - 'A';
+        name[length++] = c;
     }
-    if (ferror(cue) || tracks != 31 || pending_file || !have_index ||
-        !toc_position(&toc[0], cumulative + file_frames))
-        goto invalid;
-    fclose(cue);
-    return CdSetToc(toc, tracks);
-invalid:
-    fprintf(stderr, "Native CD TOC: invalid or unavailable original track metadata: %s\n", cue_path);
-    fclose(cue);
-    return 0;
+    if (*path && strcmp(path, ";1") != 0) return NULL;
+    name[length] = 0;
+    for (size_t i = 0; i < sizeof(ob_data_files) / sizeof(ob_data_files[0]); ++i)
+    {
+        const OB_DATA_FILE *file = &ob_data_files[i];
+        if (strcmp(name, file->path) != 0) continue;
+        if (!data_open(file)) return NULL;
+        memset(result, 0, sizeof(*result));
+        CdIntToPos((sint32)file->sector, &result->pos);
+        result->size = file->size;
+        snprintf(result->name, sizeof(result->name), "%s", leaf);
+        return result;
+    }
+    return NULL;
+}
+
+static sint32 data_read(void *context, uint32 sector, uint8 buffer[2352], uint32 *sector_bytes)
+{
+    (void)context;
+    for (size_t i = 0; i < sizeof(ob_data_files) / sizeof(ob_data_files[0]); ++i)
+    {
+        const OB_DATA_FILE *file = &ob_data_files[i];
+        uint32 relative, bytes;
+        if (sector < file->sector) continue;
+        relative = sector - file->sector;
+        if (relative >= (file->size + 2047u) / 2048u) continue;
+        if (!data_open(file)) return 0;
+        if (fseek(data_stream, (long)(file->offset + relative * file->sector_bytes), SEEK_SET) != 0) return 0;
+        bytes = file->sector_bytes;
+        if (bytes == 2048u && file->size - relative * 2048u < bytes)
+            bytes = file->size - relative * 2048u;
+        memset(buffer, 0, 2352u);
+        if (xport_fread(buffer + (file->sector_bytes == 2048u ? 24u : 0u), 1u, bytes, data_stream) != bytes) return 0;
+        *sector_bytes = file->sector_bytes;
+        return 1;
+    }
+    /* The transport prefetches past file boundaries before Pause completes */
+    memset(buffer, 0, 2352u);
+    *sector_bytes = 2048u;
+    return 1;
+}
+
+sint32 ob_native_cd_files_init(void)
+{
+    const XPORT_CD_SOURCE source = {NULL, 49988u, data_read, data_search, data_close};
+    return xport_cd_mount_source(&source);
+}
+
+sint32 ob_native_cd_toc_init(void)
+{
+    CdlLOC toc[100] = {0};
+    for (uint32 i = 0; i < sizeof(ob_track_frames) / sizeof(ob_track_frames[0]); ++i)
+        if (!toc_position(&toc[i], ob_track_frames[i])) return 0;
+    return CdSetToc(toc, 31);
 }
 
 static sint32 audio_track;

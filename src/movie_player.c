@@ -222,7 +222,12 @@ uint32 ob_native_movie_dispatch(uint32 target, uint32 count, const uint32 *args)
         return ob_movie_8008DD9C(args[0]);
     case 0x8008D0D8u:
         if (count != 5u) ob_native_missing(target, 5u, count);
+#if defined(AP_WEB)
+        /* Web omits standalone movie playback */
+        return 0u;
+#else
         return ob_movie_8008D0D8(args[0], args[1], args[2], args[3], args[4]);
+#endif
     case 0x8008E3B4:
         if (count != 0) ob_native_missing(target, 0, count);
         return ob_movie_8008E3B4();

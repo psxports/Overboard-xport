@@ -114,7 +114,7 @@ uint32 ob_game_800B762C(uint32 object, uint32 slot, uint32 request, uint32 angle
             }
         }
     }
-    else if (slot == 2u || slot == 3u || slot == 4u)
+    else
     {
         uint32 identifier = slot == 2u ? 0x10047u : slot == 3u ? 0x10046u : 0x1004Cu;
         node = (uint32)sub_800437C4(r_u32(r_u32(object + 44u) + 12u), (sint32)identifier);

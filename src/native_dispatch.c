@@ -1436,7 +1436,8 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             if (count < 2) ob_native_missing(target, 2u, count);
             return ob_border_cell_address(args[0], args[1]);
         case 0x8004B634u:
-            return (uint32)sub_8004B634();
+            sub_8004B634();
+            return 0u;
         case 0x8004B6ACu:
             return (uint32)ob_init_effect_callbacks();
         case 0x8004B70Cu:

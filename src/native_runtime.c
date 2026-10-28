@@ -49,7 +49,7 @@ __declspec(noreturn) void ob_native_missing(uint32 target, uint32 expected, uint
     char message[256];
     FILE *log;
     snprintf(message, sizeof(message), "Unimplemented native call %08X (expected args %u, supplied %u)", target, expected, supplied);
-    log = fopen("../status/native-repair/last-error.log", "w");
+    log = xport_fopen("../status/native-repair/last-error.log", "w");
     if (log) { fputs(message, log); fputc('\n', log); fclose(log); }
     fprintf(stderr, "%s\n", message);
     xport_message_error("Overboard! startup failure", message);
@@ -74,7 +74,7 @@ void ob_native_runtime_init(void)
 {
     ob_native_timers_init();
     ob_native_sound_bindings_init();
-    ob_native_card_init("../tools/duckstation/data/user/bios/ps-30e.bin");
+    ob_native_card_init();
     /* Native BIOS event storage lives below the executable load area */
     xport_guest_fill(0x80008000u, 0u, 32u * 28u);
     w_u32(0xA0000120u, 0x80008000u);
@@ -308,18 +308,13 @@ static uint32 native_call(uint32 target, uint32 argument_count, uint32 *args)
 void ob_native_pump(void)
 {
     static uint32 running;
-    static uint32 presented = UINT32_MAX;
     sint32 frame;
     if (running) return;
     running = 1u;
     ob_native_timers_poll();
     frame = VSync(-1);
     if (frame < 0) ob_native_missing(0x80059CA8u, 1u, 0u);
-    if ((uint32)frame != presented)
-    {
-        gpu_present();
-        presented = (uint32)frame;
-    }
+    /* Native VSync polling owns field presentation */
     running = 0u;
 }
 

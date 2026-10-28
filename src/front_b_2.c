@@ -50,7 +50,8 @@ uint32 ob_front_80095094(void)
   sint32 v25;
   ;
   sint32 v27;
-  sint32 v28;
+  /* TODO Original save-slot stack field is unwritten until state 14 */
+  sint32 v28 = -1;
   v0 = 0;
   v1 = 0;
   v2 = 2;
@@ -263,6 +264,7 @@ uint32 ob_front_80095094(void)
         goto LABEL_77;
 
       case 15:
+        if (v28 < 0) goto LABEL_36;
         ob_draft_unresolved_call(0x800130C4, 6, r_u32(0x8006BCC0), 0x8008D340, 1, 1, 0x8009CE20, 0x8009CEC0);
         ob_draft_unresolved_call(0x8001ce4cu, 2u, (local_objects + 0u), r_u8(0x8006C231));
         if (!ob_draft_unresolved_call(0x8001345cu, 4u, v0, (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(552) * (uint32)(v0))) - (uint32)(2146919116))) + (uint32)((sint32)((uint32)(36) * (uint32)(v28))))) + (uint32)(12)), 1, (sint32)r_u32(0x8006BCC0)))

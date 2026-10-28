@@ -6,13 +6,11 @@
 #include "native_callbacks.h"
 #include "native_cd_toc.h"
 
-sint32 cd_mount_cue(const char *cue_path);
 
 const uint32 xport_gpu_graph_type_address = 0x80075BECu;
 
 void xport_main(void)
 {
-    gpu_set_frame_skip(0);
     const PSX_EXE executable = {
         "../orig/SLES_008.65", 0x80010000u, 0x800771F8u, 0x8008D018u,
         0x80075EA0u, 0x800D6768u, 0x801FDFF8u - 0x800D6768u
@@ -23,15 +21,15 @@ void xport_main(void)
         xport_set_exit_code(1);
         return;
     }
-    if (!cd_mount_cue("../status/native-repair/data-track.cue"))
+    if (!ob_native_cd_files_init())
     {
-        xport_message_error("Overboard!", "Cannot mount the original data track");
+        xport_message_error("Overboard!", "Cannot initialize DATA file access");
         xport_set_exit_code(1);
         return;
     }
-    if (ob_native_cd_toc_init("../iso/Overboard! (Europe).cue") != 31)
+    if (ob_native_cd_toc_init() != 31)
     {
-        xport_message_error("Overboard!", "Cannot load the original disc TOC");
+        xport_message_error("Overboard!", "Cannot initialize music track metadata");
         xport_set_exit_code(1);
         return;
     }
