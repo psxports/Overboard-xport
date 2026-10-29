@@ -1,11 +1,17 @@
 #include "psx.h"
 #include "draft_signatures.h"
 #include "game_signatures.h"
+#include "decomp_208_signatures.h"
 
 uint32 ob_game_800A4AC8(uint32 selector)
 {
     FUNCTION_MARKER(0x800A4AC8u, "GAME.BIN");
-    uint32 descriptor = r_u32(0x80077190u);
+    return ob_game_800a4ad0(selector, r_u32(0x80077190u));
+}
+
+uint32 ob_game_800a4ad0(uint32 selector, uint32 descriptor)
+{
+    FUNCTION_MARKER(0x800A4AD0, "GAME.BIN");
     uint32 index = 0u;
     uint32 offset = 0u;
     if (r_u16(descriptor) != 0u)
@@ -39,8 +45,7 @@ uint32 ob_game_800A4AC8(uint32 selector)
             if (create)
             {
                 record = r_u32(0x80077194u) + offset;
-                /* TODO Bind the reached GAME object allocator */
-                sint32 slot = (sint16)ob_draft_unresolved_call(0x800A50BCu, 1u, record);
+                sint32 slot = (sint16)ob_game_800A50BC(record);
                 record = r_u32(0x80077194u) + offset;
                 uint32 table = r_u32(0x8007719Cu);
                 uint32 head = r_u32(table + (uint32)r_u16(record + 22u) * 4u);

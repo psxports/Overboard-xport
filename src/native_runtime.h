@@ -9,5 +9,6 @@ uint32 ob_draft_scratch_acquire(uint32 size);
 void ob_draft_scratch_release(uint32 address);
 uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args);
 uint32 ob_native_front_dispatch(uint32 target, uint32 count, const uint32 *args);
+uint32 ob_native_event_dispatch(uint32 target, uint32 owner, uint32 context, uint32 time, uint32 queue_node);
 void ob_native_overlay_loaded(uint32 index);
 #endif

@@ -1,3 +1,4 @@
+#include "native_card.h"
 #include "front_signatures.h"
 #include "native_runtime.h"
 
@@ -368,36 +369,9 @@ uint32 ob_front_8008E780(uint32 a1, uint32 a2)
 
 uint32 ob_front_80096E3C(uint32 a1)
 {
-    FUNCTION_MARKER(0x80096e3cu, "FRONT.BIN");
-    /* TODO: Bind external adapter for sub_8001CDE4 */
-    /* TODO: Bind external adapter for sub_80013524 */
-    /* TODO: Bind external adapter for sub_8001CE24 */
-    /* TODO: Bind external adapter for sub_8001CEBC */
-    /* TODO: Bind external adapter for sub_8001D818 */
-    uint32 local_objects = ob_draft_scratch_acquire(376u);
-  ;
-  ob_draft_unresolved_call(0x8001cde4u, 0u);
-  if (ob_draft_unresolved_call(0x80013524u, 4u, a1, (sint32)(0u - (uint32)(2147042100)), 1, (sint32)r_u32(0x8006BCC0)))
-  {
-    sint32 slot = (sint32)ob_front_80097210(a1);
-    if (slot == -1)
-    {
-      ob_draft_unresolved_call(0x8001ce24u, 0u);
-      { uint32 draft_return = (sint32)(0u - (uint32)(1)); ob_draft_scratch_release(local_objects);  return draft_return; }
-    }
-    else
-    {
-      ob_draft_unresolved_call(0x8001cebcu, 2u, local_objects, (uint32)slot);
-      ob_draft_unresolved_call(0x8001d818u, 1u, (local_objects + 0u));
-      ob_draft_unresolved_call(0x8001ce24u, 0u);
-      { uint32 draft_return = 0; ob_draft_scratch_release(local_objects);  return draft_return; }
-    }
-  }
-  else
-  {
-    ob_draft_unresolved_call(0x8001ce24u, 0u);
-    { uint32 draft_return = 1; ob_draft_scratch_release(local_objects);  return draft_return; }
-  }
+    FUNCTION_MARKER(0x80096E3Cu, "FRONT.BIN");
+
+    return ob_native_load_game() == 1 ? 0u : 1u;
 }
 
 
@@ -727,47 +701,9 @@ uint32 ob_front_8008F684(uint32 a1, uint32 a2)
 
 uint32 ob_front_80096EDC(uint32 a1)
 {
-    FUNCTION_MARKER(0x80096edcu, "FRONT.BIN");
-    /* TODO: Bind external adapter for sub_8001D5F0 */
-    /* TODO: Bind external adapter for sub_8001CDE4 */
-    /* TODO: Bind external adapter for sub_80013524 */
-    /* TODO: Bind external adapter for sub_800130C4 */
-    /* TODO: Bind external adapter for sub_8001CE4C */
-    /* TODO: Bind external adapter for sub_8001345C */
-    /* TODO: Bind external adapter for sub_8001CE24 */
-    /* TODO: Bind external adapter for sub_80013360 */
-    uint32 local_objects = ob_draft_scratch_acquire(376u);
-  sint32 v2;
-  sint32 v3;
-  ;
-  v2 = sub_8001D048(a1);
-  if ((v2 != (sint32)(0u - (uint32)(1))))
-  {
-    ob_draft_unresolved_call(0x8001d5f0u, 2u, (local_objects + 0u), (sint32)r_u32(0x8006C231));
-    ob_draft_unresolved_call(0x8001cde4u, 0u);
-    v3 = (sint32)((uint32)((sint32)((uint32)((sint32)((uint32)((sint32)((uint32)(552) * (uint32)(a1))) - (uint32)(2146919116))) + (uint32)((sint32)((uint32)(36) * (uint32)(v2))))) + (uint32)(12));
-    if (ob_draft_unresolved_call(0x80013524u, 4u, a1, v3, 1, (sint32)r_u32(0x8006BCC0)))
-    {
-      ob_draft_unresolved_call(0x800130C4, 6, r_u32(0x8006BCC0), 0x8008D340, 1, 1, 0x8009CE20, 0x8009CEC0);
-      ob_draft_unresolved_call(0x8001ce4cu, 2u, (local_objects + 0u), (sint32)r_u32(0x8006C231));
-      if (ob_draft_unresolved_call(0x8001345cu, 4u, a1, v3, 1, (sint32)r_u32(0x8006BCC0)))
-        goto LABEL_7;
-    }
-    LABEL_6:
-    ob_draft_unresolved_call(0x8001ce24u, 0u);
+    FUNCTION_MARKER(0x80096EDCu, "FRONT.BIN");
 
-    { uint32 draft_return = 1; ob_draft_scratch_release(local_objects);  return draft_return; }
-  }
-  ob_draft_unresolved_call(0x8001d5f0u, 2u, (local_objects + 0u), (sint32)r_u32(0x8006C231));
-  ob_draft_unresolved_call(0x8001cde4u, 0u);
-  ob_draft_unresolved_call(0x800130C4, 6, r_u32(0x8006BCC0), 0x8008D340, 1, 1, 0x8009CE20, 0x8009CEC0);
-  ob_draft_unresolved_call(0x8001ce4cu, 2u, (local_objects + 0u), (sint32)r_u32(0x8006C231));
-  if (!ob_draft_unresolved_call(0x80013360u, 4u, a1, (sint32)(0u - (uint32)(2147042100)), 1, (sint32)r_u32(0x8006BCC0)))
-    goto LABEL_6;
-  LABEL_7:
-  ob_draft_unresolved_call(0x8001ce24u, 0u);
-
-  { uint32 draft_return = 0; ob_draft_scratch_release(local_objects);  return draft_return; }
+    return ob_native_save_game() == 1 ? 0u : 1u;
 }
 
 

@@ -24,9 +24,8 @@ void ob_native_timers_init(void)
     timer_delivering = 0u;
 }
 
-static void timer_advance(void)
+static void timer_advance_to(uint64 now)
 {
-    uint64 now = xport_timer_get();
     uint64 elapsed;
     uint64 scaled;
     uint64 ticks;
@@ -58,12 +57,33 @@ static void timer_advance(void)
 
 void ob_native_timers_poll(void)
 {
-    timer_advance();
-    if (!timer_pending || !timer_irq_enabled || !timer_interrupts_enabled || timer_delivering) return;
-    timer_pending = 0u;
-    timer_delivering = 1u;
-    DeliverEvent(0xF2000001u, 2u);
-    timer_delivering = 0u;
+    uint64 now;
+    if (timer_delivering) return;
+    now = xport_timer_get();
+    for (;;)
+    {
+        uint64 next = now;
+        PsxTimerState state;
+        if (timer_pending && timer_irq_enabled && timer_interrupts_enabled)
+        {
+            timer_pending = 0u;
+            timer_delivering = 1u;
+            /* Reprogram the counter at its IRQ time, before catching up further */
+            DeliverEvent(0xF2000001u, 2u);
+            timer_delivering = 0u;
+        }
+        if (timer_time >= now) return;
+        psx_timers_export(&state);
+        if (timer_configured && timer_irq_enabled && timer_interrupts_enabled && (state.mode[1] & 0x10u))
+        {
+            uint32 period = state.target[1] ? state.target[1] : 0x10000u;
+            uint64 remaining = period - state.counter[1] % period;
+            uint64 delay = (remaining * OB_PAL_LINE_US_DENOM - timer_fraction + OB_PAL_GPU_HZ - 1u) / OB_PAL_GPU_HZ;
+            if (delay < now - timer_time) next = timer_time + delay;
+        }
+        /* Enabled interrupts run between targets even when presentation stalled */
+        timer_advance_to(next);
+    }
 }
 
 void ob_native_timers_critical(uint32 enabled)
@@ -72,19 +92,23 @@ void ob_native_timers_critical(uint32 enabled)
     if (enabled) ob_native_timers_poll();
 }
 
+uint32 ob_native_timers_dispatching(void)
+{
+    return timer_delivering;
+}
+
 uint32 ob_native_timers_set(uint32 counter, uint32 target, uint32 mode)
 {
     uint32 index = (uint16)counter;
     uint32 result;
-    timer_advance();
+    ob_native_timers_poll();
     if (index >= 3u) return 0u;
     /* TODO Support CPU-clock counters and synchronized gate modes when reached */
     if (index != 1u || (mode & 0x11u) || (mode & ~0x1011u))
         ob_native_missing(0x80055984u, 0x1000u, mode);
     result = (uint32)SetRCnt(index, (uint16)target, mode);
     timer_configured = result;
-    timer_time = xport_timer_get();
-    timer_fraction = 0u;
+    if (!timer_delivering) timer_time = xport_timer_get();
     timer_pending = 0u;
     return result;
 }
@@ -93,7 +117,7 @@ uint32 ob_native_timers_get(uint32 counter)
 {
     PsxTimerState state;
     uint32 index = (uint16)counter;
-    timer_advance();
+    ob_native_timers_poll();
     if (index >= 3u) return 0u;
     if (index != 1u) ob_native_missing(0x80055A24u, 1u, index);
     psx_timers_export(&state);
@@ -103,7 +127,7 @@ uint32 ob_native_timers_get(uint32 counter)
 uint32 ob_native_timers_start(uint32 counter)
 {
     uint32 index = (uint16)counter;
-    timer_advance();
+    ob_native_timers_poll();
     if (index >= 3u) return 0u;
     if (index != 1u) ob_native_missing(0x80055A5Cu, 1u, index);
     timer_irq_enabled = 1u;
@@ -113,7 +137,7 @@ uint32 ob_native_timers_start(uint32 counter)
 uint32 ob_native_timers_stop(uint32 counter)
 {
     uint32 index = (uint16)counter;
-    timer_advance();
+    ob_native_timers_poll();
     if (index >= 3u) return 1u;
     if (index != 1u) ob_native_missing(0x80055A90u, 1u, index);
     /* StopRCnt masks interrupts while the hardware counter keeps counting */

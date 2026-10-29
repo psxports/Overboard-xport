@@ -2,6 +2,7 @@
 #include "game_signatures.h"
 #include "draft_signatures.h"
 #include "native_runtime.h"
+#include "decomp_208_signatures.h"
 
 static sint32 ob_game_init_add(sint32 first, sint32 second)
 {
@@ -134,16 +135,22 @@ uint32 ob_game_800C1104(void)
 
 uint32 ob_game_80093E08(uint32 state)
 {
-    FUNCTION_MARKER(0x80093E08u, "GAME.BIN");
+    FUNCTION_MARKER(0x80093E08, "GAME.BIN");
+    return ob_game_80093e10(state, r_u8(0x8006C230));
+}
+
+uint32 ob_game_80093e10(uint32 state, uint32 scene_mode)
+{
+    FUNCTION_MARKER(0x80093E10, "GAME.BIN");
     sint32 extra_z = 0;
     w_u32(0x800C4D14u, state);
-    if (r_u8(0x8006C230u) < 2u && r_u32(0x800D5C8Cu) == 0u)
+    if (scene_mode < 2u && r_u32(0x800D5C8Cu) == 0u)
         return 0u;
     uint32 temporary = ob_draft_scratch_acquire(60u);
     uint32 first_matrix = temporary;
     uint32 second_matrix = temporary + 24u;
     uint32 position = temporary + 48u;
-    if (r_u8(0x8006C230u) < 2u)
+    if (scene_mode < 2u)
     {
         sub_80045378(r_u32(r_u32(0x800D5C8Cu) + 44u), state, 0x800C4CD0u);
         w_u32(0x800C4CD4u, 0u);
@@ -178,6 +185,8 @@ uint32 ob_game_80093E08(uint32 state)
             sint32 x = r_s32(position);
             sint32 z = r_s32(position + 8u);
             if (x > max_x) max_x = x;
+            /* Internal original block shares the camera owner's live state */
+            FUNCTION_MARKER(0x80093EF4, "GAME.BIN");
             if (x < min_x) min_x = x;
             if (z > max_z) max_z = z;
             if (z < min_z) min_z = z;

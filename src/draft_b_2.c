@@ -1,3 +1,4 @@
+#include "native_card.h"
 #include "draft_signatures.h"
 #include "native_runtime.h"
 #include "psx.h"
@@ -187,26 +188,22 @@ uint32 sub_80022440(void)
 }
 
 
-uint32 sub_80029EEC(uint32 a1, uint32 a2)
+uint32 sub_80029EEC(uint32 angle, uint32 output)
 {
-    FUNCTION_MARKER(0x80029eecu, "SLES_008.65");
-  sint32 v2;
-  sint16 v3;
-  sint32 result;
-  v2 = (sint32)((uint32)(2) * (uint32)((((uint32)(a1) + (uint32)(8)) >> 4)));
-  v3 = r_u16((uint32)((sint32)((uint32)(v2) - (uint32)(2147040508))));
-  v2 = ((uint32)(v2) & ~((uint32)65535u << 0) | (((uint32)(r_u16((uint32)((sint32)((uint32)(v2) - (uint32)(2147038460))))) & 65535u) << 0));
-  result = 0x4000;
-  w_u16((a2 + (2) * 2u), 0);
-  w_u16((a2 + (5) * 2u), 0);
-  w_u16((a2 + (6) * 2u), 0);
-  w_u16((a2 + (7) * 2u), 0);
-  w_u16((a2 + (8) * 2u), 0x4000);
-  w_u16((a2 + (1) * 2u), v3);
-  w_u16(a2, v2);
-  w_u16((a2 + (3) * 2u), (sint32)(0u - (uint32)(v3)));
-  w_u16((a2 + (4) * 2u), v2);
-  return result;
+    FUNCTION_MARKER(0x80029EECu, "SLES_008.65");
+    uint32 offset = ((((uint32)(uint16)angle + 8u) >> 4) << 1);
+    uint32 sine = r_u16(0x8006C304u + offset);
+    uint32 cosine = r_u16(0x8006CB04u + offset);
+    w_u16(output + 4u, 0u);
+    w_u16(output + 10u, 0u);
+    w_u16(output + 12u, 0u);
+    w_u16(output + 14u, 0u);
+    w_u16(output + 16u, 0x4000u);
+    w_u16(output + 2u, sine);
+    w_u16(output, cosine);
+    w_u16(output + 6u, 0u - sine);
+    w_u16(output + 8u, cosine);
+    return 0x4000u;
 }
 
 
@@ -1207,47 +1204,8 @@ uint32 sub_80050550(uint32 a1)
 
 uint32 sub_8001CF58(void)
 {
-    FUNCTION_MARKER(0x8001cf58u, "SLES_008.65");
-    /* TODO: Bind external adapter for sub_8001CDE4 */
-    /* TODO: Bind external adapter for sub_80013524 */
-    /* TODO: Bind external adapter for sub_8001CF2C */
-    /* TODO: Bind external adapter for sub_8001CEBC */
-    /* TODO: Bind external adapter for sub_8001D818 */
-    /* TODO: Bind external adapter for sub_8001CE24 */
-    uint32 local_objects = ob_draft_scratch_acquire(376u);
-  sint32 v0;
-  sint32 v1;
-  sint32 v2;
-  sint32 result;
-  ;
-  v0 = 0;
-  v1 = 0;
-  while (1)
-  {
-    v2 = sub_80012758(v1);
-    if ((!v2 || (v2 == 3)))
-    {
-      sub_80012BE8(v1);
-      if ((sub_8001D048(v1) != (sint32)(0u - (uint32)(1))))
-        v0 = 1;
-    }
-    if (v0)
-      break;
-    result = ((sint32)(++v1) < (sint32)(8));
-    if (((sint32)(v1) >= (sint32)(8)))
-      { uint32 draft_return = result; ob_draft_scratch_release(local_objects);  return draft_return; }
-  }
-
-  ob_draft_unresolved_call(0x8001cde4u, 0u);
-  if (ob_draft_unresolved_call(0x80013524u, 4u, v1, 0x8006BCCCu, 1u, (sint32)r_u32(0x8006bcc0u)))
-  {
-    if (ob_draft_unresolved_call(0x8001cf2cu, 1u, 0))
-    {
-      ob_draft_unresolved_call(0x8001cebcu, 2u, (local_objects + 0u), 0);
-      ob_draft_unresolved_call(0x8001d818u, 1u, (local_objects + 0u));
-    }
-  }
-  { uint32 draft_return = ob_draft_unresolved_call(0x8001ce24u, 0u); ob_draft_scratch_release(local_objects);  return draft_return; }
+    FUNCTION_MARKER(0x8001CF58u, "SLES_008.65");
+    return ob_native_load_profile() == 1;
 }
 
 

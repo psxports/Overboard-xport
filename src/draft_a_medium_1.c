@@ -757,7 +757,7 @@ uint32 sub_80045D70(uint32 a1)
       if (!(sint32)r_u32((i + (3) * 4u)))
         ob_draft_unresolved_call(0x80043C6Cu, 1u, i);
       w_u32(0x80077334u, v5);
-      result = ob_draft_unresolved_call(v6, 3u, v4, v7, v5);
+      result = ob_native_event_dispatch(v6, v4, v7, v5, i);
     }
     else
     {

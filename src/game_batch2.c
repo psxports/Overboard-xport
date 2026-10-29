@@ -4,6 +4,7 @@
 #include "native_extra_signatures.h"
 #include "draft_signatures.h"
 #include "movie_player.h"
+#include "decomp_208_signatures.h"
 
 static uint32 ob_batch2_load_unaligned(uint32 address)
 {
@@ -913,7 +914,14 @@ uint32 ob_game_800A4E4C(uint32 group)
 uint32 ob_game_800A52C4(uint32 object, uint32 rate, uint32 time)
 {
     FUNCTION_MARKER(0x800A52C4, "GAME.BIN");
-    if (r_s8(0x8008AE6A))
+    sint32 protection_mode = r_s8(0x8008AE6A);
+    return ob_game_800a52cc(object, rate, time, protection_mode);
+}
+
+uint32 ob_game_800a52cc(uint32 object, uint32 rate, uint32 time, sint32 protection_mode)
+{
+    FUNCTION_MARKER(0x800A52CC, "GAME.BIN");
+    if (protection_mode)
         for (uint32 index = 0; index < 5; ++index)
             if (object == r_u32(0x8006C138 + index * 4))
                 return 0;
@@ -945,10 +953,10 @@ uint32 ob_game_800A52C4(uint32 object, uint32 rate, uint32 time)
         }
         return UINT32_MAX;
     }
-    sint32 remaining = (sint32)(health - (uint32)damage);
+    uint32 remaining = health - (uint32)damage;
     uint32 maximum = ob_game_800901A8(r_u32(object + 292)) & 0xFFFF;
     uint32 value;
-    if ((sint32)maximum < remaining)
+    if ((sint32)maximum < (sint32)remaining)
     {
         value = ob_game_800901A8(r_u32(object + 292));
         slot = (uint32)(sint32)r_s16(object + 326) * 104;
@@ -976,27 +984,8 @@ uint32 ob_game_800A9720(uint32 owner, uint32 state, uint32 time)
 
 uint32 ob_game_800AC640(uint32 object, uint32 kind)
 {
-    FUNCTION_MARKER(0x800AC640, "GAME.BIN");
-    uint32 counter = r_u32(0x800C8330);
-    uint32 output = 0x800D5DD8;
-    w_u32(0x800C8330, counter + 1);
-    if (counter & 1)
-        output = 0x800D5D18;
-    ob_game_800C0FC8(output, r_u32(object + 44), 164);
-    uint32 attributes = r_u32(object + 124);
-    if (attributes)
-        ob_game_800C0FC8(output + 164, attributes, 16);
-    else
-    {
-        w_u32(output + 164, 0);
-        w_u16(output + 168, 0);
-        w_u32(output + 172, 0);
-    }
-    w_u32(output + 180, r_u32(object + 112));
-    uint32 result = r_u16(object + 302);
-    w_u8(output + 186, kind);
-    w_u16(output + 184, result);
-    return result;
+    FUNCTION_MARKER(0x800AC640u, "GAME.BIN");
+    return ob_game_800ac648(object, kind, r_u32(0x800C8330u));
 }
 
 uint32 ob_game_800AD720(uint32 owner, uint32 state, uint32 time)

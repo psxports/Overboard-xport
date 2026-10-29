@@ -16,17 +16,7 @@ static sint32 draft_c_divide(sint32 numerator, sint32 denominator, uint32 fault)
     return numerator / denominator;
 }
 
-void sub_80063C1C(sint32 a1)
-{
-    FUNCTION_MARKER(0x80063C1Cu, "SLES_008.65");
-    ob_draft_unresolved_call(0x80059E8Cu, 1u, 0u);
-    sub_800558E4();
-    /* TODO: Frozen callee declaration omits the original a0 argument */
-    ob_draft_unresolved_call(0x80063CD8u, 1u, (uint32)a1);
-    ob_draft_unresolved_call(0x80063D60u, 0u);
-    ob_draft_unresolved_call(0x80063E18u, 0u);
-    sub_800558F4();
-}
+
 
 sint32 sub_80021C24(void)
 {
@@ -115,14 +105,7 @@ sint32 sub_80021AD8(void)
     return 1;
 }
 
-void sub_80063C70(void)
-{
-    FUNCTION_MARKER(0x80063C70u, "SLES_008.65");
-    sub_800558E4();
-    sub_80063CE8();
-    ob_draft_unresolved_call(0x80059E8Cu, 1u, 0u);
-    sub_800558F4();
-}
+
 
 sint32 sub_800256CC(uint32 a1)
 {

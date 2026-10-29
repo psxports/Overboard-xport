@@ -168,12 +168,19 @@ APP_SOURCES := \
     ../../batch_1.c \
     ../../batch_2.c \
     ../../batch_3.c \
-    ../../batch_4.c
+    ../../batch_4.c \
+    ../../batch_5.c \
+    ../../batch_6.c
 APP_DEFINES := -DFULL_NAME='"$(FULL_NAME)"' -DWND_TITLE='"$(FULL_NAME) (xport)"' -DWND_WIDTH=960 -DWND_HEIGHT=720 -DFIELD_RATE=50
 ifeq ($(CONFIG),Release)
 APP_DEFINES += -DXPORT_DISABLE_FUNCTION_MARKERS
 endif
-WEB_EXCLUDE_FILES := DATA/FMV/*
 WEB_PACKAGER_FLAGS := --extra-file $(PROJECT_ROOT)/orig/SLES_008.65 orig/SLES_008.65
 include ../../../../xport/src/platform/web/Makefile
-COMMON_FLAGS += -include $(PROJECT_ROOT)/src/native_sdk_declarations.h
+COMMON_FLAGS += -include $(PROJECT_ROOT)/src/native_sdk_declarations.h -Wno-unused-parameter
+# Debug scene saved 167416 bytes across a browser yield
+LINK_FLAGS += -sASYNCIFY_STACK_SIZE=262144 -sSTACK_OVERFLOW_CHECK=2
+ifeq ($(CONFIG),Debug)
+# Keep the large dispatch switches within browser compiler and stack limits
+$(call object_for,../../native_dispatch.c) $(call object_for,../../game_dispatch.c): BUILD_FLAGS += -O1
+endif

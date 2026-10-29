@@ -2,8 +2,25 @@
 #include "native_runtime.h"
 #include "game_signatures.h"
 #include "movie_player.h"
+#include "decomp_208_signatures.h"
 
 static uint32 loaded_overlay = UINT32_MAX;
+
+uint32 ob_native_event_dispatch(uint32 target, uint32 owner, uint32 context, uint32 time, uint32 queue_node)
+{
+    if (loaded_overlay == 1u && target == 0x800A7700u)
+    {
+        /* The original scheduler retains its current queue node in S0 */
+        uint32 effect_record = ob_draft_scratch_acquire(96u);
+        uint32 projectile_request = ob_draft_scratch_acquire(120u);
+        uint32 result = ob_game_800a7700(owner, time, queue_node, effect_record, projectile_request);
+        ob_draft_scratch_release(projectile_request);
+        ob_draft_scratch_release(effect_record);
+        ob_native_pump();
+        return result;
+    }
+    return ob_draft_unresolved_call(target, 3u, owner, context, time);
+}
 
 void ob_native_overlay_loaded(uint32 index)
 {

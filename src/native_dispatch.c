@@ -1,6 +1,7 @@
 #include "draft_signatures.h"
 #include "native_runtime.h"
 #include "native_extra_signatures.h"
+#include "decomp_208_signatures.h"
 
 uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
 {
@@ -8,6 +9,346 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
         return ob_native_front_dispatch(target, count, args);
     switch (target)
     {
+    case 0x80029FC4:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return (uint32)ob_main_80029fc4(args[0], args[1], args[2]);
+    case 0x8002B3EC:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return (uint32)ob_main_8002b3ec(args[0], args[1], args[2]);
+    case 0x8002C2C4:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_8002c2c4(args[0], args[1]);
+    case 0x8002DC90:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_8002dc90(args[0], args[1]);
+    case 0x8004C0D0:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8004c0d0((sint32)args[0], args[1], args[2]);
+    case 0x80044620:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_80044620(args[0], args[1], args[2]);
+    case 0x8004BD7C:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_8004bd7c(args[0], args[1]);
+    case 0x8002DE20:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8002de20(args[0], args[1], args[2]);
+    case 0x8002E1B0:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8002e1b0(args[0], args[1], args[2]);
+    case 0x8002E540:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8002e540(args[0], args[1], args[2]);
+    case 0x8002A530:
+    {
+        if (count < 3) ob_native_missing(target, 3, count);
+        sint32 first = r_s16(args[0]);
+        sint32 factor = r_s16(args[1]);
+        uint32 product = first * factor;
+        /* The negative prefix branch bypasses the core's positive bias */
+        if ((first < 0) != (factor < 0)) product -= 0x4000u;
+        return (uint32)ob_main_8002a54c(args[0], args[1], args[2], product);
+    }
+    case 0x8002A6D0:
+    {
+        if (count < 3) ob_native_missing(target, 3, count);
+        sint32 first = r_s16(args[0]);
+        sint32 factor = r_s16(args[1]);
+        uint32 product = first * factor;
+        /* The negative prefix branch bypasses the core's positive bias */
+        if ((first < 0) != (factor < 0)) product -= 0x4000u;
+        return (uint32)ob_main_8002a6ec(args[0], args[1], args[2], product);
+    }
+    case 0x8001E480:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return (uint32)ob_main_8001e488(args[0], r_u8(0x8006C00Cu));
+    case 0x8001F97C:
+        return ob_main_8001f984(r_u8(0x8006C012u));
+    case 0x80024258:
+        return ob_main_80024260(r_u32(0x80077620u));
+    case 0x800242BC:
+        return ob_main_800242c4(r_u32(0x800773D0u));
+    case 0x800254A4:
+        return ob_main_800254a8(r_u32(0x8007708Cu));
+    case 0x80025534:
+        return ob_main_80025538(r_u32(0x8007708Cu));
+    case 0x8002FADC:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8002fadc(args[0], args[1], args[2]);
+    case 0x8002FB78:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8002fb78(args[0], args[1], args[2]);
+    case 0x8002FBFC:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8002fbfc(args[0], args[1], args[2]);
+    case 0x8002FCE4:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8002fce4(args[0], args[1], args[2]);
+    case 0x8003005C:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8003005c(args[0], args[1], args[2]);
+    case 0x800300E0:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_800300e0(args[0], args[1], args[2]);
+    case 0x80030268:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_80030268(args[0], args[1], args[2]);
+    case 0x800302EC:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_800302ec(args[0], args[1], args[2]);
+    case 0x800203BC:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_800203bc(args[0]);
+    case 0x80020CD4:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_80020cd4(args[0], args[1]);
+    case 0x80033CB4:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_80033cb4(args[0], args[1]);
+    case 0x8003A5B4:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_8003a5b4(args[0], args[1]);
+    case 0x8004472C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8004472c(args[0]);
+    case 0x8004597C:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8004597c(args[0], args[1], args[2]);
+    case 0x80013EE4:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return (uint32)ob_main_80013ee4(args[0], args[1], args[2]);
+    case 0x80015DE8:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_80015de8(args[0], args[1], args[2]);
+    case 0x800164EC:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_800164ec(args[0], args[1], args[2]);
+    case 0x80026C18:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80026c18(args[0]);
+    case 0x80026CA4:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80026ca4(args[0]);
+    case 0x80027B24:
+        return ob_main_80027b24();
+    case 0x80027C28:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80027c28(args[0]);
+    case 0x800281D0:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return (uint32)ob_main_800281d0(args[0]);
+    case 0x800287D4:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_800287d4(args[0], args[1], args[2]);
+    case 0x8002A324:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002a324(args[0]);
+    case 0x8002B67C:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return (uint32)ob_main_8002b67c(args[0], args[1]);
+    case 0x8001373C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8001373c(args[0]);
+    case 0x80014BAC:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return (uint32)ob_main_80014bac(args[0]);
+    case 0x8001F944:
+        return (uint32)ob_main_8001f944();
+    case 0x800231A4:
+        return (uint32)ob_main_800231a4();
+    case 0x800513F0:
+        return (uint32)ob_main_800513f0();
+    case 0x800549D4:
+        return ob_main_800549d4();
+    case 0x8004372C:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_8004372c(args[0], args[1]);
+    case 0x8004374C:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_8004374c(args[0], (sint32)args[1]);
+    case 0x8004376C:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8004376c(args[0], args[1], args[2]);
+    case 0x80043924:
+        return ob_main_80043924();
+    case 0x80043994:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80043994(args[0]);
+    case 0x80043E88:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_80043e88(args[0], args[1], args[2]);
+    case 0x800442B0:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_800442b0(args[0], args[1]);
+    case 0x800445B0:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_800445b0(args[0], args[1]);
+    case 0x800445FC:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_800445fc(args[0], args[1], args[2]);
+    case 0x800447FC:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_800447fc(args[0]);
+    case 0x80044824:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80044824(args[0]);
+    case 0x80044844:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80044844(args[0]);
+    case 0x80044EB8:
+        if (count < 4) ob_native_missing(target, 4, count);
+        return ob_main_80044eb8(args[0], args[1], args[2], args[3]);
+    case 0x80045194:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_80045194(args[0], args[1]);
+    case 0x80045804:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80045804(args[0]);
+    case 0x800513AC:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return (uint32)ob_main_800513ac(args[0], args[1]);
+    case 0x80029484:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_80029484(args[0], (sint32)args[1], args[2]);
+    case 0x80026530:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80026530(args[0]);
+    case 0x8002662C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002662c(args[0]);
+    case 0x80026660:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80026660(args[0]);
+    case 0x80026BC0:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80026bc0(args[0]);
+    case 0x80027920:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80027920(args[0]);
+    case 0x8002794C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002794c(args[0]);
+    case 0x80028A58:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_80028a58(args[0], args[1]);
+    case 0x80028A7C:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_80028a7c(args[0], args[1]);
+    case 0x80028E3C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80028e3c(args[0]);
+    case 0x80028E94:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80028e94(args[0]);
+    case 0x800298DC:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_800298dc(args[0]);
+    case 0x80029934:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80029934(args[0]);
+    case 0x80029954:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80029954(args[0]);
+    case 0x8002A2B0:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002a2b0(args[0]);
+    case 0x8002A2D8:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002a2d8(args[0]);
+    case 0x8002A300:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002a300(args[0]);
+    case 0x8002B0B4:
+        if (count < 4) ob_native_missing(target, 4, count);
+        return ob_main_8002b0b4(args[0], args[1], args[2], args[3]);
+    case 0x8002B108:
+        if (count < 4) ob_native_missing(target, 4, count);
+        return ob_main_8002b108(args[0], args[1], args[2], args[3]);
+    case 0x8002B3C4:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_main_8002b3c4(args[0], args[1], args[2]);
+    case 0x8002B654:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return (uint32)ob_main_8002b654(args[0], args[1], args[2]);
+    case 0x8002B904:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002b904(args[0]);
+    case 0x8002DA74:
+        if (count < 1) ob_native_missing(target, 1, count);
+        ob_main_8002da74(args[0]);
+        return 0;
+    case 0x8002DA80:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return (uint32)ob_main_8002da80(args[0], args[1]);
+    case 0x8002DAB8:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return (uint32)ob_main_8002dab8(args[0], args[1]);
+    case 0x80030524:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return (uint32)ob_main_80030524(args[0], args[1], args[2]);
+    case 0x80030574:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return (uint32)ob_main_80030574(args[0], args[1], args[2]);
+    case 0x800357A8:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_800357a8(args[0], args[1]);
+    case 0x80030964:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_main_80030964(args[0], args[1]);
+    case 0x8001EFE4:
+    {
+        if (count < 7) ob_native_missing(target, 7, count);
+        uint32 enabled = r_u8(0x8006C00C);
+        return ob_main_8001efec(args[0], args[1], args[2], args[3], args[4], args[5], args[6], enabled);
+    }
+    case 0x80054558:
+        return ob_main_80054560(r_u32(0x80073A38));
+    case 0x8001193C:
+        return (uint32)ob_main_8001193c();
+    case 0x8002C774:
+        return (uint32)ob_main_8002c774();
+    case 0x800252DC:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_800252dc(args[0]);
+    case 0x800253C4:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_800253c4(args[0]);
+    case 0x8002568C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002568c(args[0]);
+    case 0x8002575C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002575c(args[0]);
+    case 0x80025834:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80025834(args[0]);
+    case 0x80025894:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80025894(args[0]);
+    case 0x800258EC:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_800258ec(args[0]);
+    case 0x80025930:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80025930(args[0]);
+    case 0x80025968:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80025968(args[0]);
+    case 0x800259E4:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_800259e4(args[0]);
+    case 0x80025A44:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80025a44(args[0]);
+    case 0x800267EC:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_800267ec(args[0]);
+    case 0x8002682C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_8002682c(args[0]);
+    case 0x80026850:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_main_80026850(args[0]);
     case 0x80046660:
         if (count < 3) ob_native_missing(target, 3, count);
         return ob_main_80046660(args[0], args[1], args[2]);
@@ -185,8 +526,6 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
             return (uint32)overboard_poll_extended_event();
         case 0x8001237Cu:
             return (uint32)overboard_drain_extended_events();
-        case 0x800123E4u:
-            return (uint32)sub_800123E4();
         case 0x80012758u:
             if (count < 1) ob_native_missing(target, 1u, count);
             return (uint32)sub_80012758((uint32)args[0]);
@@ -1743,11 +2082,6 @@ uint32 ob_native_dispatch(uint32 target, uint32 count, const uint32 *args)
         case 0x800629C4u:
             if (count < 2) ob_native_missing(target, 2u, count);
             return (uint32)sub_800629C4((uint32)args[0], (uint32)args[1]);
-        case 0x80063C1Cu:
-            if (count < 1) ob_native_missing(target, 1u, count);
-            sub_80063C1C((sint32)args[0]); return 0u;
-        case 0x80063C70u:
-            sub_80063C70(); return 0u;
         case 0x80063CD8u:
             sub_80063CD8(); return 0u;
         case 0x80063CE8u:

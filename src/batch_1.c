@@ -3,6 +3,7 @@
 #include "draft_signatures.h"
 #include "native_extra_signatures.h"
 #include "native_runtime.h"
+#include "decomp_208_signatures.h"
 
 uint32 ob_game_800B03D4(uint32 object, uint32 target, uint32 time)
 {
@@ -49,26 +50,48 @@ uint32 ob_game_800A43CC(uint32 slot)
     FUNCTION_MARKER(0x800A43CC, "GAME.BIN");
     uint32 flags = r_u32(0x800C8560);
     sint32 distance = r_s32(0x800C82B8);
+    return ob_game_800a43dc(slot, flags, distance);
+}
+
+uint32 ob_game_800a43dc(uint32 slot, uint32 flags, sint32 distance)
+{
+    FUNCTION_MARKER(0x800A43DC, "GAME.BIN");
     w_u32(0x800C8560, flags | 128);
-    if (distance == 127) return 127;
-    uint32 map = 0x800D5EA4 + (sint16)slot * 504;
-    while (distance <= r_s32(0x800C82BC))
+    if (distance == 127)
+        return 127;
+    if (r_s32(0x800C82BC) >= distance)
     {
-        w_u32(0x800C81BC, -1);
-        for (;;)
+        sint32 layer = (sint16)slot;
+        do
         {
-            sint32 index = (sint16)ob_game_800A4958((sint16)distance, r_s16(0x800C81BC));
-            w_u32(0x800C81BC, index);
-            if (index == -1) break;
-            sint32 x = r_s16(0x800C9AC0 + index * 8), z = r_s16(0x800C9AC2 + index * 8);
-            if (x > 0 && r_s8(map + (x - 1) * 24 + z) == -2) ob_game_800A4600((sint16)distance, (sint16)slot, x - 1, z);
-            if (x + 1 < 21 && r_s8(map + (x + 1) * 24 + z) == -2) ob_game_800A4600((sint16)distance, (sint16)slot, x + 1, z);
-            if (z > 0 && r_s8(map + x * 24 + z - 1) == -2) ob_game_800A4600((sint16)distance, (sint16)slot, x, z - 1);
-            if (z + 1 < 21 && r_s8(map + x * 24 + z + 1) == -2) ob_game_800A4600((sint16)distance, (sint16)slot, x, z + 1);
-        }
-        ++distance;
+            w_u32(0x800C81BC, UINT32_MAX);
+            sint32 step = (sint16)distance;
+            uint32 map = 0x800D5EA4 + (uint32)(layer * 504);
+            for (;;)
+            {
+                sint32 index = (sint16)ob_game_800A4958(step, r_s16(0x800C81BC));
+                w_u32(0x800C81BC, index);
+                if (index == -1)
+                    break;
+                sint32 x = r_s16(0x800C9AC0 + (uint32)(index * 8));
+                sint32 z = r_s16(0x800C9AC2 + (uint32)(index * 8));
+                uint32 cell = map + (uint32)(x * 24 + z);
+                if (x - 1 >= 0 && r_s8(cell - 24) == -2)
+                    ob_game_800A4600(step, layer, x - 1, z);
+                if (x + 1 < 21 && r_s8(cell + 24) == -2)
+                    ob_game_800A4600(step, layer, x + 1, z);
+                if (z - 1 >= 0 && r_s8(cell - 1) == -2)
+                    ob_game_800A4600(step, layer, x, z - 1);
+                if (z + 1 < 21 && r_s8(cell + 1) == -2)
+                    ob_game_800A4600(step, layer, x, z + 1);
+            }
+            sint32 limit = r_s32(0x800C82BC);
+            distance = (sint32)((uint32)distance + 1);
+            if (limit < distance)
+                break;
+        } while (1);
     }
-    uint32 result = r_u32(0x800C8560) & 0xFFFFFF7F;
+    uint32 result = r_u32(0x800C8560) & ~128u;
     w_u32(0x800C8560, result);
     return result;
 }

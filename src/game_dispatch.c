@@ -1,9 +1,136 @@
 #include "game_signatures.h"
 #include "native_runtime.h"
+#include "decomp_208_signatures.h"
 uint32 ob_native_game_dispatch(uint32 target, uint32 count, const uint32 *args)
 {
     switch (target)
     {
+    case 0x800A0DD8:
+        if (count < 4) ob_native_missing(target, 4, count);
+        return ob_game_800a0dd8(args[0], args[1], args[2], args[3]);
+    case 0x800A0FE8:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_800a0fe8(args[0], args[1], args[2]);
+    case 0x800AD5E8:
+        if (count < 4) ob_native_missing(target, 4, count);
+        return ob_game_800ad5e8(args[0], args[1], args[2], args[3]);
+    case 0x800A3270:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return (uint32)ob_game_800a3270((sint32)args[0], args[1]);
+    case 0x800A3384:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return (uint32)ob_game_800a3384((sint32)args[0], args[1], args[2]);
+    case 0x800A3574:
+        if (count < 5) ob_native_missing(target, 5, count);
+        return ob_game_800a3574((sint32)args[0], args[1], args[2], args[3], args[4]);
+    case 0x800979F0:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_game_800979f0(args[0], args[1]);
+    case 0x80097AB4:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_game_80097ab4(args[0], args[1]);
+    case 0x800A62B0:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_game_800a62b0(args[0], args[1]);
+    case 0x800A7090:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_game_800a7090((sint32)args[0]);
+    case 0x800A7C20:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_800a7c20(args[0], args[1], args[2]);
+    case 0x80094724:
+        if (count < 4) ob_native_missing(target, 4, count);
+        return ob_game_80094724(args[0], args[1], args[2], args[3]);
+    case 0x80094964:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_80094964(args[0], args[1], args[2]);
+    case 0x800976E4:
+        if (count < 5) ob_native_missing(target, 5, count);
+        return ob_game_800976e4(args[0], args[1], args[2], args[3], args[4]);
+    case 0x800B8DBC:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_800b8dbc(args[0], args[1], args[2]);
+    case 0x800B970C:
+        if (count < 4) ob_native_missing(target, 4, count);
+        return ob_game_800b970c(args[0], args[1], args[2], args[3]);
+    case 0x800974C8:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_game_800974c8(args[0], args[1]);
+    case 0x800A0D74:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_800a0d74(args[0], args[1], args[2]);
+    case 0x800A11A4:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_800a11a4(args[0], args[1], args[2]);
+    case 0x800A23D0:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return ob_game_800a23d0(args[0], args[1]);
+    case 0x800A7A88:
+        if (count < 2) ob_native_missing(target, 2, count);
+        return (uint32)ob_game_800a7a88(args[0], args[1]);
+    case 0x800A8AE8:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return (uint32)ob_game_800a8ae8(args[0], args[1], args[2]);
+    case 0x800AF0EC:
+        if (count < 9) ob_native_missing(target, 9, count);
+        return ob_game_800af0ec(args[0], args[1], args[2], args[3], args[4], args[6], args[7], args[8]);
+    case 0x800A418C:
+    {
+        if (count < 1) ob_native_missing(target, 1, count);
+        uint32 flags = r_u32(0x800C8560);
+        sint32 distance = r_s32(0x800C82B8);
+        return ob_game_800a419c(args[0], flags, distance);
+    }
+    case 0x80091AA8:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_game_80091aa8(args[0]);
+    case 0x800BCF9C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_game_800bcf9c(args[0]);
+    case 0x800A11D8:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_game_800a11d8(args[0]);
+    case 0x800A1230:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_game_800a1230(args[0]);
+    case 0x800A9890:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_game_800a9890(args[0]);
+    case 0x800A98F4:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_game_800a98f4(args[0]);
+    case 0x800A7A60:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_800a7a60(args[0], args[1], args[2]);
+    case 0x800A7CC4:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_800a7cc4(args[0], args[1], args[2]);
+    case 0x800A991C:
+        if (count < 3) ob_native_missing(target, 3, count);
+        return ob_game_800a991c(args[0], args[1], args[2]);
+    case 0x800A6E38:
+        return ob_game_800a6e38();
+    case 0x800A6F00:
+        return ob_game_800a6f00();
+    case 0x800A70C8:
+        return ob_game_800a70c8();
+    case 0x800A712C:
+        return ob_game_800a712c();
+    case 0x800A714C:
+        if (count < 1) ob_native_missing(target, 1, count);
+        return ob_game_800a714c(args[0]);
+    case 0x800A71C8:
+        return ob_game_800a71c8();
+    case 0x800A71F4:
+        if (count < 1) ob_native_missing(target, 1, count);
+        ob_game_800a71f4(args[0]);
+        return 0;
+    case 0x800A7284:
+        return ob_game_800a7284();
+    case 0x800A72B0:
+        return ob_game_800a72b0();
+    case 0x800A72DC:
+        return ob_game_800a72dc();
     case 0x800BB494:
         if (count < 1) ob_native_missing(target, 1, count);
         return ob_game_800BB494(args[0]);

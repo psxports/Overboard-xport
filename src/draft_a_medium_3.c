@@ -1046,7 +1046,7 @@ void sub_80022CD4(void)
     sub_80054B30();
     sub_8002328C();
     sub_8002439C();
-    sub_800123E4();
+    /* Native saves do not initialize or poll memory cards */
     sub_80024320();
     /* Skip the startup warning resource load, display and countdown */
     sub_80024320();

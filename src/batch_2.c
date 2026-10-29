@@ -1,3 +1,4 @@
+#include "decomp_208_signatures.h"
 #include "psx.h"
 #include "game_signatures.h"
 #include "draft_signatures.h"
@@ -1994,42 +1995,5 @@ uint32 ob_game_800ABCD4(uint32 object, uint32 time)
 uint32 ob_game_800A9FDC(uint32 object, uint32 time)
 {
     FUNCTION_MARKER(0x800A9FDC, "GAME.BIN");
-    uint32 player = r_u32(0x8006C134);
-    uint32 first = sub_80045464(r_u32(player + 44), time);
-    uint32 second = sub_80045464(r_u32(object + 44), time);
-    uint32 local = ob_draft_scratch_acquire(8);
-    sub_80028280(r_u32(second + 8) - r_u32(first + 8), r_u32(second) - r_u32(first), local, local + 4);
-    sint32 heading = r_s16(r_u32(object + 124) + 4);
-    sint32 angle = r_s16(local) - heading;
-    if (angle < 0) angle = -angle;
-    uint32 action = 0;
-    sint32 apply = 1;
-    if (r_u32(local + 4) < 25000)
-    {
-        if (r_s32(object + 316) < (sint32)time)
-        {
-            ob_game_800AA898(r_u32(object + 44), time);
-            w_u32(object + 316, time + 2500);
-            ob_game_800A1BD4(object, 0);
-        }
-        if ((uint16)(angle - 16385) >= 0x7FFF) apply = 0;
-        else if (r_u32(local + 4) < 15000)
-        {
-            if ((uint16)(angle - 28673) >= 0x1FFF || r_u32(local + 4) < 9001) action = 5;
-            else if (r_s32(object + 316) < (sint32)time)
-            {
-                ob_game_800A1BD4(object, 3);
-                w_u32(object + 316, time + 10000);
-                apply = 0;
-            }
-            else apply = 0;
-        }
-        else if ((uint16)(angle - 32257) < 0x3FF) action = 1;
-        else if ((uint16)(angle - 26625) < 0x2FFF) action = 2;
-        else if (!((time >> 5) & 3)) action = 7;
-    }
-    if (apply) ob_game_800A1BD4(object, action);
-    w_u32(object + 288, 18);
-    ob_draft_scratch_release(local);
-    return 18;
+    return ob_game_800a9fe4(object, time, r_u32(0x8006C134u));
 }

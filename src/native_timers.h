@@ -3,6 +3,7 @@
 #include "xport.h"
 void ob_native_timers_init(void);
 void ob_native_timers_poll(void);
+uint32 ob_native_timers_dispatching(void);
 void ob_native_timers_critical(uint32 enabled);
 uint32 ob_native_timers_set(uint32 counter, uint32 target, uint32 mode);
 uint32 ob_native_timers_get(uint32 counter);

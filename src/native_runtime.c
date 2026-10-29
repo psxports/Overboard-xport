@@ -6,7 +6,6 @@
 #include "native_services.h"
 #include "native_timers.h"
 #include "native_sound_bindings.h"
-#include "native_card.h"
 #include "native_cd_toc.h"
 #include "psx_gpu.h"
 #include <stdarg.h>
@@ -74,7 +73,6 @@ void ob_native_runtime_init(void)
 {
     ob_native_timers_init();
     ob_native_sound_bindings_init();
-    ob_native_card_init();
     /* Native BIOS event storage lives below the executable load area */
     xport_guest_fill(0x80008000u, 0u, 32u * 28u);
     w_u32(0xA0000120u, 0x80008000u);
@@ -300,7 +298,6 @@ static uint32 native_call(uint32 target, uint32 argument_count, uint32 *args)
             if (ob_native_graphics_call(target, argument_count, args, &graphics_result)) return graphics_result;
             if (ob_native_heap_call(target, argument_count, args, &graphics_result)) return graphics_result;
             if (ob_native_services_call(target, argument_count, args, &graphics_result)) return graphics_result;
-            if (ob_native_card_call(target, argument_count, args, &graphics_result)) return graphics_result;
             return ob_native_dispatch(target, argument_count, args);
     }
 }
@@ -309,7 +306,7 @@ void ob_native_pump(void)
 {
     static uint32 running;
     sint32 frame;
-    if (running) return;
+    if (running || ob_native_timers_dispatching()) return;
     running = 1u;
     ob_native_timers_poll();
     frame = VSync(-1);

@@ -1,3 +1,4 @@
+#include "native_card.h"
 #include "xport.h"
 #include "psx.h"
 #include "game_signatures.h"
@@ -1144,7 +1145,7 @@ uint32 ob_main_80019360(uint32 phase, uint32 message, uint32 submenu, uint32 sel
         if (submenu == 0)
         {
             ob_main_800175A8(0x80010324, top + 101, selected == 0);
-            uint32 style = r_u32(0x8006BCC4) == 0xFFFFFFFF ? 2 : selected == 1;
+            uint32 style = selected == 1;
             ob_main_800175A8(0x8001041C, top + 112, style);
             ob_main_800175A8(0x80010428, top + 123, selected == 2);
             ob_main_800175A8(0x800102C0, top + 134, selected == 3);
@@ -1211,9 +1212,6 @@ uint32 ob_main_80018DB0(void)
     uint32 level = r_u8(0x8006C231) + 1;
     w_u8(0x8006C231, level);
     ob_main_8001D3C0(level & 255);
-    uint32 state = ob_draft_scratch_acquire(376);
-    ob_main_8001D5F0(state, r_u8(0x8006C231));
-    ob_main_8001CDE4();
     do
     {
         sub_80054320();
@@ -1234,26 +1232,15 @@ uint32 ob_main_80018DB0(void)
             else if (height == 30) phase = 3;
         }
         else if (phase == 7) phase = 3;
-        if (phase == 1)
-        {
-            uint32 port = r_u32(0x8006BCC4);
-            if (port != 0xFFFFFFFF && sub_80012758(port))
-            {
-                w_u32(0x8006BCC4, 0xFFFFFFFF);
-                if (submenu == 2) selected = 10;
-            }
-        }
         if (submenu == 0)
         {
             if (sub_80054440(4))
             {
                 selected = selected ? selected - 1 : 3;
-                if (r_u32(0x8006BCC4) == 0xFFFFFFFF && selected == 1) selected = 0;
             }
             else if (sub_80054440(6))
             {
                 selected = selected == 3 ? 0 : selected + 1;
-                if (r_u32(0x8006BCC4) == 0xFFFFFFFF && selected == 1) selected = 2;
             }
             else if (sub_80054440(14))
             {
@@ -1264,9 +1251,11 @@ uint32 ob_main_80018DB0(void)
                 }
                 else if (selected == 1)
                 {
-                    submenu = 2;
-                    sub_800544EC();
-                    selected = 11;
+                    if (ob_native_save_game() == 1)
+                    {
+                        message = 0x80010238;
+                        phase = 2;
+                    }
                 }
                 else if (selected == 3)
                 {
@@ -1300,58 +1289,6 @@ uint32 ob_main_80018DB0(void)
                 }
             }
         }
-        else if (submenu == 2)
-        {
-            switch (selected)
-            {
-            case 6: case 7:
-                if (sub_80054440(3) || sub_80054440(12))
-                {
-                    submenu = 0;
-                    sub_800544EC();
-                    selected = 1;
-                }
-                else if (sub_80054440(7) || sub_80054440(5)) selected = selected == 7 ? 6 : 7;
-                else if (sub_80054440(14))
-                {
-                    if (selected == 6)
-                    {
-                        selected = 12;
-                        sub_800544EC();
-                    }
-                    else
-                    {
-                        submenu = 0;
-                        sub_800544EC();
-                        selected = 1;
-                    }
-                }
-                break;
-            case 8:
-                selected = 9;
-                ob_main_8001CE4C(state, r_u8(0x8006C231));
-                if (!ob_main_8001345C(r_u32(0x8006BCC4), 0x8006BCCC, 1, r_u32(0x8006BCC0))) selected = 10;
-                break;
-            case 9: case 10:
-                if (sub_80054440(3) || sub_80054440(12) || sub_80054440(14))
-                {
-                    submenu = 0;
-                    sub_800544EC();
-                    selected = selected == 10 ? 2 : 1;
-                }
-                break;
-            case 11: selected = 13; break;
-            case 12: selected = 8; break;
-            case 13:
-                selected = 10;
-                if (ob_main_80013524(r_u32(0x8006BCC4), 0x8006BCCC, 1, r_u32(0x8006BCC0)))
-                {
-                    selected = 7;
-                    if (!ob_main_8001CF2C(r_u8(0x8006C231))) selected = 12;
-                }
-                break;
-            }
-        }
         ob_main_80019360(phase, message, submenu, selected, height);
         while (r_u32(0x80077620)) {}
         sub_8001FC60();
@@ -1360,10 +1297,8 @@ uint32 ob_main_80018DB0(void)
         sub_8002CFA8();
         w_u32(0x80077620, 1);
     } while (phase != 3);
-    ob_main_8001CE24();
     sub_80054CEC();
     sub_800544EC();
-    ob_draft_scratch_release(state);
     if (selected == 0 || selected == 1) return 3;
     if (selected == 2) return 5;
     return selected == 4 ? 2 : 0;

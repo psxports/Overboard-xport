@@ -37,7 +37,7 @@ static const OB_DATA_FILE *data_file;
 
 static void data_close(void *context)
 {
-    (void)context;
+
     if (data_stream) fclose(data_stream);
     data_stream = NULL;
     data_file = NULL;
@@ -60,7 +60,7 @@ static CdlFILE *data_search(void *context, CdlFILE *result, const char *path)
     char name[256];
     size_t length = 0;
     const char *leaf = path;
-    (void)context;
+
     while (*path == '/' || *path == '\\') ++path;
     leaf = path;
     while (*path && *path != ';')
@@ -89,7 +89,7 @@ static CdlFILE *data_search(void *context, CdlFILE *result, const char *path)
 
 static sint32 data_read(void *context, uint32 sector, uint8 buffer[2352], uint32 *sector_bytes)
 {
-    (void)context;
+
     for (size_t i = 0; i < sizeof(ob_data_files) / sizeof(ob_data_files[0]); ++i)
     {
         const OB_DATA_FILE *file = &ob_data_files[i];

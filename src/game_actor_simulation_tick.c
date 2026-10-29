@@ -2,11 +2,17 @@
 #include "game_signatures.h"
 #include "draft_signatures.h"
 #include "native_runtime.h"
+#include "decomp_208_signatures.h"
 
 uint32 ob_game_800AE0F8(uint32 time, uint32 flags)
 {
-    FUNCTION_MARKER(0x800AE0F8u, "GAME.BIN");
-    uint32 delay = r_u32(0x800C82E8u);
+    FUNCTION_MARKER(0x800AE0F8, "GAME.BIN");
+    return ob_game_800ae100(time, flags, r_u32(0x800C82E8));
+}
+
+uint32 ob_game_800ae100(uint32 time, uint32 flags, uint32 delay)
+{
+    FUNCTION_MARKER(0x800AE100, "GAME.BIN");
     if ((sint32)delay > 0)
     {
         --delay;

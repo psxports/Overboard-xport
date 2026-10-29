@@ -1331,7 +1331,7 @@ uint32 sub_8004AAFC(uint32 a1, uint32 a2)
   sint32 v23;
   sint32 v24;
   sint32 v25;
-  int64_t v26;
+  uint32 v26;
   sint32 result;
   sint8 v28;
   ;
@@ -1485,14 +1485,14 @@ uint32 sub_8004AAFC(uint32 a1, uint32 a2)
         LABEL_71:
         v26 = ob_draft_unresolved_call(0x8004b0b0u, 3u, (sint32)((uint32)((((v22 & 0xFFFF0000) | r_u8(local_objects + 0u)) | ((uint32)(r_u8(local_objects + 1u)) << (uint32)(8)))) << (uint32)(16)), v3, v5);
 
-        v26 = ((uint64_t)(v26) & ~((uint64_t)4294967295u << 32) | (((uint64_t)((((v26) >> 32) & (0xFFFFFF00))) & 4294967295u) << 32));
+
         if ((uint32)(v26))
         {
           w_u16((uint32)((sint32)((uint32)(a1) + (uint32)(38))), ((uint32)(r_u16((uint32)((sint32)((uint32)(a1) + (uint32)(38))))) | (uint32)(0x100u)));
-          v26 = ((uint64_t)(v26) & ~((uint64_t)4294967295u << 0) | (((uint64_t)(ob_draft_unresolved_call(0x8004b0b0u, 3u, ((uint32)(((((uint32)((v26) >> 32) | r_u8(local_objects + 8u)) & 0xFFFF00FF) | ((uint32)(r_u8(local_objects + 9u)) << (uint32)(8)))) << (uint32)(16)), v3, v5)) & 4294967295u) << 0));
+          v26 = ob_draft_unresolved_call(0x8004b0b0u, 3u, (r_u8(local_objects + 8u) | ((uint32)r_u8(local_objects + 9u) << 8)) << 16, v3, v5);
           if ((uint32)(v26))
           {
-            v26 = ((uint64_t)(v26) & ~((uint64_t)4294967295u << 0) | (((uint64_t)((sint8)(r_u8(local_objects + 8u))) & 4294967295u) << 0));
+            v26 = (uint32)(sint32)(sint8)r_u8(local_objects + 8u);
             w_u8(local_objects + 0u, r_u8(local_objects + 8u));
             w_u8(local_objects + 1u, r_u8(local_objects + 9u));
           }
@@ -1534,14 +1534,15 @@ uint32 sub_8004AAFC(uint32 a1, uint32 a2)
     goto LABEL_71;
   }
 
-  v26 = ((uint64_t)(v26) & ~((uint64_t)4294967295u << 0) | (((uint64_t)(ob_draft_unresolved_call(0x8004b0b0u, 3u, ((uint32)((r_u8(local_objects + 0u) | ((uint32)(r_u8(local_objects + 1u)) << (uint32)(8)))) << (uint32)(16)), v3, v5)) & 4294967295u) << 0));
+  v26 = ob_draft_unresolved_call(0x8004b0b0u, 3u, ((uint32)((r_u8(local_objects + 0u) | ((uint32)(r_u8(local_objects + 1u)) << (uint32)(8)))) << (uint32)(16)), v3, v5);
   if ((uint32)(v26))
   {
-    v26 = ((uint64_t)(v26) & ~((uint64_t)4294967295u << 0) | (((uint64_t)((r_u16((uint32)((sint32)((uint32)(a1) + (uint32)(38)))) | 0x100)) & 4294967295u) << 0));
+    v26 = r_u16(a1 + 38u) | 0x100u;
     w_u16((uint32)((sint32)((uint32)(a1) + (uint32)(38))), (uint32)v26);
   }
   LABEL_76:
-  ob_draft_unresolved_call(0x8004b3e8u, 2u, (local_objects + 24u), ((uint64_t)((((v26 & 0xFFFF0000) | r_u8(local_objects + 0u)) | ((uint32)(r_u8(local_objects + 1u)) << (uint32)(8)))) << (uint64_t)(16)));
+  /* MIPS SLL discards the previous register contents above the packed bytes */
+  ob_draft_unresolved_call(0x8004b3e8u, 2u, local_objects + 24u, (r_u8(local_objects) | ((uint32)r_u8(local_objects + 1u) << 8)) << 16);
 
   result = (sint8)r_u8(((local_objects + 24u) + (0) * 1u));
   v28 = (sint8)r_u8(((local_objects + 24u) + (1) * 1u));

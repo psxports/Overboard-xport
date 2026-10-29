@@ -260,9 +260,12 @@
     <ClCompile Include="..\..\batch_3.c" />
     <ClCompile Include="..\..\batch_1.c" />
     <ClCompile Include="..\..\batch_4.c" />
+    <ClCompile Include="..\..\batch_5.c" />
+    <ClCompile Include="..\..\batch_6.c" />
     <ClCompile Include="..\..\batch25_frontier.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_stream.c" />
+    <ClCompile Include="..\..\..\..\xport\src\xport_fmv.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_vlc.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_press.c" />
     <ClCompile Include="..\..\..\..\xport\src\psx_mdec.c" />
